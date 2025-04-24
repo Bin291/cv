@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton, MatFabButton} from '@angular/material/button';
-import {NgClass} from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import {NavigationEnd, RouterLink} from '@angular/router';
 import {Auth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, user} from '@angular/fire/auth';
 import {Store} from '@ngrx/store';
@@ -16,7 +16,8 @@ import {AuthModel} from '../../models/auth.model';
     MatIcon,
     MatButton,
     NgClass,
-    RouterLink
+    RouterLink,
+    NgIf
   ],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
@@ -56,9 +57,7 @@ export class SideNavComponent implements OnInit {
     { label: 'Template', icon: 'bookmark', route: '' },
     { label: 'Content', icon: 'attach_file', route: '/content' },
     { label: 'Customize', icon: 'content_cut', route: '/customize' },
-    { label: 'Trash', icon: 'delete', route: '/trash' },
-
-
+    { label: 'Trash', icon: 'delete', route: '/trash' }
   ];
 
   setActiveLink(): void {

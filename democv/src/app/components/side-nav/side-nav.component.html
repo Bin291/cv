@@ -5,7 +5,6 @@
     <mat-icon>{{ item.icon }}</mat-icon>{{ item.label }}</button>
   }
 
-
   <hr>
   <button mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === 'account'}" (click)="loginWithGG()" >
     @if (currentUsers != null){
@@ -16,7 +15,7 @@
       <div class="avatar-container1"><mat-icon>account_circle</mat-icon><p>Login</p></div>
     }
   </button>
-  <button mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === 'logout'}" (click)="logout()">
+  <button *ngIf="currentUsers != null" mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === 'logout'}" (click)="logout()">
     <mat-icon>logout</mat-icon>Logout
   </button>
 </div>

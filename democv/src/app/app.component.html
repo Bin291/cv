@@ -8,8 +8,8 @@
 <!--     </div>-->
       <router-outlet></router-outlet>
     </section>
-    <section class="column3">
-<app-cv></app-cv>
-    </section>
+    <section class="column3" *ngIf="activeLink !== '' && !isHome()">
+  <app-cv></app-cv>
+</section>
   </div>
 </div>
