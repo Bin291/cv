@@ -37,14 +37,6 @@ export class AppComponent implements OnInit{
     });
   }
 
-  isActive(link: string): boolean {
-    return this.activeLink === link;
-  }
-  isSelected(link: string): boolean {
-    return this.activeLink === link;
-  }
-
-
   isHome(): boolean {
     return this.router.url === '/' || this.router.url === '';
 

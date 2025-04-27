@@ -9,6 +9,7 @@ import {AuthState} from '../../ngrx/auth/auth.state';
 import {Router} from '@angular/router';
 import {filter, Observable, Subscription} from 'rxjs';
 import {AuthModel} from '../../models/auth.model';
+import * as AuthActions from '../../ngrx/auth/auth.actions';
 
 @Component({
   selector: 'app-side-nav',
@@ -85,7 +86,13 @@ ngOnInit() {
         }
       })
     );
-
+    this.store.select('auth').subscribe((auth) => {
+      if (auth.authData) {
+        this.currentUsers = auth.authData;
+      } else {
+        this.currentUsers = null;
+      }
+    });
 }
 
   async loginWithGG(){
@@ -97,10 +104,11 @@ ngOnInit() {
   }
 
   logout(){
-    this.auth.signOut();
+    this.auth.signOut().then(r =>
+    console.log('logout success'));
   }
 
-  // login(){
+  //  async loginWithGG(){
   //   this.store.dispatch(AuthActions.login());
   // }
 
