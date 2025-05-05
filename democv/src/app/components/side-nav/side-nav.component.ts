@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {MatButton, MatFabButton} from '@angular/material/button';
-import {NgClass, NgIf} from '@angular/common';
+import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {NavigationEnd, RouterLink} from '@angular/router';
 import {Auth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, user} from '@angular/fire/auth';
 import {Store} from '@ngrx/store';
@@ -10,6 +10,7 @@ import {Router} from '@angular/router';
 import {filter, Observable, Subscription} from 'rxjs';
 import {AuthModel} from '../../models/auth.model';
 import * as AuthActions from '../../ngrx/auth/auth.actions';
+import {AuthService} from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -18,14 +19,15 @@ import * as AuthActions from '../../ngrx/auth/auth.actions';
     MatButton,
     NgClass,
     RouterLink,
-    NgIf
+    NgIf,
   ],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
 })
-export class SideNavComponent implements OnInit {
+export class SideNavComponent
+  implements OnInit
+{
   activeLink: string = '';
-
   authData$ !:Observable<AuthModel|null>;
   subscription: Subscription[] = [];
   authData!: AuthModel |  null;
@@ -35,7 +37,7 @@ export class SideNavComponent implements OnInit {
 
   constructor(private auth: Auth, private store: Store<{
     auth: AuthState
-  }>, private router: Router) {
+  }>, private router: Router, private authService: AuthService) {
     this.authData$ = store.select('auth','authData');
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -76,44 +78,38 @@ export class SideNavComponent implements OnInit {
 
 
 ngOnInit() {
-    this.subscription.push(
-      this.authData$.subscribe((authData) => {
-        if (authData) {
-          this.authData = authData;
-          this.currentUsers = authData;
-        } else {
-          this.currentUsers = null;
-        }
-      })
-    );
-    this.store.select('auth').subscribe((auth) => {
-      if (auth.authData) {
-        this.currentUsers = auth.authData;
-      } else {
-        this.currentUsers = null;
+  this.subscription.push(
+    this.authData$.subscribe((authData) => {
+      if (authData?.idToken) {
+        this.authData = authData;
       }
-    });
+    })
+  );
 }
 
-  async loginWithGG(){
-    const credential = await signInWithPopup(this.auth, new GoogleAuthProvider());
-    this.currentUsers = credential.user;
-    console.log(credential);
-    // const token = await credential.user.getIdToken();
-    // console.log(token);
-  }
+login() {
+  this.authService.loginWithGoogle().subscribe((userData) => {
+    if (userData) {
+      console.log('Đăng nhập thành công, dữ liệu:', userData);
+      // Lưu vào store hoặc chuyển trang
+    } else {
+      console.log('Đăng nhập thất bại hoặc bị hủy');
+    }
+  });
+}
+
+
 
   logout(){
-    this.auth.signOut().then(r =>
-    console.log('logout success'));
+    this.auth.signOut()}
+
+
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src =
+      'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg';
   }
-
-  //  async loginWithGG(){
-  //   this.store.dispatch(AuthActions.login());
-  // }
-
-
-
 
 
 }

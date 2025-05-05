@@ -6,7 +6,7 @@ export class LinkTypeService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   async findAll() {
-    const { data, error } = await this.supabaseService.client
+    const { data, error } = await this.supabaseService.getClient()
       .from('link_types')
       .select('*');
 

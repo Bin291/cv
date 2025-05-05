@@ -9,19 +9,22 @@ import { provideEffects } from '@ngrx/effects';
 import {environment} from './environments/environment';
 import {authReducer} from './ngrx/auth/auth.reducers';
 import {provideStore} from '@ngrx/store';
-
+import * as AuthEffects from './ngrx/auth/auth.effect';
+import {provideHttpClient} from '@angular/common/http';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(),
     provideClientHydration(withEventReplay()),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideStore({
       auth: authReducer,
+
     }),
 
 
     provideAuth(() => getAuth()),
-    provideEffects(  )
+    provideEffects( AuthEffects )
   ]
 };

@@ -24,6 +24,8 @@
     height: 100%;
     padding: 2%;
 
+
+
     &:has(.column3) {
       grid-template-columns: 45% 55%;
     }

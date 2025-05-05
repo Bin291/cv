@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet, Route, Router} from '@angular/router';
 import {SideNavComponent} from './components/side-nav/side-nav.component';
-import {MatButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
 import {CVComponent} from './components/cv/cv.component';
 import {NgIf} from '@angular/common';
 
