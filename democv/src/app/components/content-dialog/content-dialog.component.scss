@@ -1,0 +1,77 @@
+.content-dialog {
+  width: 700px;
+  background: var();
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.content-dialog h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.content-dialog p {
+  font-size: 18px;
+  color: var(--onSurface);
+}
+
+.content-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.content-button {
+  background-color: var(--surfaceContainer);
+  color: var(--onSurface);
+  border: none;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-button:hover {
+  background-color: var(--surfaceContainerHighest);
+}
+
+.content-button mat-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.content-button span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.content-button p {
+  font-size: 14px;
+  color: var(--onSurfaceVariant);
+  margin-top: 5px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.actions button {
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: var(--onPrimary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: var(--primaryContainer);
+}

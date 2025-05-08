@@ -1,0 +1,28 @@
+<div class="dialog" *ngIf="isVisible">
+  <div class="dialog-content">
+    <div class="dialog-header">
+      <h2>Add Content</h2>
+      <span (click)="closeDialog()" class="close-btn">&times;</span>
+    </div>
+    <p class="dialog-description">Quick start (signup required):</p>
+
+    <!-- Content Options -->
+    <div class="content-options">
+      <button class="content-option">Education</button>
+      <button class="content-option">Certificates</button>
+      <button class="content-option">Professional Experience</button>
+      <button class="content-option">Skills</button>
+      <button class="content-option">Languages</button>
+      <button class="content-option">Projects</button>
+      <button class="content-option">Awards</button>
+      <button class="content-option">Organisations</button>
+      <button class="content-option">Publications</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <button class="footer-btn cancel-btn" (click)="closeDialog()">Cancel</button>
+      <button class="footer-btn save-btn" (click)="saveContent()">Save</button>
+    </div>
+  </div>
+</div>

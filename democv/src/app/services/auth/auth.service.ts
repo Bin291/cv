@@ -12,10 +12,7 @@ import {AuthModel} from '../../models/auth.model';
 })
 export class AuthService {
 
-  constructor(private auth: Auth, private http: HttpClient) {
-  }
-
-
+  constructor(private auth: Auth, private http: HttpClient) {}
   loginWithGoogle(): Observable<UserCredential | null> {
     return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
       catchError((error) => {
@@ -25,9 +22,8 @@ export class AuthService {
     );
   }
 
-
   logout() {
-    return this.auth.signOut();
+    return this.auth.signOut() ;
   }
 
   getAuth(idToken: string): Observable<any> {
@@ -38,11 +34,6 @@ export class AuthService {
       },
     });
   }
-
-
-
-
-
 
   // Lấy thông tin người dùng hiện tại
   getCurrentUser(): Observable<User | null> {

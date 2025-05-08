@@ -41,7 +41,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSnackBarContainer} from '@angular/material/snack-bar';
 import {MatStepperModule} from '@angular/material/stepper';
 import { ReactiveFormsModule} from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import {MatIcon} from '@angular/material/icon';
+import {InputcontentComponent} from '../app/components/inputcontent/inputcontent.component';
+import {ContentDialogComponent} from '../app/components/content-dialog/content-dialog.component';
 
 
 const materialModules = [
@@ -87,6 +89,10 @@ const materialModules = [
   MatStepperModule,
   ReactiveFormsModule,
   CommonModule,
+  MatIcon,
+  InputcontentComponent,
+  ContentDialogComponent,
+
 
 
 

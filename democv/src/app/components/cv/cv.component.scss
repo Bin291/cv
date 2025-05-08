@@ -1,8 +1,12 @@
 
-.cv-container{
+/* cv.component.scss */
+.cv-container {
   width: 794px;
   height: 1123px;
   background: white;
   margin: 0 auto;
-
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: relative;
+  page-break-before: always;
 }

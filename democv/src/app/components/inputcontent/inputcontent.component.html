@@ -1,0 +1,93 @@
+<div class="content-container">
+  <!-- Resume Header -->
+  <div class="resume-header">
+    <div class="resume-title">
+      <div *ngIf="!isEditing" class="title-display">
+        <h2>{{ resumeTitle }}</h2>
+        <button (click)="editTitle()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="isEditing" class="title-edit">
+        <div class="content-container">
+          <div class="input-container">
+            <input type="text" [(ngModel)]="resumeTitle" placeholder="Enter your title here..." />
+            <span class="highlight"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+
+        <button (click)="saveTitle()">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button (click)="cancelEdit()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button class="download-btn">Download</button>
+  </div>
+
+  <!-- Personal Information -->
+
+    <div class="personal-info">
+     <div>
+       <h3>Your name</h3>
+       <div class="info-item">
+         <label>Email</label>
+         <span>{{ personalInfo.email }}</span>
+       </div>
+       <div class="info-item">
+         <label>Phone</label>
+         <span>{{ personalInfo.phone }}</span>
+       </div>
+       <div class="info-item">
+         <label>Address</label>
+         <span>{{ personalInfo.address }}</span>
+       </div>
+
+     </div>
+      <div class="upload-container"
+           (mouseover)="isHovered = true"
+           (mouseleave)="isHovered = false"
+           (click)="triggerFileInput(fileInput)">
+        <div *ngIf="!selectedFile" class="upload-placeholder">
+          <p class="upload-prompt">Upload your photo</p>
+        </div>
+        <div *ngIf="selectedFile" class="image-preview">
+          <img [src]="imageUrl" alt="Uploaded photo" class="image-preview-img" />
+        </div>
+
+        <!-- Hidden file input -->
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          #fileInput
+          style="display: none;"
+        />
+
+        <!-- Custom Upload and Change Text -->
+        <div *ngIf="!selectedFile" class="upload-text" [ngClass]="{ 'show': isHovered }">
+          <p class="upload-small-text">Upload</p>
+        </div>
+
+        <div *ngIf="selectedFile" class="upload-text" [ngClass]="{ 'show': isHovered }">
+          <p class="upload-small-text">Change</p>
+        </div>
+      </div>
+
+
+    </div>
+
+  <!-- Add Content Button -->
+  <div class="add-content-container">
+    <p class="content-prompt">Well done! :) Add some content here</p>
+    <button (click)="openDialog()" class="add-content-btn">
+      + Add Content
+    </button>
+  </div>
+
+  <!-- Content Dialog Component -->
+  <app-content-dialog (saveEvent)="onSave()"></app-content-dialog>
+</div>

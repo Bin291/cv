@@ -90,10 +90,10 @@ ngOnInit() {
 login() {
   this.authService.loginWithGoogle().subscribe((userData) => {
     if (userData) {
-      console.log('Đăng nhập thành công, dữ liệu:', userData);
+      // console.log('Đăng nhập thành công, dữ liệu:', userData);
       // Lưu vào store hoặc chuyển trang
     } else {
-      console.log('Đăng nhập thất bại hoặc bị hủy');
+      // console.log('Đăng nhập thất bại hoặc bị hủy');
     }
   });
 }
