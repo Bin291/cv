@@ -1,0 +1,57 @@
+<div class="upload-container">
+  <div class="upload-header">
+    <h4>Upload Photo</h4>
+<!--    <button mat-mini-fab aria-label="Example icon button with a menu icon" (click)="onClose()">-->
+<!--      <mat-icon>close</mat-icon>-->
+<!--    </button>-->
+  </div>
+
+  <div class="upload-body">
+  <div class="file-input">
+    <!-- Display this block when no image is uploaded -->
+    <div *ngIf="!imageSource" class="upload-description" (click)="fileInput.click()">
+      <img
+        class="icon-upload"
+        src="https://cdn-icons-png.flaticon.com/512/4725/4725573.png"
+        alt="Upload Logo"
+      />
+      <p>Click here to select an image</p>
+      <input
+        #fileInput
+        type="file"
+        accept="image/*"
+        (change)="onFileChange($event)"
+        style="display: none;"
+      />
+    </div>
+
+    <!-- Display this block when an image is selected -->
+    <ngx-smart-cropper class="cropper"
+      *ngIf="imageSource"
+      [imageType]="'webp'"
+      [cropX]="100"
+      [cropY]="100"
+      [cropWidth]="150"
+      [cropHeight]="150"
+      [theme]="'mixed'"
+      [imageSource]="imageSource"
+      (imageCroppedEvent)="imageCropped($event)"
+    ></ngx-smart-cropper>
+
+<!--      <img [src]="croppedImage" alt="Cropped Image"  *ngIf="croppedImage"/>-->
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+  <div class="upload-footer">
+    <button mat-raised-button color="warn" (click)="onClose()"><mat-icon>restore_from_trash</mat-icon>Delete image</button>
+    <button mat-raised-button color="primary" (click)="uploadImage()">	<mat-icon>cloud_upload</mat-icon>Upload</button>
+  </div>
+</div>

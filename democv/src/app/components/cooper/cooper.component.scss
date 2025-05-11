@@ -1,0 +1,59 @@
+.upload-container{
+  width: 100%;
+  height: 100%;
+  background: var(--inverseOnSurface);
+  padding: 20px;
+
+  .upload-header{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+}
+
+.upload-body{
+  width: 100%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--inverseOnSurface);
+  border-radius: 10px;
+  border: 2px dashed var(--onSurface);
+}
+.file-input{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon-upload{
+  width: 100px;
+  height: 100px;
+}
+.upload-description{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-footer{
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 20px;
+}
+.cropper{
+  width: 100%;
+  height:auto;
+  object-fit: fill;
+}

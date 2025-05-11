@@ -218,7 +218,11 @@ input[type="text"]:focus {
 }
 
 .upload-placeholder {
-  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .upload-text {
@@ -265,10 +269,20 @@ input[type="text"]:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border: none;
+}
+.icon-upload{
+  width: 100px;
+  height: 100px;
 }
 
 .upload-text.show {
   opacity: 1;
   transition: opacity 0.3s ease;
 }
-
+.uploaded-image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover ;
+  border-radius: 50%;
+}
