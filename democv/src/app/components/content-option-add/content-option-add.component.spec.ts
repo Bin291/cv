@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CooperComponent } from './cooper.component';
+import { ContentOptionAddComponent } from './content-option-add.component';
 
-describe('CooperComponent', () => {
-  let component: CooperComponent;
-  let fixture: ComponentFixture<CooperComponent>;
+describe('ContentOptionAddComponent', () => {
+  let component: ContentOptionAddComponent;
+  let fixture: ComponentFixture<ContentOptionAddComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CooperComponent]
+      imports: [ContentOptionAddComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CooperComponent);
+    fixture = TestBed.createComponent(ContentOptionAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

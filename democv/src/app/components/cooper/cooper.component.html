@@ -26,32 +26,32 @@
     </div>
 
     <!-- Display this block when an image is selected -->
-    <ngx-smart-cropper class="cropper"
+    <ngx-smart-cropper class="small-cropper"
       *ngIf="imageSource"
       [imageType]="'webp'"
       [cropX]="100"
       [cropY]="100"
-      [cropWidth]="150"
-      [cropHeight]="150"
+      [cropWidth]="100"
+      [cropHeight]="100"
       [theme]="'mixed'"
       [imageSource]="imageSource"
       (imageCroppedEvent)="imageCropped($event)"
+       [style.transform]="'scale(' + transform.scale + ')'"
     ></ngx-smart-cropper>
-
-<!--      <img [src]="croppedImage" alt="Cropped Image"  *ngIf="croppedImage"/>-->
-
   </div>
+
 </div>
 
-
-
-
-
-
-
-
   <div class="upload-footer">
-    <button mat-raised-button color="warn" (click)="onClose()"><mat-icon>restore_from_trash</mat-icon>Delete image</button>
+    <button mat-raised-button color="primary" (click)="zoomIn()">
+      <mat-icon>zoom_in</mat-icon>Zoom In
+    </button>
+    <button mat-raised-button color="primary" (click)="zoomOut()">
+      <mat-icon>zoom_out</mat-icon>Zoom Out
+    </button>
+    <button mat-raised-button color="warn" (click)="onClose()"><mat-icon>cancel</mat-icon>Cancel</button>
     <button mat-raised-button color="primary" (click)="uploadImage()">	<mat-icon>cloud_upload</mat-icon>Upload</button>
   </div>
 </div>
+
+

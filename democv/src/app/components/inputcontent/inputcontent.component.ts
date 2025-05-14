@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {ContentDialogComponent} from '../content-dialog/content-dialog.component';
 import {ShareModule} from '../../../shared/shared.module';
 import {MatIcon} from '@angular/material/icon';
@@ -17,9 +17,12 @@ import {CooperComponent} from '../cooper/cooper.component';
   styleUrl: './inputcontent.component.scss'
 })
 export class InputcontentComponent{
+  constructor(private dialog: MatDialog) {
+  }
   resumeTitle: string = 'Resume 1';
   isEditing: boolean = false;
   croppedImage: string | null = null;
+
 
   personalInfo = {
     email: 'example@email.com',
@@ -28,10 +31,22 @@ export class InputcontentComponent{
   };
 
   @ViewChild(ContentDialogComponent) contentDialog!: ContentDialogComponent;
-  constructor(private dialog: MatDialog) {}
-  openDialog() {
-    this.contentDialog.openDialog();
+
+
+  openDialogConten() {
+const dialogRef = this.dialog.open(ContentDialogComponent, {
+  width: '840px',
+  minWidth: '1000px',
+});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.resumeTitle = result.title;
+        this.personalInfo = result.personalInfo;
+      }
+})
   }
+
+
   onSave() {
     console.log('Content saved!');
   }
@@ -48,7 +63,9 @@ export class InputcontentComponent{
 
   openCooperDialog(): void {
     const dialogRef = this.dialog.open(CooperComponent, {
-      width: '600px'
+      width: '840px',
+      minWidth: '650px',
+
     });
     dialogRef.componentInstance.imageUploaded
       .subscribe((img: string) => this.croppedImage = img);

@@ -1,5 +1,18 @@
+.dialog{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: var(--inverseOnSurface);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
 .content-dialog {
-  width: 700px;
+  width: 100%;
   background: var();
   padding: 20px;
   border-radius: 10px;
@@ -22,33 +35,8 @@
   gap: 10px;
 }
 
-.content-button {
-  background-color: var(--surfaceContainer);
-  color: var(--onSurface);
-  border: none;
-  border-radius: 8px;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 
-.content-button:hover {
-  background-color: var(--surfaceContainerHighest);
-}
 
-.content-button mat-icon {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-
-.content-button span {
-  font-size: 16px;
-  font-weight: bold;
-}
 
 .content-button p {
   font-size: 14px;
@@ -74,4 +62,40 @@
 
 .actions button:hover {
   background-color: var(--primaryContainer);
+}
+
+
+.dialog-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.close-btn{
+  font-size: 24px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.footer{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+.title{
+  display: flex;
+  gap: 10px;
+
+  h1{
+    font-size: 24px;
+    font-weight: bold;
+  }
 }

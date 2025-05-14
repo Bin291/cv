@@ -1,0 +1,35 @@
+.content-option {
+  width: 220px;
+  height: 90px;
+  background-color: var(--surfaceContainer);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--onSurface);
+  border: none;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  .content-header {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* khoảng cách giữa icon và chữ */
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 10px;
+    color: var(--onSurfaceVariant);
+    margin-top: 5px;
+  }
+}
+.content-option:hover {
+  background-color: var(--secondaryFixedDimesion);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}

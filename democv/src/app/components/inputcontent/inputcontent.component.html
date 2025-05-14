@@ -25,7 +25,7 @@
         </button>
       </div>
     </div>
-    <button class="download-btn">Download</button>
+    <button class="download-btn"><mat-icon>cloud_download</mat-icon>Download</button>
   </div>
 
   <!-- Personal Information -->
@@ -50,7 +50,7 @@
       <div class="upload-container" (click)="openCooperDialog()">
         <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image" class="uploaded-image"/>
         <div class="upload-placeholder" *ngIf="!croppedImage">
-          <p>Click to upload</p>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s" class="placeholder-img" alt="Add Content" />
         </div>
       </div>
 
@@ -60,12 +60,9 @@
   <!-- Add Content Button -->
   <div class="add-content-container">
     <p class="content-prompt">Well done! :) Add some content here</p>
-    <button (click)="openDialog()" class="add-content-btn">
+    <button (click)="openDialogConten()" class="add-content-btn">
       + Add Content
     </button>
   </div>
-
-  <!-- Content Dialog Component -->
-  <app-content-dialog (saveEvent)="onSave()"></app-content-dialog>
 </div>
 
