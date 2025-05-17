@@ -26,7 +26,7 @@ export class AppComponent implements OnInit{
   }
   setActiveLink() {
     this.activeLink = this.router.url;
-    console.log('activeLink:', this.activeLink);
+    // console.log('activeLink:', this.activeLink);
   }
 
   ngOnInit() {

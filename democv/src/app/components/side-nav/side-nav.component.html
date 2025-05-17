@@ -5,11 +5,13 @@
       <mat-icon>{{ item.icon }}</mat-icon>{{ item.label }}</button>
   }
 
+
   <hr>
   <button mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === 'account'}" (click)="login()" >
     @if (currentUsers != null){
       <div class="avatar-container">
-        <img src="{{currentUsers.photoURL}}" alt="Login" class="avatar" (error)="onImageError($event)"><p class="nameAcc">{{currentUsers.displayName}}</p>
+        <img src="{{currentUsers.photoURL}}" alt="Login" class="avatar" (error)="onImageError($event)">
+<!--        <p class="nameAcc">{{currentUsers.displayName}}</p>-->
       </div>
     } @else {
       <div class="avatar-container1"><mat-icon>account_circle</mat-icon><p>Login</p></div>
@@ -19,3 +21,4 @@
     <mat-icon>logout</mat-icon>Logout
   </button>
 </div>
+

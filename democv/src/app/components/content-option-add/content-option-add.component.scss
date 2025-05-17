@@ -1,5 +1,5 @@
 .content-option {
-  width: 220px;
+  width: 225px;
   height: 90px;
   background-color: var(--surfaceContainer);
   display: flex;
@@ -18,11 +18,10 @@
   .content-header {
     display: flex;
     align-items: center;
-    gap: 8px; /* khoảng cách giữa icon và chữ */
+    gap: 8px;
     font-weight: 500;
     font-size: 16px;
   }
-
   p {
     font-size: 10px;
     color: var(--onSurfaceVariant);

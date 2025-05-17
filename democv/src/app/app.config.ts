@@ -11,6 +11,8 @@ import {authReducer} from './ngrx/auth/auth.reducers';
 import {provideStore} from '@ngrx/store';
 import * as AuthEffects from './ngrx/auth/auth.effect';
 import {provideHttpClient} from '@angular/common/http';
+import {addContentReducer} from './ngrx/add-content/add-content.reducer';
+import * as AddcontentEffects from './ngrx/add-content/add-content.effect';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
@@ -20,11 +22,12 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideStore({
       auth: authReducer,
+      addContent: addContentReducer,
 
     }),
 
 
     provideAuth(() => getAuth()),
-    provideEffects( AuthEffects )
+    provideEffects( AuthEffects, AddcontentEffects ),
   ]
 };

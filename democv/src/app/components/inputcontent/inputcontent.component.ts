@@ -4,21 +4,45 @@ import {ShareModule} from '../../../shared/shared.module';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import {CooperComponent} from '../cooper/cooper.component';
+import {Store} from '@ngrx/store';
+import {AddContentState} from '../../ngrx/add-content/add-content.state';
+import  * as AddContentActions from '../../ngrx/add-content/add-content.action';
+import {Observable, Subscription} from 'rxjs';
+import {AddContentModel} from '../../models/add-content.model';
 @Component({
   selector: 'app-inputcontent',
 
   imports: [
     ShareModule,
     MatIcon,
-    ContentDialogComponent,
 
   ],
   templateUrl: './inputcontent.component.html',
   styleUrl: './inputcontent.component.scss'
 })
-export class InputcontentComponent{
-  constructor(private dialog: MatDialog) {
+export class InputcontentComponent implements  OnInit{
+
+  subscription: Subscription[] = []
+  contentList$ !: Observable<AddContentModel[]>;
+  constructor(private dialog: MatDialog, private store: Store<{
+    addContent: AddContentState
+  }>) {
+
+     this.contentList$ = this.store.select('addContent','addContent')
+    this.store.dispatch(AddContentActions.loadAddContents());
+
   }
+
+  ngOnInit() {
+    this.subscription.push(
+      this.contentList$.subscribe((contentList) => {
+        if(contentList.length > 0){
+          // console.log('Content List:', contentList);
+        }
+      })
+    )
+  }
+
   resumeTitle: string = 'Resume 1';
   isEditing: boolean = false;
   croppedImage: string | null = null;

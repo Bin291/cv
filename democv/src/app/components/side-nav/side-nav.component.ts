@@ -31,12 +31,13 @@ export class SideNavComponent
   authData$ !:Observable<AuthModel|null>;
   subscription: Subscription[] = [];
   authData!: AuthModel |  null;
-  selectedMenu = 'template'; // mặc định là template
+  selectedMenu = 'template';
   currentUsers : any;
 
 
   constructor(private auth: Auth, private store: Store<{
-    auth: AuthState
+    auth: AuthState,
+
   }>, private router: Router, private authService: AuthService) {
     this.authData$ = store.select('auth','authData');
     this.router.events
@@ -58,7 +59,7 @@ export class SideNavComponent
   }
   menuItems = [
     { label: 'Template', icon: 'bookmark', route: '' },
-    { label: 'Content', icon: 'attach_file', route: '/content' },
+    { label: 'Content', icon: 'create', route: '/content' },
     { label: 'Customize', icon: 'content_cut', route: '/customize' },
     { label: 'Trash', icon: 'delete', route: '/trash' }
   ];
@@ -87,17 +88,18 @@ ngOnInit() {
   );
 }
 
-login() {
-  this.authService.loginWithGoogle().subscribe((userData) => {
-    if (userData) {
-      // console.log('Đăng nhập thành công, dữ liệu:', userData);
-      // Lưu vào store hoặc chuyển trang
-    } else {
-      // console.log('Đăng nhập thất bại hoặc bị hủy');
-    }
-  });
+// login() {
+//   this.authService.loginWithGoogle().subscribe((userData) => {
+//     if (userData) {
+//       // console.log('Đăng nhập thành công, dữ liệu:', userData);
+//       // Lưu vào store hoặc chuyển trang
+//     } else {
+//     }
+//   });
+// }
+login(){
+    this.store.dispatch(AuthActions.login());
 }
-
 
 
   logout(){
