@@ -16,12 +16,5 @@ export class AuthController {
         'Missing or invalid Authorization header',
       );
     }
-
-    const idToken = authHeader.split(' ')[1];
-    console.log('Parsed ID Token:', idToken); // Debug xem chuỗi đúng chưa
-    console.log('[Backend] Nhận token:', idToken); // 👈 THÊM LOG
-
-
-    return await this.authService.verifyToken(idToken);
   }
 }

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import {AddContentService} from './add-content.service';
 import { AddContentController } from './add-content.controller';
-import { SupabaseService } from 'src/supabase/supabase.service';
+import { SupabaseModule } from '../supabase/supabase.module';
 
 @Module({
+  imports: [SupabaseModule],
   controllers: [AddContentController],
-  providers: [AddContentService, SupabaseService],
+  providers: [AddContentService],
 })
 export class AddContentModuleModule {}
