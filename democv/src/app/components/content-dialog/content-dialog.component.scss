@@ -71,6 +71,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  gap: 10px;
 }
 .close-btn{
   font-size: 24px;
@@ -79,7 +80,7 @@
 .options {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 10px;
 }
 
 .footer{

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {MatButton} from '@angular/material/button';
+import {NgClass, NgIf} from '@angular/common';
 import {NavigationEnd, RouterLink} from '@angular/router';
-import {Auth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, user} from '@angular/fire/auth';
+import {Auth, onAuthStateChanged} from '@angular/fire/auth';
 import {Store} from '@ngrx/store';
 import {AuthState} from '../../ngrx/auth/auth.state';
 import {Router} from '@angular/router';
@@ -11,6 +11,7 @@ import {filter, Observable, Subscription} from 'rxjs';
 import {AuthModel} from '../../models/auth.model';
 import * as AuthActions from '../../ngrx/auth/auth.actions';
 import {AuthService} from '../../services/auth/auth.service';
+import {ButtonThemeModeComponent} from '../button-theme-mode/button-theme-mode.component';
 
 @Component({
   selector: 'app-side-nav',
@@ -20,6 +21,7 @@ import {AuthService} from '../../services/auth/auth.service';
     NgClass,
     RouterLink,
     NgIf,
+
   ],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
@@ -38,7 +40,7 @@ export class SideNavComponent
   constructor(private auth: Auth, private store: Store<{
     auth: AuthState,
 
-  }>, private router: Router, private authService: AuthService) {
+  }>, private router: Router) {
     this.authData$ = store.select('auth','authData');
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -54,9 +56,8 @@ export class SideNavComponent
         this.currentUsers = null;
       }
     });
-
-
   }
+
   menuItems = [
     { label: 'Template', icon: 'bookmark', route: '' },
     { label: 'Content', icon: 'create', route: '/content' },
@@ -65,7 +66,7 @@ export class SideNavComponent
   ];
 
   setActiveLink(): void {
-    const currentRoute = this.router.url.split('?')[0]; // Lấy URL hiện tại
+    const currentRoute = this.router.url.split('?')[0];
     const activeItem = this.menuItems.find(item => item.route === currentRoute);
     if (activeItem && activeItem.route) {
       this.activeLink = activeItem.route;
@@ -73,10 +74,6 @@ export class SideNavComponent
       this.activeLink = '';
     }
   }
-
-
-
-
 
 ngOnInit() {
   this.subscription.push(
@@ -88,25 +85,12 @@ ngOnInit() {
   );
 }
 
-// login() {
-//   this.authService.loginWithGoogle().subscribe((userData) => {
-//     if (userData) {
-//       // console.log('Đăng nhập thành công, dữ liệu:', userData);
-//       // Lưu vào store hoặc chuyển trang
-//     } else {
-//     }
-//   });
-// }
 login(){
     this.store.dispatch(AuthActions.login());
 }
 
-
   logout(){
     this.auth.signOut()}
-
-
-
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src =

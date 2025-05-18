@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {InputcontentComponent} from '../../components/inputcontent/inputcontent.component';
+import {ThemeService} from '../../services/theme/theme.service';
 
 
 @Component({

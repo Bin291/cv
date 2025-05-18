@@ -3,11 +3,12 @@ import {RouterOutlet, Route, Router} from '@angular/router';
 import {SideNavComponent} from './components/side-nav/side-nav.component';
 import {CVComponent} from './components/cv/cv.component';
 import {NgIf} from '@angular/common';
+import {ButtonThemeModeComponent} from './components/button-theme-mode/button-theme-mode.component';
 
 
 @Component({
   selector: 'app-root',
-  imports: [SideNavComponent, CVComponent, RouterOutlet, NgIf],
+  imports: [SideNavComponent, CVComponent, RouterOutlet, NgIf, ButtonThemeModeComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
