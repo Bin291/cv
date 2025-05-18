@@ -1,5 +1,5 @@
 <div class="drawer">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8YOa0NOd-lI8MZgQU2NzhURgTOBB8TKWVvW7qgqVsSZlYGBJetm70Z2torHEGFGgtbOs&usqp=CAU" class="logo">
+<img src="../../../assets/logos/logoBuildCV.png" class="logo">
   @for (item of menuItems; track $index) {
     <button mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === item.route}" (click)="selectedMenu = item.route" [routerLink]="item.route">
       <mat-icon>{{ item.icon }}</mat-icon>{{ item.label }}</button>

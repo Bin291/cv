@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ThemeService} from '../../services/theme/theme.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-button-theme-mode',
-  imports: [],
+  imports: [
+    NgIf
+  ],
   templateUrl: './button-theme-mode.component.html',
   styleUrl: './button-theme-mode.component.scss'
 })
@@ -13,20 +16,24 @@ constructor(private themeService: ThemeService) {
 
 }
 ngOnInit() {
-  if (typeof window !== 'undefined' && localStorage) {
-    const theme = localStorage.getItem('theme');
-    this.isLightTheme = theme === 'light';
-  }
+  const saved = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
+  this.isLightTheme = saved === 'light';
 }
-  onToggleTheme(event: Event): void {
-    const checkbox = event.target as HTMLInputElement;
-    this.isLightTheme = checkbox.checked;
 
-    if (this.isLightTheme) {
-      this.themeService.enableLightTheme();
+  onToggleThemeMode(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.isLightTheme = isChecked;
+
+    if (isChecked) {
+
+      document.body.classList.add('dark-theme');
+      document.body.classList.remove('light-theme');
     } else {
-      this.themeService.enableDarkTheme();
+      document.body.classList.add('light-theme');
+      document.body.classList.remove('dark-theme');
     }
   }
+
+
 
 }

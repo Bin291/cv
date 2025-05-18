@@ -40,4 +40,10 @@ import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
             this.enableDarkTheme();
           }
         }
+
+        isDarkTheme(): boolean {
+          return document.documentElement.classList.contains(this.darkClass);
+        }
+
+
       }
