@@ -9,12 +9,14 @@ import {AddContentState} from '../../ngrx/add-content/add-content.state';
 import  * as AddContentActions from '../../ngrx/add-content/add-content.action';
 import {Observable, Subscription} from 'rxjs';
 import {AddContentModel} from '../../models/add-content.model';
+
 @Component({
   selector: 'app-inputcontent',
 
   imports: [
     ShareModule,
     MatIcon,
+    FormCvComponent,
 
   ],
   templateUrl: './inputcontent.component.html',

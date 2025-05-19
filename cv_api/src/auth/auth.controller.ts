@@ -10,11 +10,11 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Get()
-  async verifyToken(@Headers('authorization') authHeader: string) {
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedException(
-        'Missing or invalid Authorization header',
-      );
-    }
+
+  async verifyToken(@Headers('authorization') idToken: string) {
+    console.log(idToken);
+    const user = await this.authService.verifyToken(idToken);
+    console.log(user);
+    return user;
   }
 }

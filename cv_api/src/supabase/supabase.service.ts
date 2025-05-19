@@ -7,8 +7,8 @@ export class SupabaseService {
   private supabase: SupabaseClient;
 
   constructor(private readonly configService: ConfigService) {
-    const url = process.env.SUPABASE_URL!;
-    const key = process.env.SUPABASE_KEY!;
+    const url = this.configService.get('SUPABASE_URL');
+    const key = this.configService.get('SUPABASE_KEY');
     this.supabase = createClient(url, key);
   }
   getClient() {

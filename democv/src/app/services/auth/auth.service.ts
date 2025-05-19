@@ -13,34 +13,28 @@ import {AuthModel} from '../../models/auth.model';
 export class AuthService {
 
   constructor(private auth: Auth, private http: HttpClient) {}
-  loginWithGoogle(): Observable<UserCredential | null> {
+  loginWithGoogle(){
     return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
       catchError((error) => {
-        console.error(error);
-        return of(null);
+        return of(GoogleAuthProvider.credentialFromError(error))
       })
-    );
+    )
   }
 
   logout() {
     return this.auth.signOut() ;
   }
 
-  getAuth(idToken: string): Observable<any> {
-    console.log('[Frontend] Gửi token tới backend:', idToken);
+  getAuth(idToken: string) {
+    console.log(idToken);
     return this.http.get(`${environment.apiUrl}auth`, {
       headers: {
-        Authorization: `Bearer ${idToken}`,
+        Authorization: idToken,
       },
     });
   }
-
   // Lấy thông tin người dùng hiện tại
-  getCurrentUser(): Observable<User | null> {
-    return new Observable((observer) => {
-      this.auth.onAuthStateChanged((user) => {
-        observer.next(user);
-      });
-    });
+  getCurrentUser(): Observable< User | null> {
+    return user(this.auth); // Trả về Observable chứa thông tin người dùng
   }
 }

@@ -7,18 +7,17 @@ import * as admin from 'firebase-admin';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
+  constructor() {}
+
   async use(req: any, res: any, next: () => void) {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedException('Missing or invalid token');
+    const token = req.headers.authorization;
+    if (!token) {
+      throw new UnauthorizedException('Authorization token not found');
     }
-
-    const token = authHeader.split(' ')[1];
 
     try {
       const decodedToken = await admin.auth().verifyIdToken(token);
-      req.user = decodedToken; // Gán user vào request
+      req.user = decodedToken;
       next();
     } catch (error) {
       throw new UnauthorizedException('Invalid token');

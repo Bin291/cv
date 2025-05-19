@@ -13,7 +13,9 @@ export const authReducer = createReducer(
   initialState,
   on(AuthActions.login, (state,{type}) => {
     console.log(type);
+
     return <AuthState>{
+      ...state,
       authData: null,
       isLogging: true,
     }
@@ -36,6 +38,7 @@ export const authReducer = createReducer(
   on(AuthActions.storeAuth, (state, { authData, type }) => {
     console.log(type);
     return <AuthState> {
+      ...state,
       authData: authData,
     }
   }),
@@ -43,6 +46,7 @@ export const authReducer = createReducer(
   on(AuthActions.logout, (state,{type}) => {
     console.log(type);
     return <AuthState>{
+      ...state,
       isLogging: false,
       authData: null,
       error: null,
@@ -52,6 +56,7 @@ export const authReducer = createReducer(
   on(AuthActions.logoutSuccess, (state,{type}) => {
     console.log(type);
     return <AuthState>{
+      ...state,
       isLogging: false,
       authData: null,
       error: null,
@@ -69,6 +74,7 @@ export const authReducer = createReducer(
   on(AuthActions.clearState, (state, {type}) => {
     console.log(type);
     return <AuthState>{
+      ...state,
       authData: null,
       isLogging: false,
       error: null,

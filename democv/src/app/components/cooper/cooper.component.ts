@@ -68,11 +68,17 @@ import {MatSnackBar} from '@angular/material/snack-bar';
    imageCropped(event: any) {
      this.croppedImage = event;
      if(this.croppedImage) {
-     this.snackBar.open('Image cropped successfully', 'Close',)
+     this.snackBar.open('Image cropped successfully', 'Close',{
+        duration: 3000,
+       horizontalPosition : 'right',
+        verticalPosition : 'top',
+       });
      }
       else {
         this.snackBar.open('Please crop the image before uploading', 'Close', {
           duration: 3000,
+          horizontalPosition : 'right',
+          verticalPosition : 'top',
         });
       }
 
@@ -84,11 +90,16 @@ import {MatSnackBar} from '@angular/material/snack-bar';
        this.dialogRef.close();
         this.snackBar.open('Image uploaded successfully', 'Close', {
           duration: 3000,
+          horizontalPosition : 'right',
+          verticalPosition : 'top',
         });
      }
       else {
         this.snackBar.open('Please crop the image before uploading', 'Close', {
           duration: 3000,
+          horizontalPosition : 'right',
+          verticalPosition : 'top',
+
         });
       }
 

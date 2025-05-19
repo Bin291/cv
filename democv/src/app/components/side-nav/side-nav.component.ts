@@ -30,11 +30,12 @@ export class SideNavComponent
   implements OnInit
 {
   activeLink: string = '';
-  authData$ !:Observable<AuthModel|null>;
+  authData$ !:Observable<AuthModel | null>;
   subscription: Subscription[] = [];
   authData!: AuthModel |  null;
   selectedMenu = 'template';
   currentUsers : any;
+
 
 
   constructor(private auth: Auth, private store: Store<{
@@ -74,6 +75,7 @@ export class SideNavComponent
       this.activeLink = '';
     }
   }
+
 
 ngOnInit() {
   this.subscription.push(
