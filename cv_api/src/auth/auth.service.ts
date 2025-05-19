@@ -22,7 +22,6 @@ export class AuthService {
         .getClient()
         .from('auth')
         .upsert([{ uid, email, name, picture }]);
-
       if (upsertError) {
         console.error('[Supabase Error]', upsertError.message);
         throw new HttpException(upsertError.message, 500);

@@ -1,6 +1,6 @@
 /* src/app/content/content.component.scss */
 .content-container {
-  padding: 20px;
+  padding: 0;
 }
 
 /* src/app/content/content.component.scss */
@@ -82,10 +82,11 @@
   margin-bottom: 30px;
   background-color: var(--surfaceContainer);  /* Màu nền của box */
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
+  ;
 }
 
 .personal-info h3 {

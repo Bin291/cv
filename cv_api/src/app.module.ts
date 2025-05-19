@@ -8,21 +8,21 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { HistoryUsersModule } from './history-users/history-users.module';
-
-
-
+import { AddContentService } from './add-content/add-content.service';
+import { AddContentController } from './add-content/add-content.controller';
+import { AddContentModuleModule } from './add-content/add-content.module';
 @Module({
   imports: [
-
     ConfigModule.forRoot({
       isGlobal: true
     }),
     SupabaseModule,
     LinkTypeModule,
     HistoryUsersModule,
+    AddContentModuleModule
   ],
-  controllers: [AppController, AuthController ],
-  providers: [AppService, AuthService ],
+  controllers: [AppController, AuthController, AddContentController ],
+  providers: [AppService, AuthService, AddContentService ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

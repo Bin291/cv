@@ -4,19 +4,14 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SupabaseService {
-  private supabaseClient: SupabaseClient;
+  private supabase: SupabaseClient;
 
   constructor(private readonly configService: ConfigService) {
     const url = process.env.SUPABASE_URL!;
     const key = process.env.SUPABASE_KEY!;
-    this.supabaseClient = createClient(url, key);
-    console.log('[Supabase] URL:', url);
-    console.log('[Supabase] KEY:', key.slice(0, 8) + '...'); // không in toàn bộ key để bảo mật
-
-
+    this.supabase = createClient(url, key);
   }
-
   getClient() {
-    return this.supabaseClient;
+    return this.supabase;
   }
 }

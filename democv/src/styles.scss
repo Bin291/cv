@@ -164,7 +164,7 @@ $light-theme: mat.define-theme((
 :root {
 
   @include mat.all-component-themes($light-theme);
-  --primary: #9a52d6;
+  --primary: #c4a4e4;
   --surfaceTint: #705289;
   --onPrimary: #FFFFFF;
   --primaryContainer: #F1DAFF;
@@ -181,7 +181,7 @@ $light-theme: mat.define-theme((
   --onError: #FFFFFF; // Sửa để tương phản với --error
   --errorContainer: #93000A;
   --onErrorContainer: #FFDAD6;
-  --background: #FFF7FD;
+  --background: #F3F1EC;
   --onBackground: #1E1A20;
   --surface: #FFF7FD; // Sửa để phù hợp với background
   --onSurface: #1E1A20;
@@ -210,13 +210,13 @@ $light-theme: mat.define-theme((
   --surfaceBright: #FFF7FD;
   --surfaceContainerLowest: #FFFFFF;
   --surfaceContainerLow: #FAF1F9;
-  --surfaceContainer: #F4EBF3;
+  --surfaceContainer: #ffffff;
   --surfaceContainerHigh: #F4EBF3;
   --surfaceContainerHighest: #F4EBF3;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+
+  .dark-theme {
     @include mat.all-component-themes($dark-theme);
     --primary: #895bae;
     --surfaceTint: #DDB9F8;
@@ -268,7 +268,7 @@ $light-theme: mat.define-theme((
     --surfaceContainerHigh: #2D292E;
     --surfaceContainerHighest: #373339;
   }
-}
+
 
 @include mat.color-variants-backwards-compatibility($dark-theme);
 @include mat.color-variants-backwards-compatibility($light-theme);
