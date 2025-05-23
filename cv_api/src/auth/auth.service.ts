@@ -14,45 +14,40 @@ import {
           try {
             const decodedToken = await admin.auth().verifyIdToken(idToken);
             const { uid, email, name, picture } = decodedToken;
-
+        
             const { data, error, count } = await this.supabaseProvider
               .getClient()
               .from('auth')
               .select('*', { count: 'exact' })
-              .eq('uid', decodedToken.uid);
-
-            if (error) {
-              throw new Error(error.message);
-            }
-
-            if (count === null || count === 0) {
-              const { data, error } = await this.supabaseProvider
-                .getClient()
-                .from('auth')
-                .insert([{ uid, email, name, picture }]);
-
-              if (error) {
-                throw new HttpException(error.message, 500);
+              .eq('uid', uid);
+        
+            if (error) throw new Error(error.message);
+        
+            if (!count) {
+              const insertRes = await this.supabaseProvider.getClient().from('auth').insert([
+                {
+                  uid,
+                  email,
+                  name,
+                  picture,
+                  created_at: new Date().toISOString(), // 👈 thêm created_at nếu chưa có mặc định
+                },
+              ]);
+        
+              if (insertRes.error) {
+                console.error('[Service] Supabase insert error:', insertRes.error);
+                throw new HttpException(insertRes.error.message, 500);
               }
-
-              const { data: user, error: userError } = await this.supabaseProvider
-                .getClient()
-                .from('auth')
-                .select('*')
-                .eq('uid', decodedToken.uid);
-
-              if (userError) {
-                throw new HttpException(userError.message, 400);
-              }
-
-              return user[0];
-            } else if (count > 1) {
-              throw new Error('Multiple rows returned for a single user');
+        
+              console.log('[Service] User inserted:', insertRes.data);
+              return insertRes.data?.[0];
             }
-
-            return data[0];
+        
+            return data?.[0];
           } catch (error) {
-            throw new Error(error.message);
+            console.error('[Service] verifyToken error:', error);
+            throw new UnauthorizedException(error.message);
           }
         }
+        
       }

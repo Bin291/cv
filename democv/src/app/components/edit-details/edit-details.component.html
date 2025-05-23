@@ -19,13 +19,13 @@
         <input type="text" placeholder="Enter Job title" />
       </div>
       </div>
-      
-      <div class="avatar-wrapper">
-  <div class="avatar-circle">
-    <img src="camera-icon.svg" alt="Camera Icon" />
-    <div class="edit-icon">✎</div>
-  </div>
-</div>
+
+        <div class="upload-container-edit" (click)="openCooperDialog()">
+          <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image" class="uploaded-image"/>
+          <div class="upload-placeholder" *ngIf="!croppedImage">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s" class="placeholder-img" alt="Add Content" />
+          </div>
+        </div>
       </div>
 
 
@@ -70,8 +70,8 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="cancel">Cancel</button>
-        <button type="submit" class="save">✔ Save</button>
+        <button type="button" class="cancel" (click)="onCancel() ">Cancel</button>
+        <button type="submit" class="save" (click)="onSave()" >✔ Save</button>
       </div>
     </form>
   </div>

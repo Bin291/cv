@@ -33,7 +33,7 @@ export class SideNavComponent
   authData$ !:Observable<AuthModel | null>;
   subscription: Subscription[] = [];
   authData!: AuthModel |  null;
-  selectedMenu = 'template';
+  selectedMenu = '';
   currentUsers : any;
 
 

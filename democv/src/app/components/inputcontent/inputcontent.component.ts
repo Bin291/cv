@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, inject, OnInit, Output, ViewChild} from '@angular/core';
 import {ContentDialogComponent} from '../content-dialog/content-dialog.component';
 import {ShareModule} from '../../../shared/shared.module';
 import {MatIcon} from '@angular/material/icon';
@@ -15,15 +15,18 @@ import {AddContentModel} from '../../models/add-content.model';
 
   imports: [
     ShareModule,
-    MatIcon,
-    FormCvComponent,
 
   ],
   templateUrl: './inputcontent.component.html',
   styleUrl: './inputcontent.component.scss'
 })
 export class InputcontentComponent implements  OnInit{
+  @Output() switchToEdit = new EventEmitter<void>();
 
+
+  resumeTitle: string = 'Resume 1';
+  isEditing: boolean = false;
+  croppedImage: string | null = null;
   subscription: Subscription[] = []
   contentList$ !: Observable<AddContentModel[]>;
   constructor(private dialog: MatDialog, private store: Store<{
@@ -34,7 +37,9 @@ export class InputcontentComponent implements  OnInit{
     this.store.dispatch(AddContentActions.loadAddContents());
 
   }
-
+  onClick() {
+    this.switchToEdit.emit();
+  }
   ngOnInit() {
     this.subscription.push(
       this.contentList$.subscribe((contentList) => {
@@ -45,9 +50,6 @@ export class InputcontentComponent implements  OnInit{
     )
   }
 
-  resumeTitle: string = 'Resume 1';
-  isEditing: boolean = false;
-  croppedImage: string | null = null;
 
 
   personalInfo = {
@@ -96,9 +98,4 @@ const dialogRef = this.dialog.open(ContentDialogComponent, {
     dialogRef.componentInstance.imageUploaded
       .subscribe((img: string) => this.croppedImage = img);
   }
-
-
-
-
-
 }

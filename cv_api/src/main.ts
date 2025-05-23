@@ -7,7 +7,7 @@ import './firebase/firebase-admin';
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const serviceAccount = require('../configs/firebase-key.json');
   if (!admin.apps.length) {
     admin.initializeApp({

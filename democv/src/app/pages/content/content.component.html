@@ -1,2 +1,13 @@
-<app-inputcontent></app-inputcontent>
-<app-edit-details></app-edit-details>
+<app-download-box></app-download-box>
+
+<div *ngIf="isLoading" class="loading-overlay">
+  <mat-spinner></mat-spinner> <!-- hoặc spinner custom của bạn -->
+</div>
+
+<app-inputcontent *ngIf="!showEdit && !isLoading" (switchToEdit)="switchToEdit()"></app-inputcontent>
+<app-edit-details *ngIf="showEdit && !isLoading" (back)="backToInput()"></app-edit-details>
+
+
+
+
+

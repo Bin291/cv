@@ -53,11 +53,31 @@
   padding: 20px;
 }
 
-.small-cropper{
+.small-cropper {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  margin: 0 auto;
+
+  .cropper-container {
+    max-width: 515px;
+    max-height: 700px;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 auto;
+  }
+
+  .background {
+    max-width: 100%;
+    height: auto;
+    background-size: contain !important;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
+
 
 ngx-smart-cropper{
   background-size: 608px auto !important;

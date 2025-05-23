@@ -292,3 +292,8 @@ body {
   padding: 0;
   font-family: "Lexend Deca", sans-serif;;
 }
+::ng-deep .cooper-dialog .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+}
+

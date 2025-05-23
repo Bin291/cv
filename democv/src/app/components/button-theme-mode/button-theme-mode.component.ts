@@ -4,9 +4,7 @@ import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-button-theme-mode',
-  imports: [
-    NgIf
-  ],
+  imports: [],
   templateUrl: './button-theme-mode.component.html',
   styleUrl: './button-theme-mode.component.scss'
 })

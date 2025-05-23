@@ -183,28 +183,6 @@ input[type="text"]:focus {
   background: #ddd;
 }
 
-
-.upload-text {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.upload-small-text {
-  font-size: 14px;
-  color: #ffffff;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.upload-small-text:hover {
-  color: #ff80ab;
-  transition: 0.3s;
-}
-
 .upload-text.show {
   opacity: 1;
   transition: opacity 0.3s;
