@@ -3,14 +3,18 @@
     <app-side-nav></app-side-nav>
     <app-button-theme-mode></app-button-theme-mode>
   </section>
+
   <div class="content">
-    <section class="column2">
-<!--     <div class="box-container">-->
-<!--     </div>-->
-      <router-outlet></router-outlet>
-    </section>
-    <section class="column3" *ngIf="activeLink !== '' && !isHome()">
-  <app-cv></app-cv>
-</section>
+    <div class="column2-wrapper">
+      <section class="column2">
+        <router-outlet></router-outlet>
+      </section>
+    </div>
+
+    <div class="column3-wrapper" *ngIf="activeLink !== '' && !isHome()">
+      <section class="column3">
+        <app-cv></app-cv>
+      </section>
+    </div>
   </div>
 </div>

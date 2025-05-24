@@ -17,12 +17,15 @@
        </div>
      </div>
 
-      <div class="upload-container" (click)="openCooperDialog()">
-        <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image" class="uploaded-image"/>
+      <div class="upload-container">
+        <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image"/>
         <div class="upload-placeholder" *ngIf="!croppedImage">
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s" class="placeholder-img" alt="Add Content" />
+
         </div>
       </div>
+
+
     </div>
 </div>
 

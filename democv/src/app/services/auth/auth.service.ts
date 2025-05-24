@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   getAuth(idToken: string) {
-    console.log(idToken);
+    // console.log(idToken);
     return this.http.get(`${environment.apiUrl}auth`, {
       headers: {
         Authorization: idToken,

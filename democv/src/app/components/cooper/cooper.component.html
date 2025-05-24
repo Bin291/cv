@@ -27,17 +27,14 @@
 
     <!-- Display this block when an image is selected -->
     <ngx-smart-cropper class="small-cropper"
-      *ngIf="imageSource"
-      [imageType]="'webp'"
-      [cropX]="100"
-      [cropY]="100"
-      [cropWidth]="100"
-      [cropHeight]="100"
-      [theme]="'mixed'"
-      [imageSource]="imageSource"
-      (imageCroppedEvent)="imageCropped($event)"
-       [style.transform]="'scale(' + transform.scale + ')'"
+                       *ngIf="imageSource"
+                       [imageType]="'webp'"
+                       [theme]="'mixed'"
+                       [imageSource]="imageSource"
+                       (imageCroppedEvent)="imageCropped($event)"
+                       [style.transform]="'scale(' + transform.scale + ')'"
     ></ngx-smart-cropper>
+
   </div>
 
 </div>

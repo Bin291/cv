@@ -6,9 +6,9 @@ import {
   AfterViewInit,
   ViewChild,
   ElementRef,
-  Input
+  Input, OnInit
 } from '@angular/core';
- import {MatButton, MatIconButton, MatMiniFabButton} from '@angular/material/button';
+ import {MatButton} from '@angular/material/button';
  import {MatIcon} from '@angular/material/icon';
  import {FormsModule} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
@@ -31,7 +31,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
    styleUrl: './cooper.component.scss',
    encapsulation: ViewEncapsulation.None
  })
- export class CooperComponent implements AfterViewInit{
+ export class CooperComponent implements AfterViewInit, OnInit{
    croppedImage = '';
    imageSource: string = '';
    transform = { scale: 1 };
@@ -53,6 +53,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
        bg.style.backgroundSize = this.size;
      }
    }
+ngOnInit() {
+  console.log('imageSource:', this.imageSource);
+}
 
    onFileChange(event: Event): void {
      const input = event.target as HTMLInputElement;
@@ -66,51 +69,50 @@ import {MatSnackBar} from '@angular/material/snack-bar';
    }
 
    imageCropped(event: any) {
-     this.croppedImage = event;
-     if(this.croppedImage) {
-     this.snackBar.open('Image cropped successfully', 'Close',{
-        duration: 3000,
-       horizontalPosition : 'right',
-        verticalPosition : 'top',
-       });
-     }
-      else {
-        this.snackBar.open('Please crop the image before uploading', 'Close', {
+     console.log('Crop event:', event);
+     if (event && typeof event === 'string' && event.startsWith('data:image')) {
+       this.croppedImage = event;
+       this.snackBar.open('Image cropped successfully', 'Close', {
           duration: 3000,
-          horizontalPosition : 'right',
-          verticalPosition : 'top',
-        });
-      }
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
 
+       })
+     } else {
+       this.snackBar.open('Please crop the image before uploading', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+       })
+     }
    }
 
    uploadImage(): void {
-     if (this.croppedImage) {
-       this.imageUploaded.emit(this.croppedImage); // Emit cropped image to parent
+     console.log('Upload triggered, current image:', this.croppedImage);
+     if (this.croppedImage && this.croppedImage.startsWith('data:image')) {
+       this.imageUploaded.emit(this.croppedImage);
        this.dialogRef.close();
-        this.snackBar.open('Image uploaded successfully', 'Close', {
-          duration: 3000,
-          horizontalPosition : 'right',
-          verticalPosition : 'top',
-        });
+       this.snackBar.open('Image uploaded successfully', 'Close', {
+         duration: 3000,
+         horizontalPosition: 'right',
+         verticalPosition: 'top',
+       });
+     } else {
+       this.snackBar.open('Please crop the image before uploading', 'Close', {
+         duration: 3000,
+         horizontalPosition: 'right',
+         verticalPosition: 'top',
+       });
      }
-      else {
-        this.snackBar.open('Please crop the image before uploading', 'Close', {
-          duration: 3000,
-          horizontalPosition : 'right',
-          verticalPosition : 'top',
-
-        });
-      }
-
    }
+
    zoomIn(): void {
-     this.transform.scale += 0.1; // Tăng scale
+     this.transform.scale += 0.1;
    }
 
    zoomOut(): void {
      if (this.transform.scale > 0.1) {
-       this.transform.scale -= 0.1; // Giảm scale
+       this.transform.scale -= 0.1;
      }
    }
 

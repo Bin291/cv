@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, inject, OnInit, Output, ViewChild} from '@angular/core';
 import {ContentDialogComponent} from '../content-dialog/content-dialog.component';
 import {ShareModule} from '../../../shared/shared.module';
 import {MatIcon} from '@angular/material/icon';
@@ -9,6 +9,7 @@ import {AddContentState} from '../../ngrx/add-content/add-content.state';
 import  * as AddContentActions from '../../ngrx/add-content/add-content.action';
 import {Observable, Subscription} from 'rxjs';
 import {AddContentModel} from '../../models/add-content.model';
+import {ImageShareService} from '../../services/image-share/image-share.service';
 
 @Component({
   selector: 'app-inputcontent',
@@ -20,7 +21,7 @@ import {AddContentModel} from '../../models/add-content.model';
   templateUrl: './inputcontent.component.html',
   styleUrl: './inputcontent.component.scss'
 })
-export class InputcontentComponent implements  OnInit{
+export class InputcontentComponent implements  OnInit, AfterViewInit{
   @Output() switchToEdit = new EventEmitter<void>();
 
 
@@ -31,14 +32,28 @@ export class InputcontentComponent implements  OnInit{
   contentList$ !: Observable<AddContentModel[]>;
   constructor(private dialog: MatDialog, private store: Store<{
     addContent: AddContentState
-  }>) {
+  }>, private imageShareService: ImageShareService) {
 
      this.contentList$ = this.store.select('addContent','addContent')
     this.store.dispatch(AddContentActions.loadAddContents());
 
+    this.imageShareService.croppedImage$.subscribe((img) => {
+      if (img) this.croppedImage = img;
+    });
+
   }
   onClick() {
     this.switchToEdit.emit();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const current = this.imageShareService['croppedImageSource'].getValue();
+      console.log('🔥 ngAfterViewInit - ảnh hiện tại:', current);
+      if (current?.startsWith('data:image')) {
+        this.croppedImage = current;
+      }
+    });
   }
   ngOnInit() {
     this.subscription.push(
@@ -48,6 +63,12 @@ export class InputcontentComponent implements  OnInit{
         }
       })
     )
+
+    this.imageShareService.croppedImage$.subscribe((img) => {
+      if (img?.startsWith('data:image')) {
+        this.croppedImage = img;
+      }
+    });
   }
 
 
@@ -71,31 +92,6 @@ const dialogRef = this.dialog.open(ContentDialogComponent, {
         this.resumeTitle = result.title;
         this.personalInfo = result.personalInfo;
       }
-})
-  }
-
-
-  onSave() {
-    console.log('Content saved!');
-  }
-  editTitle() {
-    this.isEditing = true;
-  }
-  saveTitle() {
-    this.isEditing = false;
-  }
-  cancelEdit() {
-    this.isEditing = false;
-    this.resumeTitle = 'Resume 1';
-  }
-
-  openCooperDialog(): void {
-    const dialogRef = this.dialog.open(CooperComponent, {
-      width: '840px',
-      minWidth: '650px',
-
-    });
-    dialogRef.componentInstance.imageUploaded
-      .subscribe((img: string) => this.croppedImage = img);
+});
   }
 }

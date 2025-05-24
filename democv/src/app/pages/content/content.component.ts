@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {InputcontentComponent} from '../../components/inputcontent/inputcontent.component';
 import { EditDetailsComponent } from "../../components/edit-details/edit-details.component";
-import {ThemeService} from '../../services/theme/theme.service';
 import {NgIf} from '@angular/common';
 import {DownloadBoxComponent} from '../../components/download-box/download-box.component';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
