@@ -1,2 +1,18 @@
-<div class="cv-container">
+<div class="cv-container" >
+ <div class ="cv" *ngIf="data$ | async as data">
+   <h2>{{ data.fullName }}</h2>
+   <h4>{{ data.jobTitle }}</h4>
+
+   <p *ngIf="data.email">
+     <span>📧 {{ data.email }}</span>
+   </p>
+
+   <p *ngIf="data.phone">
+     <span>📱 {{ data.phone }}</span>
+   </p>
+
+   <p *ngIf="data.location">
+     <span>📍 {{ data.location }}</span>
+   </p>
+ </div>
 </div>

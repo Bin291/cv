@@ -6,17 +6,17 @@
       <div class="help">📑 Need help?</div>
     </header>
 
-    <form class="form">
+    <form [formGroup]="form" class="form">
       <div class="years">
         <div class="input-info">
         <div class="row">
         <label>Full name</label>
-        <input type="text" placeholder="Enter your title, first– and last name" />
+        <input type="text" placeholder="Enter your title, first– and last name" formControlName="fullName" />
       </div>
 
       <div class="row">
         <label>Job title <span class="optional">optional</span></label>
-        <input type="text" placeholder="Enter Job title" />
+        <input type="text" placeholder="Enter Job title" formControlName="jobTitle" />
       </div>
       </div>
 
@@ -32,17 +32,17 @@
       <div class="row two-cols">
         <div>
           <label>Email <span class="recommended">recommended</span></label>
-          <input type="email" placeholder="Enter email" />
+          <input type="email" placeholder="Enter email" formControlName="email"/>
         </div>
         <div>
           <label>Phone <span class="recommended">recommended</span></label>
-          <input type="text" placeholder="Enter Phone" />
+          <input type="text" placeholder="Enter Phone" formControlName="phone" />
         </div>
       </div>
 
       <div class="row">
         <label>Location <span class="recommended">recommended</span></label>
-        <input type="text" placeholder="City, Country" />
+        <input type="text" placeholder="City, Country" formControlName="location"/>
       </div>
 
       <p class="header-content">Personal information</p>

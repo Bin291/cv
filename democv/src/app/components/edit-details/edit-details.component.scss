@@ -76,6 +76,11 @@ header {
   border-radius: 10px;
   font-size: 0.9rem;
   cursor: pointer;
+
+  .tags span:hover {
+    background: var(--primary);
+    color: var(--onPrimary);
+  }
 }
 
 .view-all {
