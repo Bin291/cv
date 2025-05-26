@@ -70,16 +70,19 @@ header {
   margin-bottom: 1.5rem;
 }
 
-.tags span {
-  background: #f0f0f3;
+.tags button{
+  background: var(--background);
   padding: 0.5rem 1rem;
   border-radius: 10px;
   font-size: 0.9rem;
   cursor: pointer;
+  color: var(--onBackground);
+  border: none;
+  transition: transform 0.2s ease;
 
-  .tags span:hover {
-    background: var(--primary);
-    color: var(--onPrimary);
+
+  .tags button:hover {
+    transform: scale(1.05);
   }
 }
 
@@ -96,8 +99,10 @@ header {
 }
 
 .cancel {
+  padding: 0.7rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 50px;
   background: none;
-  border: none;
   color: #666;
   font-size: 1rem;
   cursor: pointer;
@@ -112,6 +117,12 @@ header {
   font-size: 1rem;
   cursor: pointer;
 }
+
+save:hover {
+  opacity: 1;
+  background: linear-gradient(to right, #fa6a45, #c43a90);
+}
+
 
 .header-content{
     font-size: 1.8rem;
@@ -128,6 +139,7 @@ header {
   justify-content: center;
   align-items: center;
   background-color: var(--surfaceContainer);
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .uploaded-image{

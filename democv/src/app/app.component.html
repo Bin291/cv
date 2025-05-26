@@ -1,16 +1,31 @@
+<!--<div class="app-container">-->
+<!--  <section class="column1">-->
+<!--    <app-side-nav></app-side-nav>-->
+<!--    <app-button-theme-mode></app-button-theme-mode>-->
+<!--  </section>-->
+<!--  <div class="content">-->
+<!--    <section class="column2">-->
+<!--      <router-outlet></router-outlet>-->
+<!--    </section>-->
+<!--    <section class="column3" *ngIf="activeLink !== '' && !isHome()">-->
+<!--      <app-cv></app-cv>-->
+<!--    </section>-->
+<!--  </div>-->
+<!--</div>-->
 <div class="app-container">
-  <section class="column1">
+  <!-- Cột 1: Menu bên trái, cố định -->
+  <div class="column1">
     <app-side-nav></app-side-nav>
     <app-button-theme-mode></app-button-theme-mode>
-  </section>
-  <div class="content">
-    <section class="column2">
-      <!--     <div class="box-container">-->
-      <!--     </div>-->
-      <router-outlet></router-outlet>
-    </section>
-    <section class="column3" *ngIf="activeLink !== '' && !isHome()">
-      <app-cv></app-cv>
-    </section>
+  </div>
+
+  <!-- Cột 2: Khu vực chính (chứa router-outlet), cuộn độc lập -->
+  <div class="column2">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Cột 3: Khu vực phụ, cuộn độc lập, chỉ hiển thị khi không ở trang chủ -->
+  <div class="column3" *ngIf="activeLink !== '' && !isHome()">
+    <app-cv></app-cv>
   </div>
 </div>

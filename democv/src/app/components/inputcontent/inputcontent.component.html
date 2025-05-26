@@ -1,31 +1,37 @@
 <div class="content-container" (click)="onClick()">
 
-    <div class="personal-info">
-     <div>
-       <h3>Your name</h3>
-       <div class="info-item">
-         <label>Email</label>
-         <span>{{ personalInfo.email }}</span>
+    <div class="personal-info" *ngIf="data$ | async as data">
+
+       <div class="name-container">
+         <h3 *ngIf="!data.fullName">Your name</h3>
+         <h3 *ngIf="data.fullName">{{data.fullName}}</h3>
+         <button mat-mini-fab aria-label="Example icon button with a menu icon">
+           <mat-icon> border_color</mat-icon>
+         </button>
        </div>
-       <div class="info-item">
-         <label>Phone</label>
-         <span>{{ personalInfo.phone }}</span>
+       <div class="info-container">
+       <div class="info-item-container">
+         <div class="info-item">
+           <span *ngIf="!data.email">	<mat-icon> mail_outline</mat-icon><p>Your email</p></span>
+           <span *ngIf="data.email">	<mat-icon> email</mat-icon><p>{{data.email}}</p></span>
+         </div>
+         <div class="info-item">
+           <span *ngIf="!data.phone">	<mat-icon> phone</mat-icon><p>Your phone</p></span>
+           <span *ngIf="data.phone">	<mat-icon> phone</mat-icon><p>{{data.phone}}</p></span>
+         </div>
+         <div class="info-item">
+           <span *ngIf="!data.location"><mat-icon> location_on</mat-icon><p>Your address</p></span>
+           <span *ngIf="data.location"><mat-icon> location_on</mat-icon><p>{{data.location}}</p></span>
+         </div>
        </div>
-       <div class="info-item">
-         <label>Address</label>
-         <span>{{ personalInfo.address }}</span>
+       <div class="upload-container">
+         <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image"/>
+         <div class="upload-placeholder" *ngIf="!croppedImage">
+           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s" class="placeholder-img" alt="Add Content" />
+
+         </div>
        </div>
      </div>
-
-      <div class="upload-container">
-        <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image"/>
-        <div class="upload-placeholder" *ngIf="!croppedImage">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s" class="placeholder-img" alt="Add Content" />
-
-        </div>
-      </div>
-
-
     </div>
 </div>
 

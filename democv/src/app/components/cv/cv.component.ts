@@ -8,7 +8,7 @@ import {AsyncPipe, NgIf} from '@angular/common';
   selector: 'app-cv',
   imports: [
     NgIf,
-    AsyncPipe
+    AsyncPipe,
   ],
   templateUrl: './cv.component.html',
   styleUrl: './cv.component.scss'
