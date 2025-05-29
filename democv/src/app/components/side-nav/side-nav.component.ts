@@ -10,8 +10,6 @@ import {Router} from '@angular/router';
 import {filter, Observable, Subscription} from 'rxjs';
 import {AuthModel} from '../../models/auth.model';
 import * as AuthActions from '../../ngrx/auth/auth.actions';
-
-
 @Component({
   selector: 'app-side-nav',
   imports: [

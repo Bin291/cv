@@ -11,18 +11,19 @@
         <div class="input-info">
         <div class="row">
         <label>Full name</label>
-        <input type="text" placeholder="Enter your title, first– and last name" formControlName="fullName" />
+        <input type="text" placeholder="Enter your title, first– and last name" formControlName="full_name" (keydown)="isTyping = true"/>
       </div>
 
       <div class="row">
         <label>Job title <span class="optional">optional</span></label>
-        <input type="text" placeholder="Enter Job title" formControlName="jobTitle" />
+        <input type="text" placeholder="Enter Job title" formControlName="job_title" (keydown)="isTyping = true"/>
       </div>
       </div>
 
         <div class="upload-container-edit" (click)="openCooperDialog()">
-          <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image" class="uploaded-image"/>
-          <div class="upload-placeholder" *ngIf="!croppedImage">
+          <img *ngIf="form.get('avatar_url')?.value" [src]="form.get('avatar_url')?.value" alt="Cropped Image" class="uploaded-image"/>
+
+          <div class="upload-placeholder" *ngIf="!form.get('avatar_url')?.value">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s" class="placeholder-img" alt="Add Content" />
           </div>
         </div>
@@ -32,17 +33,17 @@
       <div class="row two-cols">
         <div>
           <label>Email <span class="recommended">recommended</span></label>
-          <input type="email" placeholder="Enter email" formControlName="email"/>
+          <input type="email" placeholder="Enter email" formControlName="email" (keydown)="isTyping = true"/>
         </div>
         <div>
           <label>Phone <span class="recommended">recommended</span></label>
-          <input type="text" placeholder="Enter Phone" formControlName="phone" />
+          <input type="text" placeholder="Enter Phone" formControlName="phone"  (keydown)="isTyping = true"/>
         </div>
       </div>
 
       <div class="row">
         <label>Location <span class="recommended">recommended</span></label>
-        <input type="text" placeholder="City, Country" formControlName="location"/>
+        <input type="text" placeholder="City, Country" formControlName="location" (keydown)="isTyping = true"/>
       </div>
 
       <p class="header-content">Personal information</p>
@@ -70,8 +71,8 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="cancel" (click)="onCancel() ">Cancel</button>
-        <button type="submit" class="save" (click)="onSave()" >✔ Save</button>
+        <button mat-stroked-button (click)="onCancel()" >Cancel</button>
+        <button mat-flat-button (click)="onSave()" >  ✔ Save</button>
       </div>
     </form>
   </div>

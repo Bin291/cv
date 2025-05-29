@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, inject, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, inject, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ContentDialogComponent} from '../content-dialog/content-dialog.component';
 import {ShareModule} from '../../../shared/shared.module';
 import {MatIcon} from '@angular/material/icon';
@@ -9,32 +9,41 @@ import  * as AddContentActions from '../../ngrx/add-content/add-content.action';
 import {Observable, Subscription} from 'rxjs';
 import {AddContentModel} from '../../models/add-content.model';
 import {ImageShareService} from '../../services/image-share/image-share.service';
-import {UserDataService} from '../../services/user-data/user-data.service';
-import {PersonalInfo} from '../../models/personal-info';
+import * as ResumeAtions from '../../ngrx/resume/resume.action';
+
 import {MatMiniFabButton} from '@angular/material/button';
+import {ResumeState} from '../../ngrx/resume/resume.state';
+import {ResumeModel} from '../../models/resume.model';
+import {loadResume} from '../../ngrx/resume/resume.action';
+import {LetDirective} from '@ngrx/component';
 
 @Component({
   selector: 'app-inputcontent',
 
   imports: [
     ShareModule,
-    MatIcon,
     MatMiniFabButton,
+    MatIcon,
+    LetDirective,
 
   ],
   templateUrl: './inputcontent.component.html',
   styleUrl: './inputcontent.component.scss'
 })
 export class InputcontentComponent implements  OnInit, AfterViewInit{
+  @Input() resume$!: Observable<ResumeModel | null>;
+
   @Output() switchToEdit = new EventEmitter<void>();
   resumeTitle: string = 'Resume 1';
   croppedImage: string | null = null;
   subscription: Subscription[] = []
   contentList$ !: Observable<AddContentModel[]>;
-  data$: Observable<PersonalInfo> | undefined;
+  resumeData!: ResumeModel | null;
+
   constructor(private dialog: MatDialog, private store: Store<{
-    addContent: AddContentState
-  }>, private imageShareService: ImageShareService, userData: UserDataService) {
+    addContent: AddContentState,
+    resume:ResumeState
+  }>, private imageShareService: ImageShareService,) {
 
      this.contentList$ = this.store.select('addContent','addContent')
     this.store.dispatch(AddContentActions.loadAddContents());
@@ -42,7 +51,10 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
     this.imageShareService.croppedImage$.subscribe((img) => {
       if (img) this.croppedImage = img;
     });
-    this.data$ = userData.personalInfo$;
+
+    this.resume$ = this.store.select(state => state.resume.resume);
+
+
 
   }
   onClick() {
@@ -72,6 +84,25 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
         this.croppedImage = img;
       }
     });
+    this.subscription.push(
+      this.store.select(state => state.resume.resume).subscribe((resume) => {
+        this.resumeData = resume;
+      })
+    );
+    const id = localStorage.getItem('resume_id');
+    if (id) {
+      this.store.dispatch(loadResume({ id }));
+    }
+
+    this.resume$ = this.store.select(state => state.resume.resume);
+
+    if (typeof window !== 'undefined') {
+      const id = localStorage.getItem('resume_id');
+      if (id) {
+        this.store.dispatch(loadResume({ id }));
+      }
+    }
+
   }
 
 
@@ -81,7 +112,7 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
   @ViewChild(ContentDialogComponent) contentDialog!: ContentDialogComponent;
 
 
-  openDialogConten() {
+  openDialogContent() {
 const dialogRef = this.dialog.open(ContentDialogComponent, {
   width: '840px',
   minWidth: '1000px',
@@ -93,4 +124,7 @@ const dialogRef = this.dialog.open(ContentDialogComponent, {
       }
 });
   }
+
+
+
 }

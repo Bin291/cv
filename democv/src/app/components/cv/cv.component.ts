@@ -1,28 +1,36 @@
 import {Component, OnInit} from '@angular/core';
-import {UserDataService} from '../../services/user-data/user-data.service';
 import {Observable} from 'rxjs';
-import {PersonalInfo} from '../../models/personal-info';
 import {AsyncPipe, NgIf} from '@angular/common';
+import {ResumeModel} from '../../models/resume.model';
+import {select, Store} from '@ngrx/store';
+import {ResumeState} from '../../ngrx/resume/resume.state';
+import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from '@angular/material/card';
+import {MatIcon, MatIconModule} from '@angular/material/icon';
+import {LetDirective} from '@ngrx/component';
 
 @Component({
   selector: 'app-cv',
   imports: [
     NgIf,
     AsyncPipe,
+    MatCardHeader,
+    MatCard,
+    MatCardContent,
+    MatIcon,
+    MatCardModule,   // ✅ thêm đầy đủ module card
+    MatIconModule,
+    LetDirective
   ],
   templateUrl: './cv.component.html',
   styleUrl: './cv.component.scss'
 })
 export class CVComponent implements OnInit{
-  data$: Observable<PersonalInfo> | undefined;
-constructor(private userData: UserDataService) {
-this.data$= this.userData.personalInfo$;
-}
+  resume$!: Observable<ResumeModel | null>;
 
-ngOnInit() {
-  this.data$?.subscribe((data) => {
-    console.log('📄 CVComponent - Dữ liệu cá nhân:', data);
-  });
-}
+  constructor(private store: Store<{ resume: ResumeState }>) {}
+
+  ngOnInit(): void {
+    this.resume$ = this.store.pipe(select(state => state.resume.resume));
+  }
 
 }

@@ -1,0 +1,107 @@
+<div class="education-form">
+  <div class="header">
+    <h2>Create Education</h2>
+    <a href="#" class="need-help">Need help?</a>
+  </div>
+
+  <div class="form-group">
+    <label for="school">School <span class="optional">optional</span></label>
+    <div class="input-wrapper">
+      <input type="text" id="school" placeholder="Enter school / university" />
+      <button mat-icon-button class="link-btn"><mat-icon>link</mat-icon></button>
+    </div>
+  </div>
+
+  <div class="form-group degree">
+    <label for="degree">Degree <span class="optional">optional</span></label>
+    <div class="input-wrapper">
+      <input type="text" id="degree" placeholder="Enter Degree / Field Of Study" />
+    </div>
+  </div>
+
+  <div class="form-group city-country">
+    <div class="col">
+      <label for="city">City <span class="optional">optional</span></label>
+      <div class="input-wrapper">
+        <input type="text" id="city" placeholder="Enter City" />
+      </div>
+    </div>
+    <div class="col">
+      <label for="country">Country <span class="optional">optional</span></label>
+      <div class="input-wrapper">
+        <input type="text" id="country" placeholder="Enter Country" />
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col">
+      <label for="start-date">Start Date <span class="optional">optional</span></label>
+      <div class="date-input">
+        <select [(ngModel)]="selectedMonth">
+          <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+        </select>
+        <select [(ngModel)]="selectedYearStart">
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+      </div>
+      <div class="checkbox-group">
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="dont-show-start" />
+          <label for="dont-show-start">Don't show</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="only-year-start" />
+          <label for="only-year-start">Only year</label>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <label for="end-date">End Date <span class="optional">optional</span></label>
+      <div class="date-input">
+        <select [(ngModel)]="SetMonthEnd">
+          <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+        </select>
+
+        <select [(ngModel)]="selectedYearEnd">
+          <label>Month</label>
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+      </div>
+      <div class="checkbox-group">
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="present" checked />
+          <label for="present">Present (Current)</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="dont-show-end" />
+          <label for="dont-show-end">Don't show</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="only-year-end" />
+          <label for="only-year-end">Only year</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description <span class="optional">optional</span></label>
+    <div class="textarea-toolbar">
+      <button mat-icon-button><mat-icon>format_bold</mat-icon></button>
+      <button mat-icon-button><mat-icon>format_italic</mat-icon></button>
+      <button mat-icon-button><mat-icon>format_underlined</mat-icon></button>
+      <button mat-icon-button><mat-icon>format_list_bulleted</mat-icon></button>
+      <button mat-icon-button><mat-icon>reorder</mat-icon></button>
+      <button mat-icon-button><mat-icon>format_align_left</mat-icon></button>
+      <button mat-icon-button><mat-icon>format_align_right</mat-icon></button>
+      <button mat-icon-button><mat-icon>format_list_numbered</mat-icon></button>
+      <button mat-icon-button><mat-icon>link</mat-icon></button>
+    </div>
+    <textarea id="description" placeholder="Add a description of your education entry..."></textarea>
+  </div>
+</div>
+<div class="action-buttons">
+  <button mat-stroked-button>Cancel</button>
+  <button mat-flat-button>Save</button>
+</div>

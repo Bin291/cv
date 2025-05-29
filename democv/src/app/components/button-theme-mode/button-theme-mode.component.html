@@ -3,7 +3,9 @@
   <label class="ui-switch">
     <input type="checkbox" [checked]="isLightTheme"
            (change)="onToggleThemeMode($event)"
-           >
+            [attr.aria-label]="'Toggle theme mode'">
+
+
     <div class="slider">
       <div class="circle"></div>
     </div>

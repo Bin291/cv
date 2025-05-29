@@ -7,10 +7,11 @@ import { LinkTypeModule } from './link-type/link-type.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
-import { HistoryUsersModule } from './history-users/history-users.module';
 import { AddContentService } from './add-content/add-content.service';
 import { AddContentController } from './add-content/add-content.controller';
 import { AddContentModuleModule } from './add-content/add-content.module';
+import { AuthModule } from './auth/auth.module';
+import { ResumeModule } from './resume/resume.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,8 +19,9 @@ import { AddContentModuleModule } from './add-content/add-content.module';
     }),
     SupabaseModule,
     LinkTypeModule,
-    HistoryUsersModule,
-    AddContentModuleModule
+    AddContentModuleModule,
+    AuthModule,
+    ResumeModule,
   ],
   controllers: [AppController, AuthController, AddContentController ],
   providers: [AppService, AuthService, AddContentService ],

@@ -22,8 +22,5 @@ private extractTokenFromHeader(req: Request): string | undefined {
       const [tokenType, token] = (req.headers['authorization'] ?? '').split(' ');
       return token;
 
-
     }
-
-
 }

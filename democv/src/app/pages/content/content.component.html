@@ -1,13 +1,21 @@
 <app-download-box></app-download-box>
 
 <div *ngIf="isLoading" class="loading-overlay">
-  <mat-spinner></mat-spinner> <!-- hoặc spinner custom của bạn -->
+  <mat-spinner></mat-spinner>
 </div>
 
-<app-inputcontent *ngIf="!showEdit && !isLoading" (switchToEdit)="switchToEdit()"></app-inputcontent>
-<app-edit-details *ngIf="showEdit && !isLoading" (back)="backToInput()"></app-edit-details>
+<ng-container *ngrxLet="resume$ as data">
+  <app-inputcontent
+    *ngIf="!showEdit && !isLoading"
+    [resume$]="resume$"
+    (switchToEdit)="switchToEdit()">
+  </app-inputcontent>
 
+  <app-edit-details
+    *ngIf="showEdit && !isLoading"
+    [resume$]="resume$"
+    (back)="backToInput()">
+  </app-edit-details>
+</ng-container>
 
-
-
-
+<!--<app-content-form></app-content-form>-->

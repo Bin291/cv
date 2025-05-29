@@ -32,13 +32,28 @@ import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
           if (!this.isBrowser) return;
 
           const saved = localStorage.getItem('theme');
+            // Nếu không có theme đã lưu, kiểm tra hệ thống
 
-          if (saved === 'light') {
+
+          if (saved === 'light' || (!saved && window.matchMedia('(prefers-color-scheme: light)').matches)) {
             this.enableLightTheme();
-          } else {
-            // ✅ Mặc định dark nếu chưa có hoặc là "dark"
+          } else if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+
             this.enableDarkTheme();
           }
+        }
+
+        onSavethemeChange(callback: () => void): void {
+            if (!this.isBrowser) return;
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (e.matches) {
+                this.enableDarkTheme();
+                } else {
+                this.enableLightTheme();
+                }
+                callback();
+            });
         }
 
         isDarkTheme(): boolean {
