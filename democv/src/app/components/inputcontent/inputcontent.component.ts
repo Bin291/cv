@@ -9,8 +9,6 @@ import  * as AddContentActions from '../../ngrx/add-content/add-content.action';
 import {Observable, Subscription} from 'rxjs';
 import {AddContentModel} from '../../models/add-content.model';
 import {ImageShareService} from '../../services/image-share/image-share.service';
-import * as ResumeAtions from '../../ngrx/resume/resume.action';
-
 import {MatMiniFabButton} from '@angular/material/button';
 import {ResumeState} from '../../ngrx/resume/resume.state';
 import {ResumeModel} from '../../models/resume.model';
@@ -95,6 +93,13 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
     }
 
     this.resume$ = this.store.select(state => state.resume.resume);
+
+    if (typeof window !== 'undefined') {
+      const id = localStorage.getItem('resume_id');
+      if (id) {
+        this.store.dispatch(loadResume({ id }));
+      }
+    }
 
     if (typeof window !== 'undefined') {
       const id = localStorage.getItem('resume_id');

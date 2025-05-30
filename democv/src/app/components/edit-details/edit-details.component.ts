@@ -12,6 +12,8 @@ import { Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
+import {AuthModel} from '../../models/auth.model';
+import {AuthState} from '../../ngrx/auth/auth.state';
 
 @Component({
   selector: 'app-edit-details',
@@ -27,13 +29,16 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   form: FormGroup;
   private subscriptions: Subscription[] = [];
   protected isTyping = false;
-
+  atht$!: Observable<AuthModel | null>;
+  authData: AuthModel | null = null;
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
     private imageShareService: ImageShareService,
     private resumeService: ResumeService,
-    private store: Store<{ resume: ResumeState }>
+    private store: Store<{
+      resume: ResumeState,
+      auth: AuthState }>,
   ) {
     this.form = this.fb.group({
       full_name: [''],
@@ -43,6 +48,8 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       location: [''],
       avatar_url: [''],
     });
+    this.atht$ = this.store.select('auth', 'authData');
+    this.resume$ = this.store.select(state => state.resume.resume);
   }
 
   ngOnInit(): void {
@@ -72,6 +79,10 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions.push(sub2);
+
+    this.subscriptions.push(
+
+    );
   }
 
   ngOnDestroy(): void {

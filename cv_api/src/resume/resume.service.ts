@@ -1,30 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
-import { SupabaseService } from '../supabase/supabase.service'; // Adjust the import path as necessary
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class ResumeService {
   constructor(private readonly supabase: SupabaseService) {}
 
-  async create(data: CreateResumeDto = {}) {
+  async create(data: CreateResumeDto = {}, uid?: string) {
     const client = this.supabase.getClient();
+    const insertData = { ...data };
+    if (uid) {
+      insertData['uid'] = uid;
+    }
     const { data: created, error } = await client
       .from('resume')
-      .insert([data])
+      .insert([insertData])
       .select()
       .maybeSingle();
-
-
     if (error) throw error;
     return created;
-  }
-
-  async findAll() {
-    const client = this.supabase.getClient();
-    const { data, error } = await client.from('resume').select('*');
-    if (error) throw error;
-    return data;
   }
 
   async findOne(id: string) {
@@ -34,11 +29,15 @@ export class ResumeService {
     return data;
   }
 
-  async update(id: string, data: UpdateResumeDto) {
+  async update(id: string, data: UpdateResumeDto, uid?: string) {
     const client = this.supabase.getClient();
+    const updateData = { ...data };
+    if (uid) {
+      updateData['uid'] = uid;
+    }
     const { data: updated, error } = await client
       .from('resume')
-      .update({ ...data })
+      .update(updateData)
       .eq('id', id)
       .select()
       .single();
@@ -46,14 +45,4 @@ export class ResumeService {
     if (error) throw error;
     return updated;
   }
-
-  async remove(id: string) {
-    const client = this.supabase.getClient();
-    const { error } = await client.from('resume').delete().eq('id', id);
-    if (error) throw error;
-    return { message: 'Deleted successfully' };
-  }
-
-
-
 }

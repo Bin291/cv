@@ -1,18 +1,18 @@
 <div class="cv-container" >
   <div class ="cv" *ngrxLet="resume$ as data">
     <h2>{{ data?.full_name }}</h2>
-    <h4>{{ data?.job_title}}</h4>
+    <mat-card-subtitle>{{ data?.job_title}}</mat-card-subtitle>
 
     <p *ngIf="data?.email">
-      <span>📩{{ data?.email }}</span>
+      <span>	<mat-icon> email</mat-icon>{{ data?.email }}</span>
     </p>
 
     <p *ngIf="data?.phone">
-      <span>📱 {{ data?.phone }}</span>
+      <span>	<mat-icon> phone</mat-icon> {{ data?.phone }}</span>
     </p>
 
     <p *ngIf="data?.location">
-      <span>📍 {{ data?.location }}</span>
+      <span>	<mat-icon> location_on</mat-icon>{{ data?.location }}</span>
     </p>
 
     <div class="avatar-container">

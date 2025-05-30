@@ -1,6 +1,5 @@
 <div class="content-container" (click)="onClick()">
   <div class="personal-info" *ngrxLet="resume$ as data">
-
     <div class="name-container">
       <h3 *ngIf="!data?.full_name">Your name</h3>
       <h3 *ngIf="data?.full_name">{{data?.full_name}}</h3>
@@ -24,10 +23,9 @@
         </div>
       </div>
       <div class="upload-container">
-        <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image"/>
-        <div class="upload-placeholder" *ngIf="!croppedImage">
+        <img *ngIf="data?.avatar_url" [src]="data?.avatar_url" alt="Avatar" class="avatar-image"/>
+        <div class="upload-placeholder" *ngIf="!data?.avatar_url">
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s" class="placeholder-img" alt="Add Content" />
-
         </div>
       </div>
     </div>
@@ -35,13 +33,9 @@
 
 </div>
 
-
-
 <div class="add-content-container">
   <p class="content-prompt">Well done! :) Add some content here</p>
   <button (click)="openDialogContent()" class="add-content-btn">
     + Add Content
   </button>
 </div>
-
-<!--  -->

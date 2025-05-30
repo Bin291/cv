@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
 import { ResumeService } from './resume.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
@@ -8,13 +8,10 @@ export class ResumeController {
   constructor(private readonly resumeService: ResumeService) {}
 
   @Post()
-  async create(@Body() createResumeDto: CreateResumeDto) {
-    return this.resumeService.create(createResumeDto);
-  }
-
-  @Get()
-  async findAll() {
-    return this.resumeService.findAll();
+  async create(@Body() createResumeDto: CreateResumeDto, @Req() req) {
+    // Giả sử bạn lấy uid từ req.user (đã qua auth middleware)
+    const uid = req.user?.uid;
+    return this.resumeService.create(createResumeDto, uid);
   }
 
   @Get(':id')
@@ -23,12 +20,8 @@ export class ResumeController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateResumeDto: UpdateResumeDto) {
-    return this.resumeService.update(id, updateResumeDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.resumeService.remove(id);
+  async update(@Param('id') id: string, @Body() updateResumeDto: UpdateResumeDto, @Req() req) {
+    const uid = req.user?.uid;
+    return this.resumeService.update(id, updateResumeDto, uid);
   }
 }

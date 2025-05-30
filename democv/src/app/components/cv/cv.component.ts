@@ -12,12 +12,8 @@ import {LetDirective} from '@ngrx/component';
   selector: 'app-cv',
   imports: [
     NgIf,
-    AsyncPipe,
-    MatCardHeader,
-    MatCard,
-    MatCardContent,
     MatIcon,
-    MatCardModule,   // ✅ thêm đầy đủ module card
+    MatCardModule,
     MatIconModule,
     LetDirective
   ],

@@ -26,15 +26,19 @@
   white-space: pre-wrap;
   overflow-wrap: break-word;
   line-height: 1.5;
+
+
+
+  p span{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 }
 }
 
 
-mat-icon.icon {
-  vertical-align: middle;
-  margin-right: 8px;
-  color: #666;
-}
+
 .avatar-container{
 width: 150px;
   height: 150px;
@@ -54,4 +58,8 @@ width: 150px;
 
 
 
+}
+.info-binding{
+    display: flex;
+    flex-direction: row;
 }
