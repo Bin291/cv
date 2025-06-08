@@ -9,4 +9,5 @@ export interface ResumeModel {
   avatar_url?: string;
   created_at?: string;      // ISO string từ Supabase
   updated_at?: string;
+  resume_name?: string; // Tên của resume, có thể dùng để phân biệt các bản lưu
 }

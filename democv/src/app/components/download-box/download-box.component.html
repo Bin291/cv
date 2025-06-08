@@ -1,27 +1,31 @@
 <div class="resume-header">
-  <div class="resume-title">
-    <div *ngIf="!isEditing" class="title-display">
-      <h2>{{ resumeTitle }}</h2>
-      <button (click)="editTitle()">
+  <div class="resume-title-container">
+    <!-- VIEW MODE -->
+    <ng-container *ngIf="!editing; else editMode">
+      <span class="title-text">{{ resumeName || 'Untitled Resume' }}</span>
+      <button mat-icon-button class="icon-btn" (click)="startEdit()">
         <mat-icon>edit</mat-icon>
       </button>
-    </div>
-    <div *ngIf="isEditing" class="title-edit">
-      <div class="content-container">
-        <div class="input-container">
-          <input type="text" [(ngModel)]="resumeTitle" placeholder="Enter your title here..." />
-          <span class="highlight"></span>
-          <span class="bar"></span>
-        </div>
-      </div>
+    </ng-container>
 
-      <button (click)="saveTitle()">
-        <mat-icon>check</mat-icon>
-      </button>
-      <button (click)="cancelEdit()">
-        <mat-icon>cancel</mat-icon>
-      </button>
-    </div>
+    <!-- EDIT MODE -->
+    <ng-template #editMode>
+      <input
+        type="text"
+        [(ngModel)]="resumeName"
+        class="title-input"
+        placeholder="Enter resume name..."
+        #titleInput
+        (keydown.enter)="save()"
+      />
+      <div class="action-group">
+        <button mat-button color="primary" class="btn save" (click)="save()">Save</button>
+        <button mat-button class="btn cancel" (click)="cancel()">Cancel</button>
+      </div>
+    </ng-template>
   </div>
-  <button class="download-btn"><mat-icon>cloud_download</mat-icon>Download</button>
+
+  <button class="download-btn">
+    <mat-icon>cloud_download</mat-icon> Download
+  </button>
 </div>

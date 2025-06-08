@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
 import { SupabaseService } from '../supabase/supabase.service';
@@ -45,4 +45,16 @@ export class ResumeService {
     if (error) throw error;
     return updated;
   }
+  async findAll(uid?: string) {
+    const client = this.supabase.getClient();
+    let query = client.from('resume').select('*');
+    if (uid) {
+      query = query.eq('uid', uid);
+    }
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
+  }
+
 }
+

@@ -14,7 +14,7 @@ export class ResumeService {
   constructor(private http: HttpClient) {}
 
   updateResume(id: string, data: Partial<ResumeModel>): Observable<any> {
-    return this.http.patch(`${this.api}/${id}`, data);
+    return this.http.patch(`${this.api}/${id}`, data,);
   }
 
   createResume(): Observable<ResumeModel> {
@@ -23,5 +23,9 @@ export class ResumeService {
   getResume(id: string): Observable<ResumeModel> {
     return this.http.get<ResumeModel>(`${this.api}/${id}`);
   }
+  update(id: string, dto: { resume_name?: string }): Observable<ResumeModel> {
+    return this.http.patch<ResumeModel>(`${this.api}/${id}`, dto);
+  }
+
 
 }

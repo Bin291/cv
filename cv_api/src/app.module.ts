@@ -30,7 +30,15 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes('*');
+      .forRoutes(
+        { path: 'auth', method: RequestMethod.GET },
+        { path: 'auth', method: RequestMethod.POST },
+        { path: 'resume', method: RequestMethod.GET },
+        { path: 'resume', method: RequestMethod.POST },
+
+
+
+      );
 
   }
 

@@ -1,0 +1,44 @@
+<div class="dialog-container">
+  <mat-dialog-content class="dialog-content">
+    <h2>Customize Image</h2>
+    <p>click to blow box here to upload.....</p>
+
+
+<div class="canvas" (click)="!hasUploaded && triggerFileInput()">
+            <input type="file" #fileInput accept="image/*" style="display: none" (change)="onFileChangeDom($event)" />
+  <canvas #canvas class="canvas-cropper"
+          style="display: block; margin: 0 auto;"
+          [style.visibility]="hasUploaded ? 'visible' : 'hidden'"
+          (mousedown)="onMouseDown($event)"
+          (mousemove)="onMouseMove($event)"
+          (mouseup)="onMouseUp()"
+          (mouseleave)="onMouseUp()">
+  </canvas>
+          </div>
+    <div class="controls">
+      <div class="shape-buttons">
+        <button class="shape-btn" [class.active]="shape === 'rect'" (click)="setShape('rect')"><div class="retangle"></div></button>
+        <button class="shape-btn" [class.active]="shape === 'square'" (click)="setShape('square')"><div class="square"></div></button>
+        <button class="shape-btn1" [class.active]="shape === 'circle'" (click)="setShape('circle')"><div class="circle"></div></button>
+        <mat-slider>
+          <input
+            matSliderThumb
+            [ngModel]="zoomOffset"
+            (ngModelChange)="onZoomOffsetChange($event)"
+            [min]="0"
+            [max]="300"
+            step="1"
+          />
+        </mat-slider>
+
+
+
+        <div class="action-upload">
+          <button mat-stroked-button color="warn" (click)="deleteImage()">Delete</button>
+          <button mat-stroked-button (click)="triggerFileInput()">Replace Photo</button>
+          <button mat-flat-button color="accent" (click)="saveCrop()" [disabled]="!hasUploaded">Save</button>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

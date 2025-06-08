@@ -75,7 +75,7 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
           // console.log('Content List:', contentList);
         }
       })
-    )
+    );
 
     this.imageShareService.croppedImage$.subscribe((img) => {
       if (img?.startsWith('data:image')) {
@@ -87,27 +87,16 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
         this.resumeData = resume;
       })
     );
-    const id = localStorage.getItem('resume_id');
+
+    let id: string | null = null;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      id = window.localStorage.getItem('resume_id');
+    }
     if (id) {
       this.store.dispatch(loadResume({ id }));
     }
 
     this.resume$ = this.store.select(state => state.resume.resume);
-
-    if (typeof window !== 'undefined') {
-      const id = localStorage.getItem('resume_id');
-      if (id) {
-        this.store.dispatch(loadResume({ id }));
-      }
-    }
-
-    if (typeof window !== 'undefined') {
-      const id = localStorage.getItem('resume_id');
-      if (id) {
-        this.store.dispatch(loadResume({ id }));
-      }
-    }
-
   }
 
 

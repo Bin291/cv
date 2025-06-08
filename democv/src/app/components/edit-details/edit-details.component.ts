@@ -14,6 +14,9 @@ import { NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import {AuthModel} from '../../models/auth.model';
 import {AuthState} from '../../ngrx/auth/auth.state';
+import {AuthService} from '../../services/auth/auth.service';
+import { take, switchMap } from 'rxjs/operators';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-edit-details',
@@ -31,11 +34,22 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   protected isTyping = false;
   atht$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
+  personalInfo = [
+    { id: 1, label: 'Date of Birth' },
+    { id: 2, label: 'Nationality' },
+    { id: 3, label: 'Passport or Id' },
+    { id: 4, label: 'Marital status' },
+    { id: 5, label: 'Military Service' },
+    { id: 6, label: 'Driving License' },
+    { id: 7, label: 'Gender/Pronoun' },
+    { id: 8, label: 'Visa Status' }
+  ];
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
     private imageShareService: ImageShareService,
     private resumeService: ResumeService,
+    private authService: AuthService,
     private store: Store<{
       resume: ResumeState,
       auth: AuthState }>,
@@ -47,6 +61,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       phone: [''],
       location: [''],
       avatar_url: [''],
+      uid: ['%{uid}'],
     });
     this.atht$ = this.store.select('auth', 'authData');
     this.resume$ = this.store.select(state => state.resume.resume);
@@ -83,6 +98,15 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
 
     );
+    this.subscriptions.push(
+      this.atht$.subscribe((auth: AuthModel | null) => {
+        if (auth?.uid) {
+          this.authData = auth;
+          this.form.patchValue({ uid: auth.uid });
+          console.log(auth)
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -109,8 +133,41 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    this.back.emit();
-  }
+            let resumeId: string | null = null;
+            if (typeof window !== 'undefined' && window.localStorage) {
+              resumeId = window.localStorage.getItem('resume_id');
+            }
+
+            if (!resumeId) {
+              console.error('No resume_id in localStorage');
+              return;
+            }
+
+            this.authService.getCurrentUser().pipe(
+              take(1),
+              switchMap((user: User | null) => {
+                if (!user || !user.uid) {
+                  throw new Error('Chưa login hoặc không có uid');
+                }
+                const uid = user.uid;
+                this.store.dispatch(updateResume({ id: resumeId!, data: this.form.value }));
+
+                return this.resumeService.updateResume(resumeId!, {
+                  ...this.form.value,
+                  uid,
+                });
+              })
+            )
+            .subscribe({
+              next: updated => {
+                console.log('Details & UID saved:', updated);
+                this.back.emit();
+              },
+              error: err => {
+                console.error('Error saving details:', err);
+              }
+            });
+          }
 
   onCancel() {
     this.back.emit();

@@ -26,7 +26,7 @@ import * as AuthActions from '../../ngrx/auth/auth.actions';
 export class SideNavComponent
   implements OnInit
 {
-  activeLink: string = '';
+  activeLink:String = '';
   authData$ !:Observable<AuthModel | null>;
   subscription: Subscription[] = [];
   authData!: AuthModel |  null;
@@ -64,17 +64,25 @@ export class SideNavComponent
   ];
 
   setActiveLink(): void {
-    const currentRoute = this.router.url.split('?')[0];
-    const activeItem = this.menuItems.find(item => item.route === currentRoute);
-    if (activeItem && activeItem.route) {
-      this.activeLink = activeItem.route;
-    } else {
-      this.activeLink = '';
+    if (this.router.url.includes('')) {
+      this.activeLink = this.menuItems[0].route;
+    }else if (this.router.url.includes('/content')) {
+      this.activeLink = this.menuItems[1].route;
+    } else if (this.router.url.includes('/customize')) {
+      this.activeLink = this.menuItems[2].route;
+    } else if (this.router.url.includes('/trash')) {
+      this.activeLink = this.menuItems[3].route;
+
+    } else if (this.router.url.includes('/')) {
+      this.activeLink = this.menuItems[0].route;
     }
   }
 
 
 ngOnInit() {
+
+  this.setActiveLink();
+
   this.subscription.push(
     this.authData$.subscribe((authData) => {
       if (authData?.idToken) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Req, HttpException, HttpStatus } from '@nestjs/common';
 import { ResumeService } from './resume.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
@@ -20,8 +20,13 @@ export class ResumeController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateResumeDto: UpdateResumeDto, @Req() req) {
-    const uid = req.user?.uid;
-    return this.resumeService.update(id, updateResumeDto, uid);
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateResumeDto
+  ) {
+    return this.resumeService.update(id, dto);
   }
+
+
+
 }
