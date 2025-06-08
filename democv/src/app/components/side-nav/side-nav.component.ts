@@ -17,7 +17,6 @@ import * as AuthActions from '../../ngrx/auth/auth.actions';
     MatIcon,
     MatButton,
     NgClass,
-    RouterLink,
     NgIf,
   ],
   templateUrl: './side-nav.component.html',

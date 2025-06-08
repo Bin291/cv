@@ -1,0 +1,27 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+mat-dialog-actions {
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+button[mat-button] {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+}
+
+button[mat-raised-button] {
+  background-color: var(--secondary); // Màu hồng như mẫu
+  color: var(--onSecondary); // Màu chữ trắng
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  &:disabled {
+    background-color: #e0e0e0;
+    color: #757575;
+  }
+}

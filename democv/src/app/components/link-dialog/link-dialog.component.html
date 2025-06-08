@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Link URL</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Enter URL</mat-label>
+    <input matInput [(ngModel)]="data.value" [ngModelOptions]="{standalone: true}" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="!data.value" (click)="onAdd()">Add</button>
+</mat-dialog-actions>

@@ -1,5 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ResumeState } from '../../ngrx/resume/resume.state';
 import { ResumeModel } from '../../models/resume.model';
@@ -11,19 +20,38 @@ import { ImageShareService } from '../../services/image-share/image-share.servic
 import { Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgIf } from '@angular/common';
-import { MatButton } from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {AuthModel} from '../../models/auth.model';
 import {AuthState} from '../../ngrx/auth/auth.state';
 import {AuthService} from '../../services/auth/auth.service';
 import { take, switchMap } from 'rxjs/operators';
 import { User } from '@angular/fire/auth';
+import {MatIcon} from '@angular/material/icon';
+import {MatFormField} from '@angular/material/form-field';
+import {ShareModule} from '../../../shared/shared.module';
+import {MatInput} from '@angular/material/input';
+import {MatLabel} from '@angular/material/form-field';
+import { MatButtonModule    } from '@angular/material/button';
+import { MatIconModule      } from '@angular/material/icon';
+import {LinkDialogComponent} from '../link-dialog/link-dialog.component';
+interface Info { id: number; label: string; }
+
+
+interface Link {
+  id: number;
+  label: string;
+  name: string;
+  value: string;
+}
+
 
 @Component({
   selector: 'app-edit-details',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, MatButton],
+  imports: [ReactiveFormsModule, NgIf, MatButton, MatIcon, MatFormField, MatIconButton, MatInput, FormsModule, MatLabel, ShareModule],
   templateUrl: './edit-details.component.html',
-  styleUrl: './edit-details.component.scss'
+  styleUrl: './edit-details.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class EditDetailsComponent implements OnInit, OnDestroy {
   @Input() resume$!: Observable<ResumeModel | null>;
@@ -34,7 +62,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   protected isTyping = false;
   atht$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
-  personalInfo = [
+  personalInfo: Info[] = [
     { id: 1, label: 'Date of Birth' },
     { id: 2, label: 'Nationality' },
     { id: 3, label: 'Passport or Id' },
@@ -42,14 +70,31 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     { id: 5, label: 'Military Service' },
     { id: 6, label: 'Driving License' },
     { id: 7, label: 'Gender/Pronoun' },
-    { id: 8, label: 'Visa Status' }
+    { id: 8, label: 'Visa Status' },
   ];
+  saved: Record<number, string> = {};
+  selectedIds: number[] = [];
+
+
+  links: Link[] = [
+    { id: 1, label: 'Website', name: '', value: '' },
+    { id: 2, label: 'GitHub', name: '', value: '' },
+    { id: 3, label: 'Medium', name: '', value: '' },
+    { id: 4, label: 'Skype', name: '', value: '' },
+  ];
+  selectedLinkIds: number[] = []; // Lưu các ID đã chọn
+  customSuggestion: string = '';
+  isViewAllExpanded: boolean = false;
+  searchQuery: string = '';
+
+
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
     private imageShareService: ImageShareService,
     private resumeService: ResumeService,
     private authService: AuthService,
+    private cdr: ChangeDetectorRef,
     private store: Store<{
       resume: ResumeState,
       auth: AuthState }>,
@@ -62,6 +107,18 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       location: [''],
       avatar_url: [''],
       uid: ['%{uid}'],
+      resume_name: [''],
+      national: [''],
+      date_of_birth: [''],
+      passport_or_id: [''],
+      material_status: [''],
+      military_service: [''],
+      driving_license: [''],
+      visa_status: [''],
+      gender_or_pronoun: [''],
+      avatar_origin: [''],
+      template_id: [''],
+
     });
     this.atht$ = this.store.select('auth', 'authData');
     this.resume$ = this.store.select(state => state.resume.resume);
@@ -167,7 +224,9 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
                 console.error('Error saving details:', err);
               }
             });
-          }
+
+    this.isTyping = false;
+  }
 
   onCancel() {
     this.back.emit();
@@ -183,5 +242,103 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       this.form.patchValue({ avatar_url: img });
       this.imageShareService.updateCroppedImage(img);
     });
+  }
+
+  get availableInfo(): Info[] {
+    return this.personalInfo.filter(info => !this.selectedIds.includes(info.id));
+  }
+
+  startEdit(info: Info) {
+    if (!this.selectedIds.includes(info.id)) {
+      this.selectedIds.push(info.id);
+      this.saved[info.id] = this.saved[info.id] ?? '';
+    }
+  }
+
+  remove(id: number) {
+    const index = this.selectedIds.indexOf(id);
+    if (index !== -1) {
+      this.selectedIds.splice(index, 1);
+      const { [id]: _, ...rest } = this.saved;
+      this.saved = rest;
+    }
+  }
+
+  getLabelPersonal(id: number): string {
+    const info = this.personalInfo.find(i => i.id === id);
+    return info ? info.label : '';
+  }
+
+// ==================Link==========================
+
+  getAvailableLinks(): Link[] {
+    return this.links.filter(link => !this.selectedLinkIds.includes(link.id));
+  }
+
+  startEditLink(link: Link) {
+    if (!this.selectedLinkIds.includes(link.id)) {
+      this.selectedLinkIds.push(link.id);
+    }
+  }
+
+  removeLink(id: number) {
+    const index = this.selectedLinkIds.indexOf(id);
+    if (index !== -1) {
+      this.selectedLinkIds.splice(index, 1);
+      const link = this.getLinkById(id);
+      if (link) {
+        link.name = '';  // Xóa name khi remove
+        link.value = ''; // Xóa value khi remove
+      }
+    }
+  }
+
+  openLinkDialogLink(id: number) {
+    const link = this.getLinkById(id);
+    if (link) {
+      const dialogRef = this.dialog.open(LinkDialogComponent, {
+        width: '300px',
+        data: { label: link.label, name: link.name, value: link.value }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          link.value = result; // Cập nhật value (URL) từ dialog
+        }
+      });
+    }
+  }
+
+  toggleViewAllLink() {
+    this.isViewAllExpanded = !this.isViewAllExpanded;
+  }
+
+  getFilteredAllLinks(): string[] {
+    const allLinks = ['LinkedIn', 'ORCID', 'Bluesky', 'Threads', 'Discord', 'Dribbble', 'AngelList', 'HackerRank', 'StackOverflow', 'KakaoTalk', 'Coding Ninjas', 'Hugging Face'];
+    return allLinks.filter(link => link.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  }
+
+  getLabel(id: number): string {
+    const link = this.getLinkById(id);
+    return link ? link.label : '';
+  }
+
+  getName(id: number): string {
+    const link = this.getLinkById(id);
+    return link ? link.name : '';
+  }
+
+  getValue(id: number): string {
+    const link = this.getLinkById(id);
+    return link ? link.value || 'Link URL' : 'Link URL';
+  }
+
+  isLinkActive(id: number): boolean {
+    const link = this.getLinkById(id);
+    return link ? !!link.value : false; // Kích hoạt dựa trên value (URL)
+  }
+
+  getLinkById(id: number): Link | undefined {
+    return this.links.find(link => link.id === id);
   }
 }
