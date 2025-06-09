@@ -113,7 +113,7 @@
           <input matInput [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" placeholder="Search..." />
         </mat-form-field>
         <div class="link-options">
-          <button mat-stroked-button class="tag-button-link" [class.link-type]="link.type === 'link'" [class.info-type]="link.type === 'info'" *ngFor="let link of getAllLinks()" (click)="startEditLink(link)">
+          <button mat-stroked-button class="tag-button-link" [class.link-type]="link.type === 'link'" [class.info-type]="link.type === 'info'" *ngFor="let link of getFilteredAllLinks()" (click)="startEditLink(link)">
             <mat-icon>add</mat-icon>
             {{ link.label }}
           </button>
@@ -126,7 +126,6 @@
         <mat-label>Missing something? Please let me know:</mat-label>
         <input matInput [(ngModel)]="customSuggestion" [ngModelOptions]="{standalone: true}" />
       </mat-form-field>
-
 <!--      ======================btn-access=============================-->
       <div class="actions">
         <button mat-stroked-button (click)="onCancel()" >Cancel</button>
