@@ -95,29 +95,27 @@
         </div>
       </div>
 
-      <!-- Display remaining buttons -->
-      <div class="tags-links">
-        <ng-container *ngFor="let link of getAvailableLinks()">
-          <button mat-stroked-button class="tag-button-link" (click)="startEditLink(link)">
+      <!-- Display initial buttons -->
+      <div class="tags-links" *ngIf="!isViewAllExpanded">
+        <ng-container *ngFor="let link of getInitialLinks()">
+          <button mat-stroked-button class="tag-button-link" [class.link-type]="link.type === 'link'" [class.info-type]="link.type === 'info'" (click)="startEditLink(link)">
             <mat-icon>add</mat-icon>
             {{ link.label }}
           </button>
         </ng-container>
+        <button mat-stroked-button class="view-all-button" (click)="toggleViewAllLink()" *ngIf="getInitialLinks().length < links.length">View all</button>
       </div>
 
       <!-- View all toggle button and expandable content -->
-      <button mat-stroked-button class="view-all-button" (click)="toggleViewAllLink()" *ngIf="!isViewAllExpanded">
-        View all
-      </button>
       <div class="view-all-content-link" *ngIf="isViewAllExpanded">
         <mat-form-field appearance="outline" class="search-field-links">
           <mat-label>Search Link</mat-label>
           <input matInput [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" placeholder="Search..." />
         </mat-form-field>
         <div class="link-options">
-          <button mat-stroked-button class="tag-button-link" *ngFor="let link of getFilteredAllLinks()" (click)="startEditLink({ id: links.length + selectedLinkIds.length + 1, label: link, name: '', value: '' })">
+          <button mat-stroked-button class="tag-button-link" [class.link-type]="link.type === 'link'" [class.info-type]="link.type === 'info'" *ngFor="let link of getAllLinks()" (click)="startEditLink(link)">
             <mat-icon>add</mat-icon>
-            {{ link }}
+            {{ link.label }}
           </button>
         </div>
         <button mat-button class="collapse-button" (click)="toggleViewAllLink()">Collapse</button>
@@ -128,8 +126,6 @@
         <mat-label>Missing something? Please let me know:</mat-label>
         <input matInput [(ngModel)]="customSuggestion" [ngModelOptions]="{standalone: true}" />
       </mat-form-field>
-
-
 
 <!--      ======================btn-access=============================-->
       <div class="actions">

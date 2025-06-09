@@ -42,6 +42,7 @@ interface Link {
   label: string;
   name: string;
   value: string;
+  type: 'link' | 'info'; // Add type property
 }
 
 
@@ -77,12 +78,161 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
 
 
   links: Link[] = [
-    { id: 1, label: 'Website', name: '', value: '' },
-    { id: 2, label: 'GitHub', name: '', value: '' },
-    { id: 3, label: 'Medium', name: '', value: '' },
-    { id: 4, label: 'Skype', name: '', value: '' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
   ];
-  selectedLinkIds: number[] = []; // Lưu các ID đã chọn
+
+  selectedLinkIds: number[] = [];
   customSuggestion: string = '';
   isViewAllExpanded: boolean = false;
   searchQuery: string = '';
@@ -271,6 +421,14 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
 
 // ==================Link==========================
 
+  getInitialLinks(): Link[] {
+    return this.links.slice(0, 4); // Show only the first 4 links initially
+  }
+
+  getAllLinks(): Link[] {
+    return this.links.filter(link => !this.selectedLinkIds.includes(link.id)); // All available links
+  }
+
   getAvailableLinks(): Link[] {
     return this.links.filter(link => !this.selectedLinkIds.includes(link.id));
   }
@@ -287,8 +445,8 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       this.selectedLinkIds.splice(index, 1);
       const link = this.getLinkById(id);
       if (link) {
-        link.name = '';  // Xóa name khi remove
-        link.value = ''; // Xóa value khi remove
+        link.name = '';
+        link.value = '';
       }
     }
   }
@@ -303,7 +461,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          link.value = result; // Cập nhật value (URL) từ dialog
+          link.value = result;
         }
       });
     }
@@ -313,9 +471,10 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     this.isViewAllExpanded = !this.isViewAllExpanded;
   }
 
-  getFilteredAllLinks(): string[] {
-    const allLinks = ['LinkedIn', 'ORCID', 'Bluesky', 'Threads', 'Discord', 'Dribbble', 'AngelList', 'HackerRank', 'StackOverflow', 'KakaoTalk', 'Coding Ninjas', 'Hugging Face'];
-    return allLinks.filter(link => link.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  getFilteredAllLinks(): Link[] {
+    return this.getAllLinks().filter(link =>
+      link.label.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
   }
 
   getLabel(id: number): string {
@@ -335,7 +494,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
 
   isLinkActive(id: number): boolean {
     const link = this.getLinkById(id);
-    return link ? !!link.value : false; // Kích hoạt dựa trên value (URL)
+    return link ? !!link.value : false;
   }
 
   getLinkById(id: number): Link | undefined {
