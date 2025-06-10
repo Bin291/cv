@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Req, HttpException, HttpStatus } from '@nestjs/common';
+// src/resume/resume.controller.ts
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Req,
+  Patch,
+  BadRequestException,
+} from '@nestjs/common';
 import { ResumeService } from './resume.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
@@ -7,26 +17,56 @@ import { UpdateResumeDto } from './dto/update-resume.dto';
 export class ResumeController {
   constructor(private readonly resumeService: ResumeService) {}
 
+  // @Post()
+  // async create(@Req() req: any, @Body() dto: CreateResumeDto) {
+  //     const uid = req.user?.uid;
+  //     if (uid) {
+  //       return this.resumeService.create({ ...dto, uid });
+  //     } else {
+  //       // guest: chỉ cho tạo 1 lần
+  //       const existing = await this.resumeService.findAllByUser('guest');
+  //       if (existing.length > 0) {
+  //         throw new BadRequestException(
+  //           'Bạn đã tạo resume mẫu rồi, vui lòng đăng nhập để tạo mới.'
+  //         );
+  //       }
+  //       return this.resumeService.create({ ...dto, uid: 'guest' });
+  //     }
+  //   }
+
+
   @Post()
-  async create(@Body() createResumeDto: CreateResumeDto, @Req() req) {
-    // Giả sử bạn lấy uid từ req.user (đã qua auth middleware)
-    const uid = req.user?.uid;
-    return this.resumeService.create(createResumeDto, uid);
+  async create(
+    @Body() createDto: CreateResumeDto,
+    @Req() req: any,            // req.user có thể undefined
+  ) {
+    const uid = req.user?.uid ?? null;
+    return this.resumeService.create(createDto, uid);
   }
+
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.resumeService.findOne(id);
   }
 
+  // route sửa lại thành /resume/user/:uid cho rõ ràng
+  @Get('user/:uid')
+  async findAllByUser(@Param('uid') uid: string) {
+    return this.resumeService.findAllByUser(uid);
+  }
+
+
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() dto: UpdateResumeDto
+    @Body() dto: UpdateResumeDto,
   ) {
     return this.resumeService.update(id, dto);
   }
 
-
-
+  @Get()
+  async findAll() {
+    return this.resumeService.findAll();
+  }
 }

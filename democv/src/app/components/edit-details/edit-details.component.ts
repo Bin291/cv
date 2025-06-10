@@ -10,15 +10,16 @@ import {
 } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Store } from '@ngrx/store';
+
 import { ResumeState } from '../../ngrx/resume/resume.state';
 import { ResumeModel } from '../../models/resume.model';
-import { updateResume } from '../../ngrx/resume/resume.action';
+import {loadResume, updateResume} from '../../ngrx/resume/resume.action';
 import { ResumeService } from '../../services/resume/resume.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CooperComponent } from '../cooper/cooper.component';
 import { ImageShareService } from '../../services/image-share/image-share.service';
-import { Observable, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import {catchError, filter, Observable, Subscription, throwError} from 'rxjs';
+import { debounceTime,distinctUntilChanged } from 'rxjs/operators';
 import { NgIf } from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {AuthModel} from '../../models/auth.model';
@@ -31,10 +32,12 @@ import {MatFormField} from '@angular/material/form-field';
 import {ShareModule} from '../../../shared/shared.module';
 import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
-import { MatButtonModule    } from '@angular/material/button';
-import { MatIconModule      } from '@angular/material/icon';
+
 import {LinkDialogComponent} from '../link-dialog/link-dialog.component';
-interface Info { id: number; label: string; }
+interface Info {
+  id: string;
+  label: string;
+}
 
 
 interface Link {
@@ -57,25 +60,29 @@ interface Link {
 export class EditDetailsComponent implements OnInit, OnDestroy {
   @Input() resume$!: Observable<ResumeModel | null>;
   @Output() back = new EventEmitter<void>();
-
+  private subs = new Subscription();
   form: FormGroup;
-  private subscriptions: Subscription[] = [];
+  subscriptions: Subscription[] = [];
+  private sub = new Subscription();
+  resumeId!: string;
   protected isTyping = false;
   atht$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
-  personalInfo: Info[] = [
-    { id: 1, label: 'Date of Birth' },
-    { id: 2, label: 'Nationality' },
-    { id: 3, label: 'Passport or Id' },
-    { id: 4, label: 'Marital status' },
-    { id: 5, label: 'Military Service' },
-    { id: 6, label: 'Driving License' },
-    { id: 7, label: 'Gender/Pronoun' },
-    { id: 8, label: 'Visa Status' },
+  personalInfo = [
+    { id: 'date_of_birth', label: 'Date of Birth' },
+    { id: 'nationality', label: 'Nationality' },
+    { id: 'passport_or_id', label: 'Passport or Id' },
+    { id: 'material_status', label: 'Material Status' },     // sửa đúng
+    { id: 'minitary_service', label: 'Military Service' }, // theo DB typo
+    { id: 'driving_license', label: 'Driving License' },
+    { id: 'gender_or_pronoun', label: 'Gender/Pronoun' },
+    { id: 'visa_status', label: 'Visa Status' },
   ];
-  saved: Record<number, string> = {};
-  selectedIds: number[] = [];
 
+
+  // 2) selectedIds giờ là string[]
+  selectedIds: string[] = [];
+  saved: Record<number, string> = {};
 
   links: Link[] = [
     { id: 1, label: 'Website', name: '', value: '', type: 'link' },
@@ -97,141 +104,9 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
     { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
     { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-  ];
 
+  ];
+  fieldMap: Record<number, string> = {};
   selectedLinkIds: number[] = [];
   customSuggestion: string = '';
   isViewAllExpanded: boolean = false;
@@ -256,129 +131,156 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       phone: [''],
       location: [''],
       avatar_url: [''],
-      uid: ['%{uid}'],
-      resume_name: [''],
-      national: [''],
+      // Personal Info
       date_of_birth: [''],
+      nationality: [''],
       passport_or_id: [''],
       material_status: [''],
-      military_service: [''],
+      minitary_service: [''],
       driving_license: [''],
-      visa_status: [''],
       gender_or_pronoun: [''],
-      avatar_origin: [''],
-      template_id: [''],
-
+      visa_status: [''],
     });
     this.atht$ = this.store.select('auth', 'authData');
+    this.atht$ = this.store.select(state => state.auth.authData);
     this.resume$ = this.store.select(state => state.resume.resume);
   }
 
-  ngOnInit(): void {
-    if (this.resume$) {
-      const sub = this.resume$.subscribe((resume) => {
-        if (resume && !this.isTyping) {
-          this.form.patchValue(resume);
-        }
-      });
-      this.subscriptions.push(sub);
+  ngOnInit() {
+    // 1) Lấy resumeId từ localStorage (chỉ trên browser)
+    let resumeId: string | null = null;
+    if (typeof window !== 'undefined') {
+      resumeId = window.localStorage.getItem('resume_id');
+    }
+    if (!resumeId) {
+      console.error('No resume_id in localStorage – please select a resume on Home page');
+      return;
     }
 
-    const sub2 = this.form.valueChanges.pipe(
-      debounceTime(500)
-    ).subscribe(value => {
-      this.isTyping = false;
-      let resumeId = localStorage.getItem('resume_id');
-      if (!resumeId) {
-        this.resumeService.createResume().subscribe((res: ResumeModel) => {
-          resumeId = res.id!;
-          localStorage.setItem('resume_id', resumeId);
-          this.dispatchUpdate(resumeId, value);
-        });
-      } else {
-        this.dispatchUpdate(resumeId, value);
-      }
-    });
+    // 2) Dispatch loadResume để fetch dữ liệu
+    this.store.dispatch(loadResume({ id: resumeId }));
 
-    this.subscriptions.push(sub2);
+    // 3) Patch form + init selectedIds
+    this.initFormPatch(resumeId);
 
+    // 4) Auto-merge UID khi login giữa chừng
     this.subscriptions.push(
-
+      this.atht$
+        .pipe(
+          filter(auth => !!auth?.uid),
+          distinctUntilChanged((a, b) => a!.uid === b!.uid),
+          take(1)
+        )
+        .subscribe(auth => {
+          const uid = auth!.uid!;
+          this.form.patchValue({ uid });
+          this.dispatchUpdate(resumeId!, { uid });
+        })
     );
+
+    // 5) Auto-save khi form thay đổi
     this.subscriptions.push(
-      this.atht$.subscribe((auth: AuthModel | null) => {
-        if (auth?.uid) {
-          this.authData = auth;
-          this.form.patchValue({ uid: auth.uid });
-          console.log(auth)
-        }
-      })
+      this.form.valueChanges
+        .pipe(debounceTime(500))
+        .subscribe(value => {
+          this.isTyping = false;
+          this.dispatchUpdate(resumeId!, value);
+        })
     );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+// Tách logic patch form + selectedIds
+  private initFormPatch(resumeId: string) {
+    this.subscriptions.push(
+      this.resume$
+        .pipe(filter(r => !!r), take(1))
+        .subscribe(resume => {
+          this.form.patchValue(resume!);
+          this.selectedIds = this.personalInfo
+            .map(i => i.id)
+            .filter(key => !!(resume as any)[key]);
+        })
+    );
   }
 
   dispatchUpdate(id: string, data: Partial<ResumeModel>) {
+    // Chỉ update, không tạo mới resume
     this.resumeService.updateResume(id, data).subscribe({
       next: () => {
+        // Dispatch NgRx để cập nhật store
         this.store.dispatch(updateResume({ id, data }));
       },
-      error: (err) => {
-        console.warn('⚠️ Update failed, fallback:', err);
-        if (err.status === 500 || err.message?.includes('0 rows')) {
-          localStorage.removeItem('resume_id');
-          this.resumeService.createResume().subscribe((res: ResumeModel) => {
-            const newId = res.id!;
-            localStorage.setItem('resume_id', newId);
-            this.store.dispatch(updateResume({ id: newId, data }));
-          });
-        }
+      error: err => {
+        console.error('Update resume failed', err);
+        // Có thể hiển thị toast hoặc xử lý lỗi ở đây
       }
     });
   }
 
+
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
   onSave() {
-            let resumeId: string | null = null;
-            if (typeof window !== 'undefined' && window.localStorage) {
-              resumeId = window.localStorage.getItem('resume_id');
-            }
+    // 1) Lấy resumeId an toàn
+    let resumeId: string | null = null;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      resumeId = window.localStorage.getItem('resume_id');
+    }
+    if (!resumeId) {
+      console.error('No resume_id in localStorage');
+      return;
+    }
 
-            if (!resumeId) {
-              console.error('No resume_id in localStorage');
-              return;
-            }
+    // 2) Lấy user
+    this.authService.getCurrentUser().pipe(
+      take(1),
+      switchMap(user => {
+        // 3) Nếu không login thì trả về error hoặc bạn có thể set uid='guest' tuỳ case
+        if (!user?.uid) {
+          return throwError(() => new Error('Chưa login hoặc không có uid'));
+        }
+        const uid = user.uid;
 
-            this.authService.getCurrentUser().pipe(
-              take(1),
-              switchMap((user: User | null) => {
-                if (!user || !user.uid) {
-                  throw new Error('Chưa login hoặc không có uid');
-                }
-                const uid = user.uid;
-                this.store.dispatch(updateResume({ id: resumeId!, data: this.form.value }));
+        // 4) Chuẩn bị payload
+        const payload = {
+          ...this.form.value,
+          uid,
+        };
 
-                return this.resumeService.updateResume(resumeId!, {
-                  ...this.form.value,
-                  uid,
-                });
-              })
-            )
-            .subscribe({
-              next: updated => {
-                console.log('Details & UID saved:', updated);
-                this.back.emit();
-              },
-              error: err => {
-                console.error('Error saving details:', err);
-              }
-            });
+        // 5) Dispatch NgRx action trước (để UI phản hồi nhanh)
+        this.store.dispatch(updateResume({ id: resumeId!, data: payload }));
 
+        // 6) Gọi service update thực sự lên backend
+        return this.resumeService.updateResume(resumeId!, payload)
+          .pipe(
+            catchError(err => {
+              console.error('API updateResume failed', err);
+              // Bạn có thể dispatch rollback action nếu muốn
+              return throwError(() => err);
+            })
+          );
+      })
+    )
+      .subscribe({
+        next: updated => {
+          console.log('Details & UID saved:', updated);
+          // 7) Emit sự kiện đóng form / quay lại
+          this.back.emit();
+        },
+        error: err => {
+          console.error('Error saving details:', err);
+          // Hiển thị toast hoặc message lỗi nếu cần
+        }
+      });
+    this.back.emit();
+    // Reset flag typing
     this.isTyping = false;
   }
 
   onCancel() {
+    // Chỉ emit về parent để đóng form
     this.back.emit();
   }
 
@@ -394,29 +296,30 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+
+
+
+
+  // ==================Personal Info==========================
+
   get availableInfo(): Info[] {
     return this.personalInfo.filter(info => !this.selectedIds.includes(info.id));
   }
 
-  startEdit(info: Info) {
+  startEdit(info: Info): void {
     if (!this.selectedIds.includes(info.id)) {
       this.selectedIds.push(info.id);
-      this.saved[info.id] = this.saved[info.id] ?? '';
     }
   }
 
-  remove(id: number) {
-    const index = this.selectedIds.indexOf(id);
-    if (index !== -1) {
-      this.selectedIds.splice(index, 1);
-      const { [id]: _, ...rest } = this.saved;
-      this.saved = rest;
-    }
+  remove(id: string): void {
+    this.selectedIds = this.selectedIds.filter(i => i !== id);
+    this.form.patchValue({ [id]: '' });
+    this.resumeService.updateResume(this.resumeId, { [id]: null }).subscribe();
   }
 
-  getLabelPersonal(id: number): string {
-    const info = this.personalInfo.find(i => i.id === id);
-    return info ? info.label : '';
+  getLabelPersonal(id: string): string {
+    return this.personalInfo.find(i => i.id === id)?.label || '';
   }
 
 // ==================Link==========================
@@ -450,6 +353,9 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       }
     }
   }
+  // isPersonalSelected(id: number): boolean {
+  //   return this.selectedOptions.some(opt => opt.id === id);
+  // }
 
   openLinkDialogLink(id: number) {
     const link = this.getLinkById(id);

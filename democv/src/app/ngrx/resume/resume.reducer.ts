@@ -5,12 +5,18 @@ import {
   loadResumeFailure,
   updateResume,
   updateResumeSuccess,
-  updateResumeFailure
+  updateResumeFailure,
+  loadAllResumesSuccess,
+  loadAllResumes,
+  loadAllResumesFailure,
+  createResume,
+  createResumeSuccess,
+  createResumeFailure,
 } from './resume.action';
-import { initialResumeState } from './resume.state';
+import { initialState } from './resume.state';
 
 export const resumeReducer = createReducer(
-  initialResumeState,
+  initialState,
 
   // Load resume
   on(loadResume, (state,type) => {
@@ -67,4 +73,52 @@ export const resumeReducer = createReducer(
       error
     };
   }),
+  on(loadAllResumes, state => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(loadAllResumesSuccess, (state, { resumes }) => ({
+    ...state,
+    resumes,
+    loading: false,
+  })),
+  on(loadAllResumesFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+  // --- Load single resume (nếu bạn có action loadResume) ---
+  on(loadResumeSuccess, (state, { resume }) => ({
+    ...state,
+    resume,
+  })),
+
+  // --- Update resume ---
+  on(updateResumeSuccess, (state, { resume }) => ({
+    ...state,
+    // cập nhật resume đơn
+    resume,
+    // cập nhật luôn trong list
+    resumes: state.resumes.map(r => r.id === resume.id ? resume : r),
+  })),
+  on(updateResumeFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
+
+  on(createResume, state => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(createResumeSuccess, (state, { resume }) => ({
+    ...state,
+    resumes: [...state.resumes, resume]
+  })),
+  on(createResumeFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 );

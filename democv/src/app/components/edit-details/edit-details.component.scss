@@ -143,15 +143,15 @@ save:hover {
   object-fit: cover;
 }
 .placeholder-img{
-  width: 100%;
-  height: 100%;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   background-color: #e1e1e1;
 }
 
 .upload-placeholder {
-  width: 100%;
-  height: 100%;
+  width: 120px;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -323,6 +323,7 @@ button[mat-icon-button] {
   gap: 0.2rem;
   background-color: #fff;
   cursor: pointer;
+  margin-bottom: 20px;
   &:hover {
     background-color: #d1e8ff;
   }
@@ -338,9 +339,9 @@ button[mat-icon-button] {
 }
 
 .btn-remove-link {
-  margin-bottom: 10px;
   background: none;
   color: var(--background);
+  margin-bottom: 24px;
 }
 
 .tag-button-link {
@@ -400,8 +401,9 @@ button[mat-icon-button] {
 }
 
 .view-all-button {
-  margin-top: 0.5rem;
+  margin-top: 0;
   padding: 0.3em 0.6em;
+  margin-bottom: 20px;
 }
 
 .view-all-content-link {

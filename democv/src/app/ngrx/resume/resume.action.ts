@@ -32,3 +32,31 @@ export const updateResumeFailure = createAction(
   '[Resume] Update Resume Failure',
   props<{ error: any }>()
 );
+export const loadAllResumes = createAction(
+  '[Resume] Load All Resumes'
+);
+
+export const loadAllResumesSuccess = createAction(
+  '[Resume] Load All Resumes Success',
+  props<{ resumes: ResumeModel[] }>()
+);
+
+export const loadAllResumesFailure = createAction(
+  '[Resume] Load All Resumes Failure',
+  props<{ error: any }>()
+);
+
+export const createResume = createAction(
+  '[Resume] Create Resume',
+  props<{ payload: Partial<ResumeModel> }>()
+);
+
+export const createResumeSuccess = createAction(
+  '[Resume] Create Resume Success',
+  props<{ resume: ResumeModel }>()
+);
+
+export const createResumeFailure = createAction(
+  '[Resume] Create Resume Failure',
+  props<{ error: any }>()
+);

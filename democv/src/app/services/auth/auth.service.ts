@@ -37,4 +37,10 @@ export class AuthService {
   getCurrentUser(): Observable< User | null> {
     return user(this.auth); // Trả về Observable chứa thông tin người dùng
   }
+
+  getIdToken(): Observable<string | null> {
+    return this.getCurrentUser().pipe(
+      switchMap(u => u ? from(u.getIdToken()) : of(null))
+    );
+  }
 }

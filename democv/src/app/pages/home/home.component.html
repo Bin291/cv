@@ -1,83 +1,25 @@
-<body>
-<p>My Resumes</p>
+<ng-container *ngrxLet="resumes$ as resumes">
+  <div class="grid-container">
+    <!-- New Resume card -->
+    <div class="new-resume" (click)="onCreateResume()">
+      <mat-icon>add</mat-icon>
+      <span>New resume</span>
+    </div>
 
-<div class="grid-container">
-  <!-- New Resume card -->
-  <div class=" new-resume">
-    <mat-icon>add</mat-icon>New resume
+    <!-- Resume previews -->
+    <ng-container *ngFor="let r of resumes">
+      <div class="resume-card" (click)="onEditResume(r.id!)">
+        <!-- Dùng thumbnailUrl nếu có, nếu không thì defaultThumbnail -->
+        <img
+          [src]="r.avatar_origin || defaultThumbnail"
+          alt="Resume Preview"
+          class="resume-thumb"
+        />
+        <div class="caption">
+          {{ r.resume_name || 'Untitled Resume' }}<br>
+          <small>edited {{ r.updated_at | date:'short' }}</small>
+        </div>
+      </div>
+    </ng-container>
   </div>
-
-  <!-- Resume previews (repeat for 5x3 layout = 15 items) -->
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/gs_qryrzly3kldmqhxqsb/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 1<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/yrf-1jligslm-ta_zmyji/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 2<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/cjy7ca_q8xpaocheef8v1/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 3<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/mwo5rdzygyzgpjhr1vdnr/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 4<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/9hpvr_9ietentflai7zpv/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 5<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/tlz6h4qf2ti7uttcfrcf0/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 6<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/gfra5vynu_7blt4i5wfpi/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 7<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/j-o1yjhppnqj64rc5ads0/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 8<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/fz9_k1l5lqqfo3vh1srrm/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 9<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/hllwmnql8b3hndx1ulhrx/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 10<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/ee2lno46809whuyrlgocq/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 11<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/th-_fq-yjykomqznpladu/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 12<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/e8pud1on5urq08-eus5xa/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 13<br><small>edited 1 day ago</small></div>
-  </div>
-
-  <div class="resume-card">
-    <img src="https://prod.flowcvassets.com/resume-templates/03hh1oixwsbidneod9p9n/2560.webp" alt="Resume Preview">
-    <div class="caption">Resume 14<br><small>edited 1 day ago</small></div>
-  </div>
-
-</div>
-</body>
-
+</ng-container>

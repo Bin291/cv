@@ -1,6 +1,6 @@
 export interface ResumeModel {
-  id?: string;              // uuid (từ Supabase)
-  uid?: string;             // optional nếu login
+  id?: string;
+  uid?: string;
   full_name?: string;
   job_title?: string;
   email?: string;
@@ -21,3 +21,5 @@ export interface ResumeModel {
   template_id?: string; // ID của template resume, nếu có
   material_status?: string; // Tình trạng hôn nhân, nếu có
 }
+// Đây là models sử dụng ở Angular, không cần validate như DTO
+// Chúng ta sẽ sử dụng interface này để định nghĩa kiểu dữ liệu của resume trong Angular

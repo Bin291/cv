@@ -1,13 +1,16 @@
+// src/app/ngrx/resume/resume.state.ts
 import { ResumeModel } from '../../models/resume.model';
 
 export interface ResumeState {
-  resume: ResumeModel | null;
+  resumes: ResumeModel[];          // list
+  resume: ResumeModel | null;      // selected / current
   loading: boolean;
   error: any;
 }
 
-export const initialResumeState: ResumeState = {
+export const initialState: ResumeState = {
+  resumes: [],
   resume: null,
   loading: false,
-  error: null
+  error: null,
 };

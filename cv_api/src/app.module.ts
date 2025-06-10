@@ -12,6 +12,7 @@ import { AddContentController } from './add-content/add-content.controller';
 import { AddContentModuleModule } from './add-content/add-content.module';
 import { AuthModule } from './auth/auth.module';
 import { ResumeModule } from './resume/resume.module';
+import { AuthMiddleware } from './auth/firebase-auth.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,17 +31,19 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(
-        { path: 'auth', method: RequestMethod.GET },
-        { path: 'auth', method: RequestMethod.POST },
-        { path: 'resume', method: RequestMethod.GET },
+      .forRoutes('*'); // Apply LoggerMiddleware to all routes
+
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: 'resume', method: RequestMethod.POST },
         { path: 'resume', method: RequestMethod.POST },
 
 
 
-      );
-
+        );
   }
+
+
 
 
 }
