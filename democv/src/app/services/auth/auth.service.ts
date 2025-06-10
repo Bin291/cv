@@ -13,18 +13,22 @@ import {AuthModel} from '../../models/auth.model';
 export class AuthService {
 
   constructor(private auth: Auth, private http: HttpClient) {}
-  loginWithGoogle(){
-    return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
-      catchError((error) => {
-        return of(GoogleAuthProvider.credentialFromError(error))
-      })
-    )
-  }
+loginWithGoogle() {
+      return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
+        switchMap(() => {
+          window.location.reload();
+          return of(null);
+        }),
+        catchError((error) => {
+          return of(GoogleAuthProvider.credentialFromError(error));
+        })
+      );
+    }
 
-  logout() {
-    return this.auth.signOut() ;
-  }
 
+logout() {
+      return this.auth.signOut().then(() => window.location.reload());
+    }
   /** Trả về Observable<AuthModel> rõ ràng */
   getAuth(idToken: string): Observable<AuthModel> {
     return this.http.get<AuthModel>(

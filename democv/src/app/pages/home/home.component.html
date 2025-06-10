@@ -1,26 +1,28 @@
-<h3>My Resume</h3>
-<ng-container *ngrxLet="resumes$ as resumes">
-  <div class="grid-container">
 
-    <div class="new-resume" (click)="onCreateResume()">
-      <mat-icon>add</mat-icon>
-      <span>New resume</span>
-    </div>
 
-    <!-- Resume previews -->
-    <ng-container *ngFor="let r of resumes">
-      <div class="resume-card" (click)="onEditResume(r.id!)">
-        <!-- Dùng thumbnailUrl nếu có, nếu không thì defaultThumbnail -->
-        <img
-          [src]="r.avatar_origin || defaultThumbnail"
-          alt="Resume Preview"
-          class="resume-thumb"
-        />
-        <div class="caption">
-          {{ r.resume_name || 'Untitled Resume' }}<br>
-          <small>edited {{ r.updated_at | date:'short' }}</small>
-        </div>
+
+  <ng-container *ngrxLet="resumes$ as resumes">
+    <h3>My Resume</h3>
+    <div class="grid-container">
+      <!-- New Resume card -->
+      <div class="new-resume" (click)="onCreateResume()">
+        <mat-icon>add</mat-icon>
+        <span>New resume</span>
       </div>
-    </ng-container>
-  </div>
-</ng-container>
+
+      <!-- Resume previews -->
+      <ng-container *ngFor="let r of resumes">
+        <div class="resume-card" (click)="onEditResume(r.id!)">
+          <img
+            [src]="r.avatar_origin || defaultThumbnail"
+            alt="Resume Preview"
+            class="resume-thumb"
+          />
+          <div class="caption">
+            {{ r.resume_name || 'Untitled Resume' }}<br />
+            <small>edited {{ r.updated_at | date:'short' }}</small>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>

@@ -22,6 +22,10 @@ import {MatIcon} from '@angular/material/icon';
 import {LetDirective} from '@ngrx/component';
 import {DatePipe, NgForOf} from '@angular/common';
 import {Actions, ofType} from '@ngrx/effects';
+import {User} from '@angular/fire/auth';
+import {LoginComponent} from '../../components/login/login.component';
+import {MatButton} from '@angular/material/button';
+
 
 @Component({
   selector: 'app-home',
@@ -31,7 +35,8 @@ import {Actions, ofType} from '@ngrx/effects';
     MatIcon,
     LetDirective,
     DatePipe,
-    NgForOf
+    NgForOf,
+
   ],
   styleUrls: ['./home.component.scss']
 })
@@ -42,20 +47,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   private router        = inject(Router);
   private subs          = new Subscription();
 
+  subcription: Subscription[] = [];
+
   // Select thẳng state
   resumes$!: Observable<ResumeModel[]>;
   auth$   !: Observable<AuthModel | null>;
   private actions$= inject(Actions);
+  user$!: Observable<User | null>;
+  defaultThumbnail = '../../assets/logos/Frame 5.png';
 
-  defaultThumbnail = 'https://prod.flowcvassets.com/resume-templates/gs_qryrzly3kldmqhxqsb/2560.webp';
-
-  constructor() {
+  constructor(private auth: AuthService) {
     this.resumes$ = this.store.select(s => s.resume.resumes);
     this.auth$    = this.store.select(s => s.auth.authData);
   }
 
   ngOnInit() {
     // Load danh sách resume khi vào trang
+    this.user$ = this.auth.getCurrentUser();
     this.store.dispatch(loadAllResumes());
 
     // Debug auth
@@ -76,6 +84,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
         .subscribe()
     );
+
+
   }
 
   onCreateResume(): void {
