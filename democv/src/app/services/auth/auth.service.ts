@@ -25,13 +25,12 @@ export class AuthService {
     return this.auth.signOut() ;
   }
 
-  getAuth(idToken: string) {
-    // console.log(idToken);
-    return this.http.get(`${environment.apiUrl}auth`, {
-      headers: {
-        Authorization: idToken,
-      },
-    });
+  /** Trả về Observable<AuthModel> rõ ràng */
+  getAuth(idToken: string): Observable<AuthModel> {
+    return this.http.get<AuthModel>(
+      `${environment.apiUrl}auth`,
+      { headers: { Authorization: idToken } }
+    );
   }
   // Lấy thông tin người dùng hiện tại
   getCurrentUser(): Observable< User | null> {

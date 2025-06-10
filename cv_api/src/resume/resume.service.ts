@@ -81,13 +81,13 @@ export class ResumeService {
 
 
 
-  async findAllByUser(uid: string): Promise<Resume[]> {
-    const { data, error } = await this.supabase
-      .getClient()
+  async findAllByUser(uid: string) {
+    const { data, error } = await this.supabase.getClient()
       .from('resume')
       .select('*')
-      .eq('uid', uid);
-    if (error) throw new InternalServerErrorException(error.message);
+      .eq('uid', uid)         // <-- dùng đúng tên cột
+      .order('updated_at', { ascending: false });
+    if (error) throw new Error(error.message);
     return data;
   }
 

@@ -57,9 +57,19 @@ export class ResumeService {
     return this.http.patch<ResumeModel>(`${this.api}/${id}`, dto);
   }
 
-  getMyResumes(): Observable<ResumeModel[]> {
-    return this.http.get<ResumeModel[]>(`${this.api}`);
+  getMyResumes(uid: string): Observable<ResumeModel[]> {
+    // http://…/resume/user/:uid
+    return this.http.get<ResumeModel[]>(`${this.api}/user/${uid}`, {
+      headers: { Authorization: `Bearer ${this.authToken()}` }
+    });
   }
+
+  private authToken(): string {
+    return localStorage.getItem('idToken') || '';
+  }
+
+
+
 // resume.service.ts
   getAllByUser(uid: string): Observable<ResumeModel[]> {
     return this.http.get<ResumeModel[]>(`${this.api}/${uid}`);

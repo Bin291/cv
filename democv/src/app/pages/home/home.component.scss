@@ -13,6 +13,13 @@ p {
   margin-bottom: 30px;
 }
 
+h3 {
+  color: var(--onBackground);
+
+  margin-bottom: 20px;
+  font-family: 'Lexend Deca', sans-serif;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

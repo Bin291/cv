@@ -78,11 +78,11 @@ export const resumeReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(loadAllResumesSuccess, (state, { resumes }) => ({
-    ...state,
-    resumes,
-    loading: false,
-  })),
+  // on(loadAllResumesSuccess, (state, { resumes }) => ({
+  //   ...state,
+  //   resumes,
+  //   loading: false,
+  // })),
   on(loadAllResumesFailure, (state, { error }) => ({
     ...state,
     loading: false,
@@ -120,5 +120,12 @@ export const resumeReducer = createReducer(
     ...state,
     loading: false,
     error,
-  }))
+  })),
+  on(loadAllResumesSuccess, (state, { resumes }) => ({
+    ...state,
+    resumes
+  })),
 );
+
+
+

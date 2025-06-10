@@ -65,8 +65,9 @@ export class ResumeController {
     return this.resumeService.update(id, dto);
   }
 
-  @Get()
-  async findAll() {
-    return this.resumeService.findAll();
+  @Get('user/:uid')
+  findByUser(@Param('uid') uid: string) {
+    return this.resumeService.findAllByUser(uid);
   }
+
 }

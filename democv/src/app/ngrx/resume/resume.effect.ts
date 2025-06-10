@@ -2,10 +2,11 @@ import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { inject } from '@angular/core';
 import * as ResumeActions from './resume.action';
 import { ResumeService } from '../../services/resume/resume.service';
-import {catchError, map, mergeMap, of, switchMap, withLatestFrom} from 'rxjs';
+import {catchError, from, map, mergeMap, of, switchMap, withLatestFrom} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {Router} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {filter, take, tap} from 'rxjs/operators';
+import {AuthService} from '../../services/auth/auth.service';
 
 
 // ✅ Effect: Load Resume
@@ -88,4 +89,37 @@ export const createResumeSuccessEffect = createEffect(
       })
     ),
   { functional: true, dispatch: false }
+);
+export const loadMyResumesEffect = createEffect(
+  (actions$ = inject(Actions),
+   authService = inject(AuthService),
+   resumeService = inject(ResumeService)) =>
+    actions$.pipe(
+      ofType(ResumeActions.loadAllResumes),
+
+      // 1) Lấy Firebase User, chỉ tiếp nếu có user
+      switchMap(() => authService.getCurrentUser().pipe(
+        take(1),
+        filter(user => !!user),          // Bỏ qua nếu null
+        switchMap(user => from(user!.getIdToken()))
+      )),
+
+      // 2) Verify token, lấy AuthModel.uid
+      switchMap((idToken: string) =>
+        authService.getAuth(idToken).pipe(
+          take(1),
+          map(authModel => authModel.uid!),
+          filter(uid => !!uid)            // Bỏ qua nếu uid null
+        )
+      ),
+
+      // 3) Fetch resumes với uid
+      switchMap((uid: string) =>
+        resumeService.getMyResumes(uid).pipe(
+          map(resumes => ResumeActions.loadAllResumesSuccess({ resumes })),
+          catchError(error => of(ResumeActions.loadAllResumesFailure({ error })))
+        )
+      )
+    ),
+  { functional: true }
 );
