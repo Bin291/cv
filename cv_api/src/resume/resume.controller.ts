@@ -7,7 +7,7 @@ import {
   Param,
   Req,
   Patch,
-  BadRequestException,
+  BadRequestException, Delete,
 } from '@nestjs/common';
 import { ResumeService } from './resume.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
@@ -45,10 +45,12 @@ export class ResumeController {
   }
 
 
+// resume.controller.ts
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async getOne(@Param('id') id: string) {
     return this.resumeService.findOne(id);
   }
+
 
   // route sửa lại thành /resume/user/:uid cho rõ ràng
   @Get('user/:uid')
@@ -70,4 +72,13 @@ export class ResumeController {
     return this.resumeService.findAllByUser(uid);
   }
 
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.resumeService.delete(id);
+  }
+
+  @Get(':id/links')
+  getLinks(@Param('id') id: string) {
+    return this.resumeService.getLinks(id);
+  }
 }

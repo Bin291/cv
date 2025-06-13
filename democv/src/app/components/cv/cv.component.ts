@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {AsyncPipe, isPlatformBrowser, NgForOf, NgIf} from '@angular/common';
 import {ResumeModel} from '../../models/resume.model';
 import {select, Store} from '@ngrx/store';
@@ -8,6 +8,10 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from '@angular/ma
 import {MatIcon, MatIconModule} from '@angular/material/icon';
 import {LetDirective} from '@ngrx/component';
 import {loadResume} from '../../ngrx/resume/resume.action';
+import {LinkState} from '../../ngrx/link/link.state';
+import {LinkModel} from '../../models/link.model';
+import * as LinkActions from '../../ngrx/link/link.actions';
+import {ResumeService} from '../../services/resume/resume.service';
 
 @Component({
   selector: 'app-cv',
@@ -17,6 +21,8 @@ import {loadResume} from '../../ngrx/resume/resume.action';
     MatCardModule,
     MatIconModule,
     LetDirective,
+    NgForOf,
+    AsyncPipe,
 
   ],
   templateUrl: './cv.component.html',
@@ -24,22 +30,37 @@ import {loadResume} from '../../ngrx/resume/resume.action';
 })
 export class CVComponent implements OnInit{
   resume$ !: Observable<ResumeModel | null>
-
+  links$!: Observable<LinkModel[]>;
   constructor(
-    private store: Store<{ resume: ResumeState }>,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private store: Store<{ resume: ResumeState , link: LinkState}>,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private resumeService: ResumeService
   ) {
-    this.resume$ = this.store.pipe(select(state => state.resume.resume));
+    this.resume$ = this.store.select(state => state.resume.resume);
+// this.links$ = this.resumeService.getResumeLinks(this.resume$);
+    this.links$ = this.resume$.pipe(
+      map(data => {
+        if (!data?.links) return [];
+        try {
+         return Array.isArray(data.links) ? data.links : JSON.parse(data.links);
+        } catch {
+          console.warn('Invalid JSON in resume.links:', data.links);
+          return [];
+        }
+      })
+    );
+
+
 
   }
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      const id = localStorage.getItem('resume_id');
-      if (id) {
-        this.store.dispatch(loadResume({ id }));
+      const resumeId = localStorage.getItem('resume_id');
+      if (resumeId) {
+        this.store.dispatch(loadResume({ id: resumeId }));
+        this.store.dispatch(LinkActions.loadLinks({ resumeId }));
       }
     }
   }
-
 }

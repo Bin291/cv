@@ -123,3 +123,18 @@ export const loadMyResumesEffect = createEffect(
     ),
   { functional: true }
 );
+
+export const deleteResumeEffect = createEffect(
+  (actions$ = inject(Actions), resumeService = inject(ResumeService)) => {
+    return actions$.pipe(
+      ofType(ResumeActions.deleteResume),
+      switchMap(({ id }) =>
+        resumeService.deleteResume(id).pipe(
+          map(() => ResumeActions.deleteResumeSuccess({ id })),
+          catchError(error => of(ResumeActions.deleteResumeFailure({ error })))
+        )
+      )
+    );
+  },
+  { functional: true }
+);

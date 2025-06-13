@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 
 import {
   createResume,
-  createResumeFailure,
+  createResumeFailure, deleteResume,
   loadAllResumes,
   loadResume,
   updateResume
@@ -25,6 +25,8 @@ import {Actions, ofType} from '@ngrx/effects';
 import {User} from '@angular/fire/auth';
 import {LoginComponent} from '../../components/login/login.component';
 import {MatButton} from '@angular/material/button';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -37,6 +39,7 @@ import {MatButton} from '@angular/material/button';
     DatePipe,
     NgForOf,
 
+
   ],
   styleUrls: ['./home.component.scss']
 })
@@ -46,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private authService   = inject(AuthService);
   private router        = inject(Router);
   private subs          = new Subscription();
-
+isLoading = false;
   subcription: Subscription[] = [];
 
   // Select thẳng state
@@ -56,7 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   user$!: Observable<User | null>;
   defaultThumbnail = '../../assets/logos/Frame 5.png';
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, resumeService: ResumeService, private snakbar: MatSnackBar) {
     this.resumes$ = this.store.select(s => s.resume.resumes);
     this.auth$    = this.store.select(s => s.auth.authData);
   }
@@ -79,24 +82,60 @@ export class HomeComponent implements OnInit, OnDestroy {
         ofType(createResumeFailure),
         tap(({ error }) => {
           console.error('Tạo resume lỗi:', error);
-          alert('Không tạo được CV, vui lòng thử lại.');
+          this.snakbar.open('Tao resume thất bại: ' + error, 'Hide', {
+            duration: 3000,
+            panelClass: ['snackbar-error'],
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+          })
         })
       )
-        .subscribe()
+        .subscribe(),
+
     );
 
 
   }
 
+deleteResume(id: string): void {
+      this.store.dispatch(deleteResume({ id }));
+
+      this.router.navigate(['']);
+      this.snakbar.open('Đã xóa CV thành công', 'Hide', {
+        duration: 3000,
+        panelClass: ['snackbar-success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right',
+      });
+
+    }
+
+
+
   onCreateResume(): void {
-    // Dispatch action tạo resume; effect sẽ lo dịch vụ, token, và điều hướng
+    // Dispatch action tạo resume; effect sẽ lo dịch vụ, tHideen, và điều hướng
     this.store.dispatch(createResume({ payload: {} }));
+    this.snakbar.open('Đang tạo CV mới...', 'Hide', {
+      duration: 3000,
+      panelClass: ['snackbar-info'],
+      verticalPosition: 'top',
+      horizontalPosition: 'right',
+    });
+    this.router.navigate(['/content']);
+    this.snakbar.open('Tạo CV mới thành công', 'Hide', {
+      duration: 3000,
+      panelClass: ['snackbar-success'],
+      verticalPosition: 'top',
+      horizontalPosition: 'right',
+    })
+
   }
 
 
   onEditResume(id: string): void {
     localStorage.setItem('resume_id', id);
     this.router.navigate(['/content']);
+
   }
 
 

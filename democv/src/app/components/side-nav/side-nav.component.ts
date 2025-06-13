@@ -49,7 +49,7 @@ export class SideNavComponent implements OnInit {
     { label: 'Template', icon: 'bookmark', route: '' },
     { label: 'Content', icon: 'create', route: '/content' },
     { label: 'Customize', icon: 'content_cut', route: '/customize' },
-    { label: 'Trash', icon: 'delete', route: '/trash' }
+    // { label: 'Trash', icon: 'delete', route: '/trash' }
   ];
 
   setActiveLink(): void {

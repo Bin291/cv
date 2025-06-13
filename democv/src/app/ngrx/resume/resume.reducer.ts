@@ -13,6 +13,7 @@ import {
   createResumeSuccess,
   createResumeFailure,
 } from './resume.action';
+import * as ResumeActions from './resume.action';
 import { initialState } from './resume.state';
 
 export const resumeReducer = createReducer(
@@ -125,6 +126,20 @@ export const resumeReducer = createReducer(
     ...state,
     resumes
   })),
+
+  on(ResumeActions.deleteResume, (state, { id }) => ({
+    ...state,
+    resumes: state.resumes.filter(resume => resume.id !== id),
+  })),
+  on(ResumeActions.deleteResumeSuccess, (state) => ({
+    ...state,
+    loading: false,
+  })),
+  on(ResumeActions.deleteResumeFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 );
 
 

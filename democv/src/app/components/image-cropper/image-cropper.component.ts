@@ -291,4 +291,5 @@ export class ImageCropperComponent implements AfterViewInit,OnInit {
     this.image.src = '';
     this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
   }
+
 }
