@@ -139,7 +139,24 @@ export const resumeReducer = createReducer(
     ...state,
     loading: false,
     error,
+  })),
+
+  on(ResumeActions.loadLinks, (state, { resumeId }) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(ResumeActions.loadLinksSuccess, (state, { links }) => ({
+    ...state,
+    loading: false,
+    links,
+  })),
+  on(ResumeActions.loadLinksFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
+
 );
 
 

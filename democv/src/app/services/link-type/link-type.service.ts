@@ -40,7 +40,7 @@ export class LinkTypeService {
   }
   upsertLinks(
     resumeId: string,
-    links: Array<{ id: number; url: string; name?: string }>
+    links: Array<{ id: number; url: string; name?: string , icon?: string }>,
   ): Observable<LinkModel[]> {
     return this.removeAll(resumeId).pipe(
       switchMap(() => {
@@ -49,8 +49,11 @@ export class LinkTypeService {
             resume_id:    resumeId,
             id: l.id,
             value:        l.url,
+            icon:         l.icon,
+
             // nếu l.name là chuỗi thì trim, còn không có thì để undefined
-            name:         l.name?.trim()   // <-- undefined nếu l.name falsy
+            name:         l.name?.trim()  ,
+
           })
         );
         return forkJoin(calls);

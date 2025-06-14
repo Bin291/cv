@@ -34,7 +34,6 @@ import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
 
 import {LinkDialogComponent} from '../link-dialog/link-dialog.component';
-import {LinkModel} from '../../models/link.model';
 interface Info {
   id: string;
   label: string;
@@ -85,40 +84,27 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   selectedIds: string[] = [];
   saved: Record<number, string> = {};
 
-  links: LinkModel[] = [
-    { id: 1,  label: 'Website',        name: '', value: '', icon: 'fa-solid fa-table-columns' },
-    { id: 2,  label: 'GitHub',         name: '', value: '', icon: 'fa-brands fa-github' },
-    { id: 3,  label: 'Medium',         name: '', value: '', icon: 'fa-brands fa-medium' },
-    { id: 4,  label: 'Skype',          name: '', value: '', icon: 'fa-brands fa-skype' },
-    { id: 5,  label: 'LinkedIn',       name: '', value: '', icon: 'fa-brands fa-linkedin' },
-    { id: 6,  label: 'ORCID',          name: '', value: '', icon: 'fa-brands fa-orcid' },
-    { id: 7,  label: 'Bluesky',        name: '', value: '', icon: 'fa-brands fa-bluesky' },
-    { id: 8,  label: 'Threads',        name: '', value: '', icon: 'fa-brands fa-threads' },
-    { id: 9,  label: 'Discord',        name: '', value: '', icon: 'fa-brands fa-discord' },
-    { id: 10, label: 'Dribbble',       name: '', value: '', icon: 'fa-brands fa-dribbble' },
-    { id: 11, label: 'AngelList',      name: '', value: '', icon: 'fa-brands fa-angellist' },
-    { id: 12, label: 'HackerRank',     name: '', value: '', icon: 'fa-brands fa-hackerrank' },
-    { id: 13, label: 'StackOverflow',  name: '', value: '', icon: 'fa-brands fa-stack-overflow' },
-    { id: 14, label: 'KakaoTalk',      name: '', value: '', icon: 'fa-solid fa-k' },
-    { id: 15, label: 'Coding Ninjas',  name: '', value: '', icon: 'fa-solid fa-user-ninja' },
-    { id: 16, label: 'Hugging Face',   name: '', value: '', icon: 'fa-solid fa-face-smiling-hands' },
-    { id: 17, label: 'Qwiklabs',       name: '', value: '', icon: 'fa-solid fa-q' },
-    { id: 18, label: 'IMDb',           name: '', value: '', icon: 'fa-brands fa-imdb' },
-    { id: 19, label: 'Google Play',    name: '', value: '', icon: 'fa-brands fa-google-play' },
-    { id: 20, label: 'Tumblr',         name: '', value: '', icon: 'fa-brands fa-tumblr' },
-    { id: 21, label: 'Tripadvisor',    name: '', value: '', icon: 'fa-solid fa-t' },
-    { id: 22, label: 'Yelp',           name: '', value: '', icon: 'fa-brands fa-yelp' },
-    { id: 23, label: 'Slack',          name: '', value: '', icon: 'fa-brands fa-slack' },
-    { id: 24, label: 'Flickr',         name: '', value: '', icon: 'fa-brands fa-flickr' },
-    { id: 25, label: 'ReverbNation',   name: '', value: '', icon: 'fa-solid fa-r' },
-    { id: 26, label: 'DeviantArt',     name: '', value: '', icon: 'fa-brands fa-deviantart' },
-    { id: 27, label: 'Vimeo',          name: '', value: '', icon: 'fa-brands fa-vimeo' },
-    { id: 28, label: 'Reddit',         name: '', value: '', icon: 'fa-brands fa-reddit' },
-    { id: 29, label: 'Pinterest',      name: '', value: '', icon: 'fa-brands fa-pinterest' },
-    { id: 30, label: 'Blogger',        name: '', value: '', icon: 'fa-brands fa-blogger' },
-    { id: 31, label: 'Spotify',        name: '', value: '', icon: 'fa-brands fa-spotify' },
-    { id: 32, label: 'Bitcoin',        name: '', value: '', icon: 'fa-brands fa-bitcoin' },
-    { id: 33, label: 'App Store',      name: '', value: '', icon: 'fa-brands fa-app-store-ios' },
+  links: Link[] = [
+    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
+    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
+    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
+    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
+    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
+    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
+    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
+    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
+    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
+    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
+    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
+    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
+    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
+    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
+    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
+    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
+    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
+    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
+    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
+
   ];
   fieldMap: Record<number, string> = {};
   selectedLinkIds: number[] = [];
@@ -154,7 +140,6 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       driving_license: [''],
       gender_or_pronoun: [''],
       visa_status: [''],
-      links: this.fb.array([]), // Sử dụng FormArray nếu cần
     });
     this.atht$ = this.store.select('auth', 'authData');
     this.atht$ = this.store.select(state => state.auth.authData);
@@ -339,35 +324,16 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
 
 // ==================Link==========================
 
-getInitialLinks(): Link[] {
-    return this.links.slice(0, 4).map(link => ({
-      ...link,
-      type: 'link',
-      name: link.name ?? '',
-      value: link.value ?? ''
-    }));
+  getInitialLinks(): Link[] {
+    return this.links.slice(0, 4); // Show only the first 4 links initially
   }
 
   getAllLinks(): Link[] {
-    return this.links
-      .filter(link => !this.selectedLinkIds.includes(link.id))
-      .map(link => ({
-        ...link,
-        type: 'link',
-        name: link.name ?? '',
-        value: link.value ?? ''
-      }));
+    return this.links.filter(link => !this.selectedLinkIds.includes(link.id)); // All available links
   }
 
   getAvailableLinks(): Link[] {
-    return this.links
-      .filter(link => !this.selectedLinkIds.includes(link.id))
-      .map(link => ({
-        ...link,
-        type: 'link',
-        name: link.name ?? '',
-        value: link.value ?? ''
-      }));
+    return this.links.filter(link => !this.selectedLinkIds.includes(link.id));
   }
 
   startEditLink(link: Link) {
@@ -422,10 +388,10 @@ getInitialLinks(): Link[] {
     return link ? link.label : '';
   }
 
-  // getName(id: number): string {
-  //   const link = this.getLinkById(id);
-  //   return link ? link.name : '';
-  // }
+  getName(id: number): string {
+    const link = this.getLinkById(id);
+    return link ? link.name : '';
+  }
 
   getValue(id: number): string {
     const link = this.getLinkById(id);
@@ -437,7 +403,7 @@ getInitialLinks(): Link[] {
     return link ? !!link.value : false;
   }
 
-  getLinkById(id: number): LinkModel | undefined {
+  getLinkById(id: number): Link | undefined {
     return this.links.find(link => link.id === id);
   }
 }

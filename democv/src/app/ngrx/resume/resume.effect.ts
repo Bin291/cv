@@ -138,3 +138,19 @@ export const deleteResumeEffect = createEffect(
   },
   { functional: true }
 );
+
+
+export const loadResumeLinksEffect = createEffect(
+  (actions$ = inject(Actions), resumeService = inject(ResumeService)) => {
+    return actions$.pipe(
+      ofType(ResumeActions.loadLinks),
+      switchMap(({ resumeId }) =>
+        resumeService.getResumeLinks(resumeId).pipe(
+          map(links => ResumeActions.loadLinksSuccess({ links })),
+          catchError(error => of(ResumeActions.loadResumeFailure({ error })))
+        )
+      )
+    );
+  },
+  { functional: true }
+);

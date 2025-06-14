@@ -24,6 +24,7 @@ import {ResumeService} from '../../services/resume/resume.service';
     NgForOf,
     AsyncPipe,
 
+
   ],
   templateUrl: './cv.component.html',
   styleUrl: './cv.component.scss'
@@ -42,7 +43,7 @@ export class CVComponent implements OnInit{
       map(data => {
         if (!data?.links) return [];
         try {
-         return Array.isArray(data.links) ? data.links : JSON.parse(data.links);
+          return Array.isArray(data.links) ? data.links : JSON.parse(data.links);
         } catch {
           console.warn('Invalid JSON in resume.links:', data.links);
           return [];

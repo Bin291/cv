@@ -23,7 +23,7 @@ export interface ResumeModel {
   template_id?: string; // ID của template resume, nếu có
   material_status?: string; // Tình trạng hôn nhân, nếu có
   links?:LinkModel[];
-  icon    ?: string;
+
 }
 // Đây là models sử dụng ở Angular, không cần validate như DTO
 // Chúng ta sẽ sử dụng interface này để định nghĩa kiểu dữ liệu của resume trong Angular

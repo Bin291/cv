@@ -46,17 +46,17 @@
     </section>
 
     <!-- ==== Links ==== -->
-    <ng-container *ngIf="links$ | async as links">
-      <section *ngIf="links.length">
-        <ul>
-          <li *ngFor="let link of links" >
-            <a class="link-item" [href]="link.value" target="_blank"><i class="{{link.icon}}"></i>
-              <span *ngIf="link.name"> {{ link.name }}</span>
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ng-container>
+<ng-container *ngIf="links$ | async as links">
+              <section *ngIf="links?.length">
+                <ul>
+                  <li *ngFor="let link of links">
+                    <a class="link-item" [href]="link.value" target="_blank"><i class="{{link.icon}}"></i>
+                      <span *ngIf="link.name"> {{ link.name }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </section>
+            </ng-container>
 
 
   </div>
