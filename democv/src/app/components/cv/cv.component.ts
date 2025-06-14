@@ -40,16 +40,20 @@ export class CVComponent implements OnInit{
     this.resume$ = this.store.select(state => state.resume.resume);
 // this.links$ = this.resumeService.getResumeLinks(this.resume$);
     this.links$ = this.resume$.pipe(
-      map(data => {
-        if (!data?.links) return [];
+      map(resume => {
         try {
-          return Array.isArray(data.links) ? data.links : JSON.parse(data.links);
-        } catch {
-          console.warn('Invalid JSON in resume.links:', data.links);
+          const rawLinks = typeof resume?.links === 'string'
+            ? JSON.parse(resume.links)
+            : resume?.links || [];
+
+          return rawLinks.filter((link: LinkModel) => !!link.name?.trim());
+        } catch (e) {
+          console.error('Parse error links:', e);
           return [];
         }
       })
     );
+
 
 
 

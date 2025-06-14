@@ -23,7 +23,7 @@ export class ResumeService {
   updateResume(id: string, data: Partial<ResumeModel>): Observable<ResumeModel> {
     return this.http.patch<ResumeModel>(`${this.api}/${id}`, data)
       .pipe(
-        tap(r => this._resume$.next(r))
+        tap(r => this._resume$.next(  r))
       );
   }
 
@@ -49,8 +49,6 @@ export class ResumeService {
     );
   }
 
-
-
   getResume(id: string): Observable<ResumeModel> {
     return this.http.get<ResumeModel>(`${this.api}/${id}`);
   }
@@ -69,9 +67,6 @@ export class ResumeService {
     return localStorage.getItem('idToken') || '';
   }
 
-
-
-// resume.service.ts
   getAllByUser(uid: string): Observable<ResumeModel[]> {
     return this.http.get<ResumeModel[]>(`${this.api}/${uid}`);
   }

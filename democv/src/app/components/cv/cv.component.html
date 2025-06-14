@@ -18,7 +18,7 @@
     </div>
 
     <!-- ==== Personal Information ==== -->
-    <section class="personal-info">
+    <section class="personal-info-cv">
       <div *ngIf="data?.date_of_birth">
         <i class="fa-solid fa-cake-candles"></i> {{ data?.date_of_birth }}
       </div>
@@ -46,17 +46,22 @@
     </section>
 
     <!-- ==== Links ==== -->
-<ng-container *ngIf="links$ | async as links">
-              <section *ngIf="links?.length">
+   <ng-container *ngIf="links$ | async as links"
+                class="links-container">
+              <section *ngIf="links?.length" class="links">
                 <ul>
-                  <li *ngFor="let link of links">
-                    <a class="link-item" [href]="link.value" target="_blank"><i class="{{link.icon}}"></i>
-                      <span *ngIf="link.name"> {{ link.name }}</span>
-                    </a>
-                  </li>
+                  <ng-container *ngFor="let link of links">
+                    <li *ngIf="link.name && link.name.trim() !== ''" class="link-item-container">
+                      <a class="link-item" [href]="link.value" target="_blank" [title]="link.value">
+                        <i class="{{ link.icon }}"></i>
+                        <span>{{ link.name }}</span>
+                      </a>
+                    </li>
+                  </ng-container>
                 </ul>
               </section>
             </ng-container>
+
 
 
   </div>

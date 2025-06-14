@@ -46,7 +46,7 @@
 
     <!--      ====================Personal information==========================================================================-->
 
-    <!-- ==================== Personal information ==================== -->
+
     <p class="header-content">Personal information</p>
 
     <!-- Selected fields -->
@@ -99,55 +99,107 @@
     <!--===========================Links=====================================================================================-->
     <p class="header-content-links">Links</p>
 
-    <!-- Display selected links with inputs -->
-    <div class="selected-links" *ngFor="let id of selectedLinkIds">
-      <div class="edit-row">
-        <mat-form-field appearance="outline" class="edit-field-links">
-          <mat-label>
-            {{ getLabel(id) }}<small class="optional-link">optional</small>
-          </mat-label>
-          <input matInput [(ngModel)]="links[id - 1].name" [placeholder]="'Enter ' + getLabel(id).toLowerCase()" [ngModelOptions]="{standalone: true}" />
-        </mat-form-field>
-        <button mat-stroked-button class="link-button" [class.inactive]="!isLinkActive(id)" (click)="openLinkDialogLink(id)">
-          Link URL
-        </button>
-        <button mat-icon-button color="warn" (click)="removeLink(id)" [attr.aria-label]="'Remove ' + getLabel(id)" class="btn-remove-link">
-          <mat-icon>delete</mat-icon>
-        </button>
+    <!-- Display selected links with inputs (Reactive Form) -->
+    <div formArrayName="links">
+      <div
+        class="selected-links"
+        *ngFor="let id of selectedLinkIds"
+        [formGroupName]="getFormArrayIndexById(id)"
+      >
+        <div class="edit-row">
+          <mat-form-field appearance="outline" class="edit-field-links">
+            <mat-label>
+              {{ getLabel(id) }}
+              <small class="optional-link">optional</small>
+            </mat-label>
+            <input
+              matInput
+              formControlName="name"
+              [placeholder]="'Enter ' + getLabel(id).toLowerCase()"
+            />
+          </mat-form-field>
+
+          <button
+            mat-stroked-button
+            class="link-button"
+            [class.inactive]="!isLinkActive(id)"
+            (click)="openLinkDialogLink(id)"
+          >
+            Link URL
+          </button>
+
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeLink(id)"
+            [attr.aria-label]="'Remove ' + getLabel(id)"
+            class="btn-remove-link"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Display initial buttons -->
+    <!-- Tags to add links -->
     <div class="tags-links" *ngIf="!isViewAllExpanded">
       <ng-container *ngFor="let link of getInitialLinks()">
-        <button mat-stroked-button class="tag-button-link" [class.link-type]="link.type === 'link'" [class.info-type]="link.type === 'info'" (click)="startEditLink(link)">
+        <button
+          mat-stroked-button
+          class="tag-button-link"
+          (click)="startEditLink(link)"
+        >
           <mat-icon>add</mat-icon>
           {{ link.label }}
         </button>
       </ng-container>
-      <button mat-stroked-button class="view-all-button" (click)="toggleViewAllLink()" *ngIf="getInitialLinks().length < links.length">View all</button>
+      <button
+        mat-stroked-button
+        class="view-all-button"
+        (click)="toggleViewAllLink()"
+        *ngIf="getInitialLinks().length < links.length"
+      >
+        View all
+      </button>
     </div>
 
     <!-- View all toggle button and expandable content -->
     <div class="view-all-content-link" *ngIf="isViewAllExpanded">
       <mat-form-field appearance="outline" class="search-field-links">
         <mat-label>Search Link</mat-label>
-        <input matInput [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" placeholder="Search..." />
+        <input
+          matInput
+          [(ngModel)]="searchQuery"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Search..."
+        />
       </mat-form-field>
       <div class="link-options">
-        <button mat-stroked-button class="tag-button-link" [class.link-type]="link.type === 'link'" [class.info-type]="link.type === 'info'" *ngFor="let link of getFilteredAllLinks()" (click)="startEditLink(link)">
+        <button
+          mat-stroked-button
+          class="tag-button-link"
+          *ngFor="let link of getFilteredAllLinks()"
+          (click)="startEditLink(link)"
+        >
           <mat-icon>add</mat-icon>
           {{ link.label }}
         </button>
       </div>
-      <button mat-button class="collapse-button" (click)="toggleViewAllLink()">Collapse</button>
+      <button mat-button class="collapse-button" (click)="toggleViewAllLink()">
+        Collapse
+      </button>
     </div>
 
     <!-- Custom suggestion input -->
     <mat-form-field appearance="outline" class="custom-suggestion">
       <mat-label>Missing something? Please let me know:</mat-label>
-      <input matInput [(ngModel)]="customSuggestion" [ngModelOptions]="{standalone: true}" />
+      <input
+        matInput
+        [(ngModel)]="customSuggestion"
+        [ngModelOptions]="{ standalone: true }"
+      />
     </mat-form-field>
+
     <!--      ======================btn-access=============================-->
     <div class="actions">
       <button mat-stroked-button (click)="onCancel()" >Cancel</button>

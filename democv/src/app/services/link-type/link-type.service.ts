@@ -50,8 +50,6 @@ export class LinkTypeService {
             id: l.id,
             value:        l.url,
             icon:         l.icon,
-
-            // nếu l.name là chuỗi thì trim, còn không có thì để undefined
             name:         l.name?.trim()  ,
 
           })

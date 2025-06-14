@@ -8,7 +8,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { ResumeState } from '../../ngrx/resume/resume.state';
@@ -34,6 +34,7 @@ import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
 
 import {LinkDialogComponent} from '../link-dialog/link-dialog.component';
+import {LinkModel} from '../../models/link.model';
 interface Info {
   id: string;
   label: string;
@@ -45,7 +46,7 @@ interface Link {
   label: string;
   name: string;
   value: string;
-  type: 'link' | 'info'; // Add type property
+  icon?: string; // Thêm icon nếu cần
 }
 
 
@@ -68,6 +69,7 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   protected isTyping = false;
   atht$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
+  resume: ResumeModel | null = null;
   personalInfo = [
     { id: 'date_of_birth', label: 'Date of Birth' },
     { id: 'nationality', label: 'Nationality' },
@@ -84,28 +86,41 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   selectedIds: string[] = [];
   saved: Record<number, string> = {};
 
-  links: Link[] = [
-    { id: 1, label: 'Website', name: '', value: '', type: 'link' },
-    { id: 2, label: 'GitHub', name: '', value: '', type: 'link' },
-    { id: 3, label: 'Medium', name: '', value: '', type: 'link' },
-    { id: 4, label: 'Skype', name: '', value: '', type: 'link' },
-    { id: 5, label: 'LinkedIn', name: '', value: '', type: 'link' },
-    { id: 6, label: 'ORCID', name: '', value: '', type: 'link' },
-    { id: 7, label: 'Bluesky', name: '', value: '', type: 'link' },
-    { id: 8, label: 'Threads', name: '', value: '', type: 'link' },
-    { id: 9, label: 'Discord', name: '', value: '', type: 'link' },
-    { id: 10, label: 'Dribbble', name: '', value: '', type: 'link' },
-    { id: 11, label: 'AngelList', name: '', value: '', type: 'link' },
-    { id: 12, label: 'HackerRank', name: '', value: '', type: 'link' },
-    { id: 13, label: 'StackOverflow', name: '', value: '', type: 'link' },
-    { id: 14, label: 'KakaoTalk', name: '', value: '', type: 'link' },
-    { id: 15, label: 'Coding Ninjas', name: '', value: '', type: 'link' },
-    { id: 16, label: 'Hugging Face', name: '', value: '', type: 'link' },
-    { id: 17, label: 'Info 1', name: '', value: '', type: 'info' },
-    { id: 18, label: 'Info 2', name: '', value: '', type: 'info' },
-    { id: 19, label: 'Info 3', name: '', value: '', type: 'info' },
-
-  ];
+  links: LinkModel[] = [
+    { id: 1,  label: 'Website',        name: '', value: '', icon: 'fa-solid fa-table-columns' },
+    { id: 2,  label: 'GitHub',         name: '', value: '', icon: 'fa-brands fa-github' },
+    { id: 3,  label: 'Medium',         name: '', value: '', icon: 'fa-brands fa-medium' },
+    { id: 4,  label: 'Skype',          name: '', value: '', icon: 'fa-brands fa-skype' },
+    { id: 5,  label: 'LinkedIn',       name: '', value: '', icon: 'fa-brands fa-linkedin' },
+    { id: 6,  label: 'ORCID',          name: '', value: '', icon: 'fa-brands fa-orcid' },
+    { id: 7,  label: 'Bluesky',        name: '', value: '', icon: 'fa-brands fa-bluesky' },
+    { id: 8,  label: 'Threads',        name: '', value: '', icon: 'fa-brands fa-threads' },
+    { id: 9,  label: 'Discord',        name: '', value: '', icon: 'fa-brands fa-discord' },
+    { id: 10, label: 'Dribbble',       name: '', value: '', icon: 'fa-brands fa-dribbble' },
+    { id: 11, label: 'AngelList',      name: '', value: '', icon: 'fa-brands fa-angellist' },
+    { id: 12, label: 'HackerRank',     name: '', value: '', icon: 'fa-brands fa-hackerrank' },
+    { id: 13, label: 'StackOverflow',  name: '', value: '', icon: 'fa-brands fa-stack-overflow' },
+    { id: 14, label: 'KakaoTalk',      name: '', value: '', icon: 'fa-solid fa-k' },
+    { id: 15, label: 'Coding Ninjas',  name: '', value: '', icon: 'fa-solid fa-user-ninja' },
+    { id: 16, label: 'Hugging Face',   name: '', value: '', icon: 'fa-solid fa-h' },
+    { id: 17, label: 'Qwiklabs',       name: '', value: '', icon: 'fa-solid fa-q' },
+    { id: 18, label: 'IMDb',           name: '', value: '', icon: 'fa-brands fa-imdb' },
+    { id: 19, label: 'Google Play',    name: '', value: '', icon: 'fa-brands fa-google-play' },
+    { id: 20, label: 'Tumblr',         name: '', value: '', icon: 'fa-brands fa-tumblr' },
+    { id: 21, label: 'Tripadvisor',    name: '', value: '', icon: 'fa-solid fa-t' },
+    { id: 22, label: 'Yelp',           name: '', value: '', icon: 'fa-brands fa-yelp' },
+    { id: 23, label: 'Slack',          name: '', value: '', icon: 'fa-brands fa-slack' },
+    { id: 24, label: 'Flickr',         name: '', value: '', icon: 'fa-brands fa-flickr' },
+    { id: 25, label: 'ReverbNation',   name: '', value: '', icon: 'fa-solid fa-r' },
+    { id: 26, label: 'DeviantArt',     name: '', value: '', icon: 'fa-brands fa-deviantart' },
+    { id: 27, label: 'Vimeo',          name: '', value: '', icon: 'fa-brands fa-vimeo' },
+    { id: 28, label: 'Reddit',         name: '', value: '', icon: 'fa-brands fa-reddit' },
+    { id: 29, label: 'Pinterest',      name: '', value: '', icon: 'fa-brands fa-pinterest' },
+    { id: 30, label: 'Blogger',        name: '', value: '', icon: 'fa-brands fa-blogger' },
+    { id: 31, label: 'Spotify',        name: '', value: '', icon: 'fa-brands fa-spotify' },
+    { id: 32, label: 'Bitcoin',        name: '', value: '', icon: 'fa-brands fa-bitcoin' },
+    { id: 33, label: 'App Store',      name: '', value: '', icon: 'fa-brands fa-app-store-ios' },
+    ];
   fieldMap: Record<number, string> = {};
   selectedLinkIds: number[] = [];
   customSuggestion: string = '';
@@ -140,11 +155,20 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
       driving_license: [''],
       gender_or_pronoun: [''],
       visa_status: [''],
+      links: this.fb.array(this.links.map(link => this.fb.group({
+        id: [link.id],
+        label: [link.label],
+        name: [link.name],
+        value: [link.value],
+        icon: [link.icon || ''] // Thêm icon nếu cần
+      }))),
     });
     this.atht$ = this.store.select('auth', 'authData');
     this.atht$ = this.store.select(state => state.auth.authData);
     this.resume$ = this.store.select(state => state.resume.resume);
   }
+
+  private isReadyToSave = false;
 
   ngOnInit() {
     // 1) Lấy resumeId từ localStorage (chỉ trên browser)
@@ -158,10 +182,16 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     }
 
     // 2) Dispatch loadResume để fetch dữ liệu
-    this.store.dispatch(loadResume({ id: resumeId }));
+    this.store.dispatch(loadResume({id: resumeId}));
 
     // 3) Patch form + init selectedIds
     this.initFormPatch(resumeId);
+    this.selectedLinkIds = this.links
+      .filter(link => {
+        const existed = this.form.get('links')?.value?.find((l: any) => l.id === link.id);
+        return existed && existed.value;
+      })
+      .map(link => link.id);
 
     // 4) Auto-merge UID khi login giữa chừng
     this.subscriptions.push(
@@ -173,49 +203,140 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
         )
         .subscribe(auth => {
           const uid = auth!.uid!;
-          this.form.patchValue({ uid });
-          this.dispatchUpdate(resumeId!, { uid });
+          this.form.patchValue({uid});
+          this.dispatchUpdate(resumeId!, {uid});
         })
     );
 
     // 5) Auto-save khi form thay đổi
+    setTimeout(() => this.isReadyToSave = true, 100);
+    this.initFormPatch(resumeId);
     this.subscriptions.push(
       this.form.valueChanges
         .pipe(debounceTime(500))
         .subscribe(value => {
-          this.isTyping = false;
-          this.dispatchUpdate(resumeId!, value);
+          if (this.isReadyToSave) {
+            this.isTyping = false;
+            this.dispatchUpdate(resumeId!, value);
+          }
         })
     );
   }
-
 // Tách logic patch form + selectedIds
-  private initFormPatch(resumeId: string) {
+  private initFormPatch(resumeId: string): void {
+    this.resumeId = resumeId;
+
     this.subscriptions.push(
       this.resume$
         .pipe(filter(r => !!r), take(1))
         .subscribe(resume => {
-          this.form.patchValue(resume!);
-          this.selectedIds = this.personalInfo
-            .map(i => i.id)
-            .filter(key => !!(resume as any)[key]);
+          this.resume = resume!;
+
+          // ✅ THÊM TOÀN BỘ PERSONAL CONTROL TRƯỚC
+          this.selectedIds = [];
+          for (const info of this.personalInfo) {
+            const key = info.id;
+            if (!this.form.contains(key)) {
+              this.form.addControl(key, new FormControl(''));
+            }
+
+            const value = (resume as any)[key] || '';
+            this.form.get(key)?.setValue(value);
+
+            if (value && value.trim() !== '') {
+              this.selectedIds.push(key);
+            }
+          }
+
+          // ✅ PATCH FIELD CHÍNH (sau khi đã add các control bên trên)
+          this.form.patchValue({
+            full_name: resume.full_name || '',
+            job_title: resume.job_title || '',
+            email: resume.email || '',
+            phone: resume.phone || '',
+            location: resume.location || '',
+            avatar_url: resume.avatar_url || '',
+          });
+
+          let parsedLinks: LinkModel[] = [];
+
+          try {
+            parsedLinks = typeof resume.links === 'string'
+              ? JSON.parse(resume.links)
+              : resume.links || [];
+          } catch (e) {
+            console.error('❌ Lỗi parse links từ resume:', e);
+          }
+
+
+          // ✅ PATCH LINKS
+          const mergedLinks = this.links.map(link => {
+            const existed = parsedLinks.find(l => l.id === link.id);
+            return this.fb.group({
+              id: [link.id],
+              label: [link.label],
+              name: [existed?.name || link.name || ''],
+              value: [existed?.value || ''],
+              icon: [link.icon || 'fa-solid fa-link'],
+            });
+          });
+
+
+          this.form.setControl('links', this.fb.array(mergedLinks));
         })
     );
   }
 
+
+
+
   dispatchUpdate(id: string, data: Partial<ResumeModel>) {
-    // Chỉ update, không tạo mới resume
-    this.resumeService.updateResume(id, data).subscribe({
+    const raw = this.form.getRawValue();
+
+    // lọc personal info có nội dung
+    const personalFiltered = this.personalInfo.reduce((acc, info) => {
+      const value = raw[info.id];
+      if (value && value.trim() !== '') {
+        (acc as any)[info.id] = value;
+      }
+      return acc;
+    }, {} as Partial<ResumeModel>);
+
+    // ✅ LỌC link có ít nhất name hoặc value
+    const rawLinks = (this.form.get('links') as FormArray).value as LinkModel[];
+
+    const updatedLinks = rawLinks.filter((l: LinkModel) => {
+      const hasName = !!l.name?.trim();
+      const hasValue = !!l.value?.trim();
+      return hasName || hasValue;
+    });
+
+
+    const updated: Partial<ResumeModel> = {
+      ...data,
+      full_name: raw.full_name,
+      job_title: raw.job_title,
+      email: raw.email,
+      phone: raw.phone,
+      location: raw.location,
+      avatar_url: raw.avatar_url,
+      ...personalFiltered,
+      links: updatedLinks,
+    };
+
+    this.resumeService.updateResume(id, updated).subscribe({
       next: () => {
-        // Dispatch NgRx để cập nhật store
-        this.store.dispatch(updateResume({ id, data }));
+        this.store.dispatch(updateResume({ id, data: updated }));
       },
       error: err => {
-        console.error('Update resume failed', err);
-        // Có thể hiển thị toast hoặc xử lý lỗi ở đây
+        console.error('❌ Update resume failed', err);
       }
     });
+    links: JSON.stringify(updatedLinks)
   }
+
+
+
 
 
 
@@ -325,16 +446,20 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
 // ==================Link==========================
 
   getInitialLinks(): Link[] {
-    return this.links.slice(0, 4); // Show only the first 4 links initially
-  }
+  return this.links.slice(0, 0).map(link => ({
+    ...link,
+    name: link.name ?? ''
+  })) as Link[];
+}
 
-  getAllLinks(): Link[] {
-    return this.links.filter(link => !this.selectedLinkIds.includes(link.id)); // All available links
-  }
-
-  getAvailableLinks(): Link[] {
-    return this.links.filter(link => !this.selectedLinkIds.includes(link.id));
-  }
+getAllLinks(): Link[] {
+  return this.links
+    .filter(link => !this.selectedLinkIds.includes(link.id))
+    .map(link => ({
+      ...link,
+      name: link.name ?? ''
+    })) as Link[];
+}
 
   startEditLink(link: Link) {
     if (!this.selectedLinkIds.includes(link.id)) {
@@ -343,35 +468,37 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
   }
 
   removeLink(id: number) {
-    const index = this.selectedLinkIds.indexOf(id);
-    if (index !== -1) {
-      this.selectedLinkIds.splice(index, 1);
-      const link = this.getLinkById(id);
-      if (link) {
-        link.name = '';
-        link.value = '';
-      }
+    // 1. Xoá khỏi danh sách hiển thị
+    const indexInSelected = this.selectedLinkIds.indexOf(id);
+    if (indexInSelected !== -1) {
+      this.selectedLinkIds.splice(indexInSelected, 1);
+    }
+
+    // 2. Xoá luôn dữ liệu trong FormArray
+    const formArray = this.form.get('links') as FormArray;
+    const indexInFormArray = this.getFormArrayIndexById(id);
+    if (indexInFormArray !== -1) {
+      formArray.removeAt(indexInFormArray);
     }
   }
-  // isPersonalSelected(id: number): boolean {
-  //   return this.selectedOptions.some(opt => opt.id === id);
-  // }
 
   openLinkDialogLink(id: number) {
-    const link = this.getLinkById(id);
-    if (link) {
-      const dialogRef = this.dialog.open(LinkDialogComponent, {
-        width: '300px',
-        data: { label: link.label, name: link.name, value: link.value }
-      });
+    const index = this.getFormArrayIndexById(id);
+    const linkGroup = (this.form.get('links') as FormArray).at(index);
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          link.value = result;
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(LinkDialogComponent, {
+      data: {
+        value: linkGroup.get('value')?.value || '',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        linkGroup.get('value')?.setValue(result); // ✅ patch lại value từ dialog
+      }
+    });
   }
+
 
   toggleViewAllLink() {
     this.isViewAllExpanded = !this.isViewAllExpanded;
@@ -388,22 +515,35 @@ export class EditDetailsComponent implements OnInit, OnDestroy {
     return link ? link.label : '';
   }
 
-  getName(id: number): string {
-    const link = this.getLinkById(id);
-    return link ? link.name : '';
+  // getName(id: number): string {
+  //   const link = this.getLinkById(id);
+  //   return link ? link.name : '';
+  // }
+
+  // getValue(id: number): string {
+  //   const link = this.getLinkById(id);
+  //   return link ? link.value || 'Link URL' : 'Link URL';
+  // }
+  get linksFormArray(): FormArray {
+    return this.form.get('links') as FormArray;
   }
 
-  getValue(id: number): string {
-    const link = this.getLinkById(id);
-    return link ? link.value || 'Link URL' : 'Link URL';
+  getFormArrayIndexById(id: number): number {
+    return (this.form.get('links') as FormArray).controls.findIndex(
+      control => control.get('id')?.value === id
+    );
   }
 
   isLinkActive(id: number): boolean {
-    const link = this.getLinkById(id);
-    return link ? !!link.value : false;
+    const index = this.getFormArrayIndexById(id);
+    const formArray = this.form.get('links') as FormArray;
+    const linkGroup = formArray.at(index);
+    return !!linkGroup?.get('value')?.value?.trim();
   }
 
   getLinkById(id: number): Link | undefined {
-    return this.links.find(link => link.id === id);
+    const link = this.links.find(link => link.id === id);
+    if (!link) return undefined;
+    return { ...link, name: link.name ?? '' } as Link;
   }
 }

@@ -55,22 +55,12 @@ export class ResumeService {
   }
 
 
-// resume.service.ts
-  async findOne(id: string): Promise<Resume & { links: any[] }> {
+  async findOne(id: string) {
     const client = this.supabase.getClient();
-    // select tất cả trường của resume và cả mảng links liên quan
-    const { data, error } = await client
-      .from('resume')
-      .select('*, links(*)')
-      .eq('id', id)
-      .single();
-    if (error) {
-      console.error(error);
-      throw new NotFoundException('Resume not found');
-    }
-    return data as any;
+    const { data, error } = await client.from('resume').select('*').eq('id', id).single();
+    if (error) throw error;
+    return data;
   }
-
 
   async update(id: string, data: UpdateResumeDto, uid?: string) {
     const client = this.supabase.getClient();
@@ -102,33 +92,25 @@ export class ResumeService {
   }
 
   async delete(id: string) {
-    const { error } = await this.supabase.getClient()
-      .from('resume')
-      .delete()
-      .eq('id', id)
-      .single();
+    const client = this.supabase.getClient();
+    const { error } = await client.from('resume').delete().eq('id', id);
     if (error) {
       console.error('Supabase delete error:', error);
       throw new InternalServerErrorException(error.message);
     }
     return { message: 'Resume deleted successfully' };
   }
-async getLinks(id: string): Promise<any[]> {
-      const client = this.supabase.getClient();
-      const { data, error } = await client
-        .from('resume')
-        .select('links')
-        .eq('id', id)
-        .single();
 
-      if (error) throw new NotFoundException(`Resume ${id} not found`);
-      if (!data || !data.links) return [];
-      try {
-        return JSON.parse(data.links);
-      } catch {
-        return [];
-      }
+  async findAll(): Promise<Resume[]> {
+    const client = this.supabase.getClient();
+    const { data, error } = await client.from('resume').select('*');
+    if (error) {
+      console.error('Supabase fetch all resumes error:', error);
+      throw new InternalServerErrorException(error.message);
     }
+    return data as Resume[];
+  }
+
 
 
 }
