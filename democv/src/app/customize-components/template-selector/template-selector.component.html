@@ -1,15 +1,25 @@
-<div class="template-section">
-  <h2>Choose a template</h2>
-  <p>Get started with a template and then customize it easily 🧑‍🎨</p>
 
-  <div class="template-scroll">
+
+
+<div class="template-container">
+  <h4>Choose the template</h4>
+  <p>Get started with a template and then customize it easily</p>
+
+  <div class="template-scroll" #scrollContainer>
     <div class="template-card" *ngFor="let template of templates">
-      <div class="template-preview">
-        {{ template }}
-      </div>
-      <button class="use-btn" (click)="selectTemplate(template)">Use this template</button>
+      <img [src]="template.image" alt="Template preview" />
     </div>
   </div>
 
-  <button class="see-all" (click)="seeAllTemplates()">See all templates →</button>
+  <div class="see-more">
+    <a mat-button>See more →</a>
+  </div>
 </div>
+
+
+
+
+
+
+
+

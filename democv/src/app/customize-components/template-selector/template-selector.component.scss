@@ -1,76 +1,82 @@
-.template-section {
-  background: var(--surfaceContainer);
+
+.template-container {
+  background-color: var(--surfaceContainer);
+  color: var(--onBackground);
   padding: 24px;
   border-radius: 16px;
+  margin-top: 24px;
+  height: 450px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  h2 {
-    font-weight: bold;
+}
+  h4 {
     margin-bottom: 4px;
-    font-size: 30px;
+    color: var(--onBackground);
   }
 
   p {
-    color: #666;
+    color: var(--onBackground);
     margin-bottom: 16px;
   }
 
-  .template-scroll {
-    display: flex;
-    overflow-x: auto;
-    gap: 20px;
-    padding-bottom: 12px;
 
-    scroll-behavior: smooth;
+.template-scroll-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+}
 
-    /* Ẩn thanh cuộn ngang */
-    scrollbar-width: none;       // Firefox
-    -ms-overflow-style: none;
-    .template-card {
-      min-width: 200px;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px;
+.template-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding-bottom: 8px;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer */
 
-      .template-preview {
-        width: 100%;
-        height: 280px;
-        background-color: #cce4f7;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-      }
-
-      .use-btn {
-        margin-top: 12px;
-        background-color: #5e4ff0;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-      }
-    }
-  }
-  .template-scroll::-webkit-scrollbar {
-    display: none;               // Chrome/Safari
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
   }
 
-  .see-all {
-    margin-top: 16px;
-    background: none;
-    border: none;
-    color: #5e4ff0;
-    font-weight: 500;
-    font-size: 14px;
+  height: auto;
+  max-height: 100%;
+
+  .template-card {
+    min-width: 160px;
+    max-width: 160px;
+    height: auto;
+    flex-shrink: 0;
+    background: #fff;
     cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  img {
+    width: 100%;
+    display: block;
   }
 }
+
+  mat-icon {
+    color: white;
+  }
+
+
+  .see-more {
+    margin-top: 16px;
+    color: var(--onBackground);
+  }
+
+  a {
+    color: var(--onBackground);
+  }
+
+
+
+
+
+
