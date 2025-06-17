@@ -1,0 +1,36 @@
+<div class="header-style">
+  <h2>Header</h2>
+
+  <!-- Style -->
+  <div class="group">
+    <div class="button-group">
+      <button *ngFor="let style of styles"
+              [class.active]="selectedStyle === style"
+              (click)="selectStyle(style)">
+        <div class="fake-style">{{ style }}</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Details -->
+  <label>Details</label>
+  <div class="button-group">
+    <button *ngFor="let detail of details"
+            [class.active]="selectedDetail === detail"
+            (click)="selectDetail(detail)">
+      {{ detail }}
+    </button>
+  </div>
+
+  <!-- Shape -->
+  <label *ngIf="selectedDetail === 'Icon'">Shape</label>
+  <div class="button-group" *ngIf="selectedDetail === 'Icon'">
+    <button *ngFor="let shape of shapes"
+            [class.active]="selectedShape === shape"
+            (click)="selectShape(shape)">
+      {{ shape }}
+    </button>
+  </div>
+
+
+</div>

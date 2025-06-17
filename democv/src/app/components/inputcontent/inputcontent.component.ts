@@ -14,6 +14,8 @@ import {ResumeState} from '../../ngrx/resume/resume.state';
 import {ResumeModel} from '../../models/resume.model';
 import {loadResume} from '../../ngrx/resume/resume.action';
 import {LetDirective} from '@ngrx/component';
+import {MatCardSubtitle} from '@angular/material/card';
+import {ContentInfoAddedComponent} from '../content-info-added/content-info-added.component';
 
 @Component({
   selector: 'app-inputcontent',
@@ -23,6 +25,8 @@ import {LetDirective} from '@ngrx/component';
     MatMiniFabButton,
     MatIcon,
     LetDirective,
+    MatCardSubtitle,
+    ContentInfoAddedComponent,
 
   ],
   templateUrl: './inputcontent.component.html',
@@ -30,7 +34,7 @@ import {LetDirective} from '@ngrx/component';
 })
 export class InputcontentComponent implements  OnInit, AfterViewInit{
   @Input() resume$!: Observable<ResumeModel | null>;
-
+  showEdit : boolean = false;
   @Output() switchToEdit = new EventEmitter<void>();
   resumeTitle: string = 'Resume 1';
   croppedImage: string | null = null;
@@ -57,6 +61,12 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
   }
   onClick() {
     this.switchToEdit.emit();
+  }
+  onEdit() {
+    this.showEdit = !this.showEdit;
+    if (this.showEdit) {
+      this.switchToEdit.emit();
+    }
   }
 
   ngAfterViewInit() {

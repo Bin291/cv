@@ -11,6 +11,7 @@ import {Store} from '@ngrx/store';
 import {ResumeState} from '../../ngrx/resume/resume.state';
 import {loadResume} from '../../ngrx/resume/resume.action';
 import {LetDirective} from '@ngrx/component';
+import {ContentFormSmallComponent} from '../../components/content-form-small/content-form-small.component';
 
 
 
@@ -22,7 +23,9 @@ import {LetDirective} from '@ngrx/component';
     NgIf,
     DownloadBoxComponent,
     MatProgressSpinner,
-    LetDirective
+    LetDirective,
+    ContentFormComponent,
+    ContentFormSmallComponent
   ],
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss'

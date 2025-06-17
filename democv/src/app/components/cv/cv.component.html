@@ -1,5 +1,5 @@
 <div class="cv-container">
-  <div class="cv" *ngrxLet="resume$ as data">
+  <div class="cv  " *ngrxLet="resume$ as data">
     <h2>{{ data?.full_name }}</h2>
     <mat-card-subtitle>{{ data?.job_title }}</mat-card-subtitle>
 
@@ -18,43 +18,51 @@
     </div>
 
     <!-- ==== Personal Information ==== -->
-    <section class="personal-info">
+    <section class="personal-info-cv">
       <div *ngIf="data?.date_of_birth">
-        <strong>Date of Birth:</strong> {{ data?.date_of_birth }}
+        <i class="fa-solid fa-cake-candles"></i> {{ data?.date_of_birth }}
       </div>
       <div *ngIf="data?.nationality">
-        <strong>Nationality:</strong> {{ data?.nationality }}
+        <i class="fa-solid fa-flag"></i>{{ data?.nationality }}
       </div>
       <div *ngIf="data?.passport_or_id">
-        <strong>Passport/ID:</strong> {{ data?.passport_or_id }}
+        <i class="fa-solid fa-id-card"></i> {{ data?.passport_or_id }}
       </div>
       <div *ngIf="data?.material_status">
-        <strong>Marital Status:</strong> {{ data?.material_status }}
+        <i class="fa-solid fa-heart"></i> {{ data?.material_status }}
       </div>
       <div *ngIf="data?.minitary_service">
-        <strong>Military Service:</strong> {{ data?.minitary_service }}
+        <i class="fa-solid fa-shield-halved "></i> {{ data?.minitary_service }}
       </div>
       <div *ngIf="data?.driving_license">
-        <strong>Driving License:</strong> {{ data?.driving_license }}
+        <i class="fa-solid fa-car"></i> {{ data?.driving_license }}
       </div>
       <div *ngIf="data?.gender_or_pronoun">
-        <strong>Gender/Pronoun:</strong> {{ data?.gender_or_pronoun }}
+        <i class="fa-solid fa-venus-mars"></i> {{ data?.gender_or_pronoun }}
       </div>
       <div *ngIf="data?.visa_status">
-        <strong>Visa Status:</strong> {{ data?.visa_status }}
+        <i class="fa-solid fa-passport"></i> {{ data?.visa_status }}
       </div>
     </section>
 
     <!-- ==== Links ==== -->
-<!--    <section class="links" *ngIf="data?.links.length">-->
-<!--      <h3>Links</h3>-->
-<!--      <ul>-->
-<!--        <li *ngFor="let link of data.links">-->
-<!--          <a [href]="link.value" target="_blank">-->
-<!--            <mat-icon>link</mat-icon> {{ link.label }}-->
-<!--          </a>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </section>-->
+   <ng-container *ngIf="links$ | async as links"
+                class="links-container">
+              <section *ngIf="links?.length" class="links">
+                <ul>
+                  <ng-container *ngFor="let link of links">
+                    <li *ngIf="link.name && link.name.trim() !== ''" class="link-item-container">
+                      <a class="link-item" [href]="link.value" target="_blank" [title]="link.value">
+                        <i class="{{ link.icon }}"></i>
+                        <span>{{ link.name }}</span>
+                      </a>
+                    </li>
+                  </ng-container>
+                </ul>
+              </section>
+            </ng-container>
+
+
+
   </div>
 </div>

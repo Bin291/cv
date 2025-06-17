@@ -1,0 +1,64 @@
+<div class="create-skill-form">
+  <h2><mat-icon>accessible_forward</mat-icon>Create Skills</h2>
+
+  <!-- Skill -->
+  <div class="form-group">
+    <label>Skill <span class="required">*</span></label>
+    <input type="text" [(ngModel)]="skill" placeholder="Skill name" />
+  </div>
+
+  <!-- Sub-skills -->
+  <div class="form-group">
+    <label>Information / Sub-skills <span class="optional">(optional)</span></label>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <button mat-icon-button (click)="toggleFormat('italic')"><mat-icon>format_italic</mat-icon></button>
+      <button mat-icon-button (click)="toggleFormat('bold')"><mat-icon>format_bold</mat-icon></button>
+      <button mat-icon-button (click)="toggleFormat('underline')"><mat-icon>format_underlined</mat-icon></button>
+      <button mat-icon-button (click)="toggleFormat('insertUnorderedList')"><mat-icon>format_list_bulleted</mat-icon></button>
+      <button mat-icon-button (click)="toggleFormat('justifyLeft')"><mat-icon>format_align_left</mat-icon></button>
+      <button mat-icon-button (click)="toggleFormat('justifyCenter')"><mat-icon>format_align_center</mat-icon></button>
+      <button mat-icon-button (click)="toggleFormat('justifyRight')"><mat-icon>format_align_right</mat-icon></button>
+      <button mat-icon-button (click)="showLinkInput = true"><mat-icon>link</mat-icon></button>
+    </div>
+
+    <!-- Link input -->
+    <div *ngIf="showLinkInput" class="link-input-single">
+      <input [(ngModel)]="newLink" placeholder="Enter Link" />
+      <button (click)="insertLink()">✔</button>
+    </div>
+
+    <!-- Editable area -->
+    <div
+      class="editable-box"
+      contenteditable="true"
+      dir="ltr"
+      #descInput
+      (input)="onContentChange()"
+      spellcheck="true"
+    ></div>
+
+  </div>
+
+  <!-- Skill level -->
+  <div class="form-group">
+    <label>Select skill level <span class="optional">(optional)</span></label>
+    <div class="custom-select">
+      <div class="selected" (click)="toggleDropdown()">
+        {{ selectedLevel || 'Skill level' }}
+        <mat-icon class="dropdown-icon">expand_more</mat-icon>
+      </div>
+      <ul *ngIf="dropdownOpen" class="options">
+        <li *ngFor="let level of levels" (click)="selectLevel(level)">
+          {{ level }}
+          <mat-icon *ngIf="level === selectedLevel">check</mat-icon>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="form-actions">
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button (click)="save()">Save</button>
+</div>

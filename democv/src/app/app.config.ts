@@ -14,7 +14,10 @@ import {provideHttpClient, withFetch} from '@angular/common/http';
 import {addContentReducer} from './ngrx/add-content/add-content.reducer';
 import * as AddcontentEffects from './ngrx/add-content/add-content.effect';
 import * as ResumeEffects from './ngrx/resume/resume.effect';
+import {ResumeState} from './ngrx/resume/resume.state';
 import {resumeReducer} from './ngrx/resume/resume.reducer';
+import  * as LinkEffects from './ngrx/link/link.effects';
+import {linkReducer} from './ngrx/link/link.reducers';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
@@ -25,12 +28,13 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       auth: authReducer,
       addContent: addContentReducer,
-      resume:resumeReducer
+      resume:resumeReducer,
+      link: linkReducer,
 
     }),
 
 
     provideAuth(() => getAuth()),
-    provideEffects( AuthEffects, AddcontentEffects , ResumeEffects),
+    provideEffects( AuthEffects, AddcontentEffects , ResumeEffects, LinkEffects),
   ]
 };

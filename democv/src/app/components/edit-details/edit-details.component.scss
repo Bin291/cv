@@ -86,10 +86,16 @@ header {
 }
 
 .actions {
+  background-color: var(--surfaceContainer);
+  padding: 1rem;
+  border-radius: 8px;
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: 2rem;
+  margin: 20px 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+
 }
 
 .cancel {
@@ -207,6 +213,7 @@ save:hover {
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-bottom: 1.5rem;
+  color: var(--onBackground);
 }
 
 /* Row input + delete */

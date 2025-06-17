@@ -1,0 +1,36 @@
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bungee+Shade&family=Caveat&family=Caveat+Brush&family=Comfortaa&family=Elsie&family=Lobster&family=Pacifico&family=Parisienne&family=Vibur&display=swap" rel="stylesheet">
+
+<div class="job-title">
+  <h2>Job Title</h2>
+
+  <!-- Size -->
+  <label>Size</label>
+  <div class="button-group">
+    <button *ngFor="let size of sizes"
+            [class.active]="selectedSize === size"
+            (click)="selectSize(size)">
+      {{ size }}
+    </button>
+  </div>
+
+  <!-- Position -->
+  <label>Position</label>
+  <div class="button-group">
+    <button *ngFor="let pos of positions"
+            [class.active]="selectedPosition === pos"
+            (click)="selectPosition(pos)">
+      {{ pos }}
+    </button>
+  </div>
+
+  <!-- Style -->
+  <label>Style</label>
+  <div class="button-group">
+    <button *ngFor="let style of styles"
+            [class.active]="selectedStyle === style"
+            [style.fontStyle]="style === 'Italic' ? 'italic' : 'normal'"
+            (click)="selectStyle(style)">
+      {{ style }}
+    </button>
+  </div>
+</div>

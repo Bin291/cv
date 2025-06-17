@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ResumeModel } from '../../models/resume.model';
+import {LinkModel} from '../../models/link.model';
 
 // Load
 export const loadResume = createAction(
@@ -60,3 +61,20 @@ export const createResumeFailure = createAction(
   '[Resume] Create Resume Failure',
   props<{ error: any }>()
 );
+
+export const deleteResume = createAction(
+  '[Resume] Delete Resume',
+  props<{ id: string }>()
+);
+export const deleteResumeSuccess = createAction(
+  '[Resume] Delete Resume Success',
+  props<{ id: string }>()
+);
+export const deleteResumeFailure = createAction(
+  '[Resume] Delete Resume Failure',
+  props<{ error: any }>()
+);
+
+export const loadLinks = createAction('[Resume] Load Links', props<{ resumeId: string }>());
+export const loadLinksSuccess = createAction('[Resume] Load Links Success', props<{ links: LinkModel[] }>());
+export const loadLinksFailure = createAction('[Resume] Load Links Failure', props<{ error: any }>());

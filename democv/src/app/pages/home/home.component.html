@@ -9,18 +9,21 @@
       </div>
 
       <!-- Resume previews -->
-      <ng-container *ngFor="let r of resumes">
-        <div class="resume-card" (click)="onEditResume(r.id!)">
+      <ng-container *ngFor="let r of resumes" >
+        <div class="resume-card" >
           <img
             [src]="r.avatar_origin || defaultThumbnail"
             alt="Resume Preview"
             class="resume-thumb"
-          />
+            (click)="onEditResume(r.id!)"/>
           <div class="caption">
             {{ r.resume_name || 'Untitled Resume' }}<br />
             <small>edited {{ r.updated_at | date:'short' }}</small>
+            <button class="caption-btn" (click)="deleteResume(r.id!)"><mat-icon >delete</mat-icon></button>
           </div>
         </div>
       </ng-container>
     </div>
   </ng-container>
+
+

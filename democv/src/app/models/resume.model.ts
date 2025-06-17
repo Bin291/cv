@@ -1,3 +1,5 @@
+import {LinkModel} from './link.model';
+
 export interface ResumeModel {
   id?: string;
   uid?: string;
@@ -20,6 +22,7 @@ export interface ResumeModel {
   avatar_origin?: string; // Đường dẫn gốc của ảnh đại diện, nếu có
   template_id?: string; // ID của template resume, nếu có
   material_status?: string; // Tình trạng hôn nhân, nếu có
+links?: LinkModel[];
+
 }
-// Đây là models sử dụng ở Angular, không cần validate như DTO
-// Chúng ta sẽ sử dụng interface này để định nghĩa kiểu dữ liệu của resume trong Angular
+

@@ -1,0 +1,66 @@
+.font-selector {
+  background-color: var(--surfaceContainer);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin-bottom: 16px;
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  .font-type-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    .font-type {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 12px 20px;
+      cursor: pointer;
+      text-align: center;
+
+      .preview {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      .label {
+        font-size: 14px;
+        color: #333;
+      }
+
+      &.active {
+        border-color: #7367f0;
+        background-color: #f1efff;
+        .label {
+          color: #7367f0;
+        }
+      }
+    }
+  }
+
+  .font-family-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+
+    button {
+      padding: 10px 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background-color: white;
+      font-size: 14px;
+      cursor: pointer;
+
+      &.active {
+        background-color: #eae8ff;
+        border-color: #7367f0;
+        color: #7367f0;
+      }
+    }
+  }
+}

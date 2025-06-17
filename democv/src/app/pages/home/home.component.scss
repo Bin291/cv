@@ -98,4 +98,20 @@ h3 {
   color: var(--background);
 }
 
+.caption-btn{
+  color: red;
+  padding: 1px;
+  font-size: 12px;
+  text-decoration: none;
+  //cursor: pointer;
+  transition: color 0.3s ease;
+  margin-left: 100px;
+  background: none;
+  border: 1px solid red;
+  border-radius: 4px;
+}
+.caption-btn:hover {
+  color: var(--background);
+  background-color: red;
+}
 

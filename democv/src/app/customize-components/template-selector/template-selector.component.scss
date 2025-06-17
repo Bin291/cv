@@ -1,0 +1,82 @@
+
+.template-container {
+  background-color: var(--surfaceContainer);
+  color: var(--onBackground);
+  padding: 24px;
+  border-radius: 16px;
+  margin-top: 24px;
+  height: 450px;
+  margin-bottom: 24px;
+}
+  h4 {
+    margin-bottom: 4px;
+    color: var(--onBackground);
+  }
+
+  p {
+    color: var(--onBackground);
+    margin-bottom: 16px;
+  }
+
+
+.template-scroll-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.template-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding-bottom: 8px;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+  height: auto;
+  max-height: 100%;
+
+  .template-card {
+    min-width: 160px;
+    max-width: 160px;
+    height: auto;
+    flex-shrink: 0;
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+
+  mat-icon {
+    color: white;
+  }
+
+
+  .see-more {
+    margin-top: 16px;
+    color: var(--onBackground);
+  }
+
+  a {
+    color: var(--onBackground);
+  }
+
+
+
+
+
+

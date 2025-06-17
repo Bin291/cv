@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { SupabaseModule } from './supabase/supabase.module';
-import { LinkTypeModule } from './link-type/link-type.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
@@ -13,16 +12,17 @@ import { AddContentModuleModule } from './add-content/add-content.module';
 import { AuthModule } from './auth/auth.module';
 import { ResumeModule } from './resume/resume.module';
 import { AuthMiddleware } from './auth/firebase-auth.middleware';
+import { LinkModule } from './link/link.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true
     }),
     SupabaseModule,
-    LinkTypeModule,
     AddContentModuleModule,
     AuthModule,
     ResumeModule,
+    LinkModule,
   ],
   controllers: [AppController, AuthController, AddContentController ],
   providers: [AppService, AuthService, AddContentService ],
@@ -37,6 +37,10 @@ export class AppModule {
       .apply(AuthMiddleware)
       .forRoutes({ path: 'resume', method: RequestMethod.POST },
         { path: 'resume', method: RequestMethod.POST },
+        { path: 'link', method: RequestMethod.GET },
+        { path: 'link', method: RequestMethod.PATCH },
+        { path: 'link', method: RequestMethod.DELETE },
+
 
 
 

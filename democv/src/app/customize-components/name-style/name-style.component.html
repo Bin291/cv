@@ -1,0 +1,39 @@
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bungee+Shade&family=Caveat&family=Caveat+Brush&family=Comfortaa&family=Elsie&family=Lobster&family=Pacifico&family=Parisienne&family=Vibur&display=swap" rel="stylesheet">
+
+<div class="name-style">
+  <h2>Name</h2>
+
+  <!-- Size -->
+  <label>Size</label>
+  <div class="button-group size">
+    <button *ngFor="let size of sizes"
+            [class.active]="selectedSize === size"
+            (click)="selectSize(size)">
+      {{ size }}
+    </button>
+  </div>
+
+  <!-- Bold -->
+  <label class="bold-toggle">
+    <input type="checkbox" [(ngModel)]="isBold" />
+    <span>Name bold</span>
+  </label>
+
+  <!-- Font -->
+  <label>Font</label>
+  <div class="button-group">
+    <button [class.active]="fontTab === 'Body'" (click)="selectFontTab('Body')">Body Font</button>
+    <button [class.active]="fontTab === 'Creative'" (click)="selectFontTab('Creative')">Creative</button>
+  </div>
+
+  <!-- Creative font list -->
+  <div class="font-list" *ngIf="fontTab === 'Creative'">
+    <button *ngFor="let font of creativeFonts"
+            [class.active]="selectedCreativeFont === font"
+            [style.fontFamily]="font"
+            (click)="selectCreativeFont(font)">
+      {{ font }}
+    </button>
+
+  </div>
+</div>

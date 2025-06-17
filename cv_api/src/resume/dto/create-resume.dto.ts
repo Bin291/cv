@@ -75,6 +75,10 @@ export class CreateResumeDto {
   @IsUUID()
   template_id?: string;
 
-  // Supabase có thêm cột update_at nhưng thường không set qua DTO
-  // @IsOptional() @IsDateString() update_at?: string;
+
+  @IsOptional()
+  @IsString()
+  links?: string;  // JSON string chứa mảng links, ví dụ: '[{"url": "https://example.com", "name": "Example"}]'
+
+
 }

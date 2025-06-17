@@ -1,0 +1,30 @@
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bungee+Shade&family=Caveat&family=Caveat+Brush&family=Comfortaa&family=Elsie&family=Lobster&family=Pacifico&family=Parisienne&family=Vibur&display=swap" rel="stylesheet">
+
+<div class="font-selector">
+  <h2>Font</h2>
+
+  <!-- Font Type -->
+  <div class="font-type-group">
+    <div
+      *ngFor="let type of fontTypes"
+      class="font-type"
+      [class.active]="selectedFontType === type"
+      (click)="selectFontType(type)">
+      <div class="preview">Aa</div>
+      <div class="label">{{ type }}</div>
+    </div>
+  </div>
+
+  <!-- Font Family -->
+  <!-- Font Family -->
+  <div class="font-family-group">
+    <button
+      *ngFor="let font of fontFamilies"
+      [class.active]="selectedFontFamily === font"
+      [style.fontFamily]="font"
+      (click)="selectFontFamily(font)">
+      {{ font }}
+    </button>
+  </div>
+
+</div>

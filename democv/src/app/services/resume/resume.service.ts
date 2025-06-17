@@ -5,6 +5,7 @@ import {ResumeModel} from '../../models/resume.model';
 import {Observable, BehaviorSubject, switchMap, throwError, from} from 'rxjs';
 import {take, tap} from 'rxjs/operators';
 import {AuthService} from '../auth/auth.service';
+import {LinkModel} from '../../models/link.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +23,7 @@ export class ResumeService {
   updateResume(id: string, data: Partial<ResumeModel>): Observable<ResumeModel> {
     return this.http.patch<ResumeModel>(`${this.api}/${id}`, data)
       .pipe(
-        tap(r => this._resume$.next(r))
+        tap(r => this._resume$.next(  r))
       );
   }
 
@@ -48,8 +49,6 @@ export class ResumeService {
     );
   }
 
-
-
   getResume(id: string): Observable<ResumeModel> {
     return this.http.get<ResumeModel>(`${this.api}/${id}`);
   }
@@ -68,11 +67,18 @@ export class ResumeService {
     return localStorage.getItem('idToken') || '';
   }
 
-
-
-// resume.service.ts
   getAllByUser(uid: string): Observable<ResumeModel[]> {
     return this.http.get<ResumeModel[]>(`${this.api}/${uid}`);
+  }
+
+  deleteResume(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.api}/${id}`, {
+      headers: { Authorization: `Bearer ${this.authToken()}` }
+    });
+  }
+
+  getResumeLinks(id: string): Observable<LinkModel[]> {
+    return this.http.get<LinkModel[]>(`${this.api}/${id}/links`);
   }
 
 

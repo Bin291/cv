@@ -1,0 +1,44 @@
+<div class="heading-style">
+  <h2>Heading</h2>
+
+  <!-- Style -->
+  <label>Style</label>
+  <div class="button-group">
+    <button *ngFor="let style of styles"
+            [class.active]="selectedStyle === style"
+            (click)="selectStyle(style)">
+      <!-- Dùng hình minh họa thật nếu có, ở đây placeholder -->
+      <div class="fake-style">{{ style }}</div>
+    </button>
+  </div>
+
+  <!-- Capitalization -->
+  <label>Capitalization</label>
+  <div class="button-group">
+    <button *ngFor="let cap of capitalizations"
+            [class.active]="selectedCapitalization === cap"
+            (click)="selectCapitalization(cap)">
+      {{ cap }}
+    </button>
+  </div>
+
+  <!-- Size -->
+  <label>Size</label>
+  <div class="button-group size">
+    <button *ngFor="let size of sizes"
+            [class.active]="selectedSize === size"
+            (click)="selectSize(size)">
+      {{ size }}
+    </button>
+  </div>
+
+  <!-- Icons -->
+  <label>Icons</label>
+  <div class="button-group">
+    <button *ngFor="let icon of icons"
+            [class.active]="selectedIcon === icon"
+            (click)="selectIcon(icon)">
+      {{ icon }}
+    </button>
+  </div>
+</div>
