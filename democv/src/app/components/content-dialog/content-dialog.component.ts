@@ -28,8 +28,12 @@ export class ContentDialogComponent implements OnInit{
   contentList$ !: Observable<AddContentModel[]>;
   subscription: Subscription[] = [];
   contentAdd: AddContentModel[] = [];
+  @Output() contentSelected = new EventEmitter<string>();
 
-
+  select(content: any) {
+    this.contentSelected.emit(content.name_content); // hoặc content.key nếu bạn đặt tên key
+    this.onClose();
+  }
 
 
   constructor(private dialogRef: MatDialogRef<ContentDialogComponent>, addContentService: AddContentService,

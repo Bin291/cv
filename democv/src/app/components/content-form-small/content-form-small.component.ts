@@ -1,11 +1,21 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ShareModule} from '../../../shared/shared.module';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatSelect} from '@angular/material/select';
-import {MatOption} from '@angular/material/core';
 
+type SmallFormKey =
+  | 'Skills'
+  | 'Languages'
+  | 'Certificates'
+  | 'Awards'
+  | 'Publications';
+
+interface SmallFormConfig {
+  title: string;
+  icon: string;
+  nameLabel: string;
+  namePlaceholder: string;
+}
 @Component({
   selector: 'app-content-form-small',
   imports: [
@@ -19,19 +29,73 @@ import {MatOption} from '@angular/material/core';
   templateUrl: './content-form-small.component.html',
   styleUrl: './content-form-small.component.scss'
 })
-export class ContentFormSmallComponent {
+export class ContentFormSmallComponent implements OnInit{
+  @Output() cancel = new EventEmitter<void>();
+  @Output() save = new EventEmitter<void>();
   skill = '';
   selectedLevel = '';
   dropdownOpen = false;
   levels = ['Beginner', 'Amateur', 'Competent', 'Proficient', 'Expert'];
-
+  @Input() selectedContentName!: string;
   newLink = '';
-  newLabel = '';
   showLinkInput = false;
-
+  selectedConfig: any;
   @ViewChild('descInput') descInput!: ElementRef<HTMLDivElement>;
   descriptionHtml = '';
+  formConfigSmall = {
+    Skills: {
+      title: 'Create Skill',
+      icon: 'accessible_forward',
+      label: 'Skill',
+      placeholder: 'Skill name',
+      subLabel: 'Information / Sub-skills',
+      levelLabel: 'Select skill level'
+    },
+    Languages: {
+      title: 'Add Language',
+      icon: 'language',
+      label: 'Language',
+      placeholder: 'Enter language name',
+      subLabel: 'Fluency / Notes',
+      levelLabel: 'Proficiency level'
+    },
+    Certificates: {
+      title: 'Add Certificate',
+      icon: 'workspace_premium',
+      label: 'Certificate',
+      placeholder: 'Certificate name',
+      subLabel: 'Issuing Organization',
+      levelLabel: 'Level (optional)'
+    },
+    Awards: {
+      title: 'Add Award',
+      icon: 'emoji_events',
+      label: 'Award Name',
+      placeholder: 'What did you win?',
+      subLabel: 'Context / Organizer',
+      levelLabel: 'Level (optional)'
+    },
+    Publications: {
+      title: 'Add Publication',
+      icon: 'menu_book',
+      label: 'Title',
+      placeholder: 'Name of publication',
+      subLabel: 'Authors / Summary',
+      levelLabel: 'Type (e.g. Journal, Book)'
+    },
+    Organisations: {
+      title: 'Add Organization',
+      icon: 'business',
+      label: 'Organization Name',
+      placeholder: 'Name of organization',
+      subLabel: 'Role / Description',
+      levelLabel: 'Type (e.g. Non-profit, Company)'
+    }
+  };
 
+  ngOnInit(): void {
+     this.selectedConfig = this.formConfigSmall[this.selectedContentName as SmallFormKey];
+}
 
   toggleFormat(command: string) {
     document.execCommand(command, false, undefined);
@@ -44,6 +108,8 @@ export class ContentFormSmallComponent {
       this.newLink = '';
       this.showLinkInput = false;
     }
+
+
   }
 
   onContentChange() {
@@ -61,17 +127,17 @@ export class ContentFormSmallComponent {
     this.dropdownOpen = false;
   }
 
-  cancel() {
-    this.skill = '';
-    this.descriptionHtml = '';
-    this.selectedLevel = '';
-  }
-
-  save() {
-    console.log({
-      skill: this.skill,
-      description: this.descriptionHtml,
-      level: this.selectedLevel
-    });
-  }
+  // cancel() {
+  //   this.skill = '';
+  //   this.descriptionHtml = '';
+  //   this.selectedLevel = '';
+  // }
+  //
+  // save() {
+  //   console.log({
+  //     skill: this.skill,
+  //     description: this.descriptionHtml,
+  //     level: this.selectedLevel
+  //   });
+  // }
 }

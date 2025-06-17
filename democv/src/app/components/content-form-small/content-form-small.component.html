@@ -1,15 +1,17 @@
 <div class="create-skill-form">
-  <h2><mat-icon>accessible_forward</mat-icon>Create Skills</h2>
+  <h2>
+    <mat-icon>{{ selectedConfig?.icon }}</mat-icon>{{ selectedConfig?.title }}
+  </h2>
 
   <!-- Skill -->
   <div class="form-group">
-    <label>Skill <span class="required">*</span></label>
-    <input type="text" [(ngModel)]="skill" placeholder="Skill name" />
+    <label>{{ selectedConfig?.label }} <span class="required">*</span></label>
+    <input type="text" [(ngModel)]="skill" [placeholder]="selectedConfig?.placeholder" />
   </div>
 
   <!-- Sub-skills -->
   <div class="form-group">
-    <label>Information / Sub-skills <span class="optional">(optional)</span></label>
+    <label>{{ selectedConfig?.subLabel }} <span class="optional">(optional)</span></label>
 
     <!-- Toolbar -->
     <div class="toolbar">
@@ -38,12 +40,11 @@
       (input)="onContentChange()"
       spellcheck="true"
     ></div>
-
   </div>
 
   <!-- Skill level -->
   <div class="form-group">
-    <label>Select skill level <span class="optional">(optional)</span></label>
+    <label>{{ selectedConfig?.levelLabel }} <span class="optional">(optional)</span></label>
     <div class="custom-select">
       <div class="selected" (click)="toggleDropdown()">
         {{ selectedLevel || 'Skill level' }}
@@ -58,7 +59,11 @@
     </div>
   </div>
 </div>
-<div class="form-actions">
-  <button mat-stroked-button (click)="cancel()">Cancel</button>
-  <button mat-flat-button (click)="save()">Save</button>
+
+<div class="action-buttons-small">
+  <button class="delete"><mat-icon>delete_outline</mat-icon>Delete</button>
+  <div class="btn">
+    <button mat-stroked-button (click)="cancel.emit()">Cancel</button>
+    <button mat-flat-button (click)="save.emit()">Save</button>
+  </div>
 </div>

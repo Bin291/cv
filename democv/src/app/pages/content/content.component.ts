@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {InputcontentComponent} from '../../components/inputcontent/inputcontent.component';
 import { EditDetailsComponent } from "../../components/edit-details/edit-details.component";
 import {AsyncPipe, NgIf} from '@angular/common';
@@ -12,6 +12,7 @@ import {ResumeState} from '../../ngrx/resume/resume.state';
 import {loadResume} from '../../ngrx/resume/resume.action';
 import {LetDirective} from '@ngrx/component';
 import {ContentFormSmallComponent} from '../../components/content-form-small/content-form-small.component';
+import {AddContentService} from '../../services/add-content/add-content.service';
 
 
 
@@ -30,17 +31,42 @@ import {ContentFormSmallComponent} from '../../components/content-form-small/con
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss'
 })
-export class ContentComponent {
+export class ContentComponent implements OnInit{
   @Input() resume$!: Observable<ResumeModel | null>;
+  @Input() showInfoAdded: boolean = false;
+
+  selectedContent: string | null = null;
+  readonly FORM_LARGE = ['Education', 'Professional Experience', 'Projects', 'Organizations'];
+
+  selectContent(contentName: string) {
+    this.selectedContent = contentName;
+  }
+
+  isLargeForm(name: string): boolean {
+    return ['Education', 'Professional Experience', 'Projects', 'Organizations'].includes(name);
+  }
 
   constructor(private store: Store<{
     resume: ResumeState
-  }>) {
+  }>, private addContentService: AddContentService) {
     this.resume$ = this.store.select(state => state.resume.resume);
     this.resume$.subscribe(data => {
       console.log('resume$', data);
     });
 
+  }
+
+
+
+  ngOnInit() {
+    this.addContentService.selectedContent$.subscribe(content => {
+      this.selectedContent = content;
+      this.showEdit = false;
+    });
+  }
+
+  backToMainContent() {
+    this.selectedContent = null;
   }
 
   showEdit = false;
@@ -53,10 +79,13 @@ export class ContentComponent {
     }, 500); // giả lập thời gian loading
   }
 
-  backToInput() {
+  backToInput(saved: boolean = false) {
     this.isLoading = true;
+    this.selectedContent = null;
+    this.showEdit = false;
+    this.showInfoAdded = saved;
+
     setTimeout(() => {
-      this.showEdit = false;
       const id = localStorage.getItem('resume_id');
       if (id) {
         this.store.dispatch(loadResume({ id }));
@@ -64,5 +93,6 @@ export class ContentComponent {
       this.isLoading = false;
     }, 500);
   }
+
 
 }

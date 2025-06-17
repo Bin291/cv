@@ -16,6 +16,7 @@ import {loadResume} from '../../ngrx/resume/resume.action';
 import {LetDirective} from '@ngrx/component';
 import {MatCardSubtitle} from '@angular/material/card';
 import {ContentInfoAddedComponent} from '../content-info-added/content-info-added.component';
+import {AddContentService} from '../../services/add-content/add-content.service';
 
 @Component({
   selector: 'app-inputcontent',
@@ -36,7 +37,7 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
   @Input() resume$!: Observable<ResumeModel | null>;
   showEdit : boolean = false;
   @Output() switchToEdit = new EventEmitter<void>();
-  resumeTitle: string = 'Resume 1';
+  @Input() showInfoAdded: boolean = false;
   croppedImage: string | null = null;
   subscription: Subscription[] = []
   contentList$ !: Observable<AddContentModel[]>;
@@ -45,7 +46,8 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
   constructor(private dialog: MatDialog, private store: Store<{
     addContent: AddContentState,
     resume:ResumeState
-  }>, private imageShareService: ImageShareService,) {
+  }>, private imageShareService: ImageShareService,
+              private addContentService: AddContentService,) {
 
      this.contentList$ = this.store.select('addContent','addContent')
     this.store.dispatch(AddContentActions.loadAddContents());
@@ -121,12 +123,10 @@ const dialogRef = this.dialog.open(ContentDialogComponent, {
   width: '840px',
   minWidth: '1000px',
 });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.resumeTitle = result.title;
-
-      }
-});
+    dialogRef.componentInstance.contentSelected = new EventEmitter<string>();
+    dialogRef.componentInstance.contentSelected.subscribe((selectedName) => {
+      this.addContentService.selectContent(selectedName);  // Lưu tên content đã chọn
+    });
   }
 
 

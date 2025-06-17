@@ -1,24 +1,20 @@
 <div class="education-form">
   <div class="header">
-    <h2><mat-icon>school</mat-icon>Create Education</h2>
-<!--    <a href="#" class="need-help">Need help?</a>-->
+    <h2><mat-icon>{{ selectedConfig?.icon }}</mat-icon>{{ selectedConfig?.title }}</h2>
   </div>
 
-  <div class="form-group">
-    <label for="school">School <span class="optional">optional</span></label>
+  <!-- BINDING LABELS + INPUT -->
+  <div class="form-group" *ngFor="let field of selectedConfig?.fields">
+    <label [for]="field.id">{{ field.label }} <span class="optional">optional</span></label>
     <div class="input-wrapper">
-      <input type="text" id="school" placeholder="Enter school / university" />
-      <button mat-icon-button class="link-btn"><mat-icon>link</mat-icon></button>
+      <input type="text" [id]="field.id" [placeholder]="field.placeholder" />
+      <button *ngIf="field.link" mat-icon-button class="link-btn">
+        <mat-icon>link</mat-icon>
+      </button>
     </div>
   </div>
 
-  <div class="form-group degree">
-    <label for="degree">Degree <span class="optional">optional</span></label>
-    <div class="input-wrapper">
-      <input type="text" id="degree" placeholder="Enter Degree / Field Of Study" />
-    </div>
-  </div>
-
+  <!-- CITY / COUNTRY nếu cần -->
   <div class="form-group city-country">
     <div class="col">
       <label for="city">City <span class="optional">optional</span></label>
@@ -34,11 +30,13 @@
     </div>
   </div>
 
+  <!-- START / END DATE -->
   <div class="form-group row">
+    <!-- START DATE -->
     <div class="col">
       <label for="start-date">Start Date <span class="optional">optional</span></label>
-      <div class="date-input">
-        <select [(ngModel)]="selectedMonth">
+      <div class="date-input" *ngIf="!startDontShow">
+        <select *ngIf="!startOnlyYear" [(ngModel)]="selectedMonth">
           <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
         </select>
         <select [(ngModel)]="selectedYearStart">
@@ -47,44 +45,45 @@
       </div>
       <div class="checkbox-group">
         <div class="checkbox-wrapper">
-          <input type="checkbox" id="dont-show-start" />
+          <input type="checkbox" id="dont-show-start" [(ngModel)]="startDontShow" />
           <label for="dont-show-start">Don't show</label>
         </div>
         <div class="checkbox-wrapper">
-          <input type="checkbox" id="only-year-start" />
+          <input type="checkbox" id="only-year-start" [(ngModel)]="startOnlyYear" [disabled]="startDontShow" />
           <label for="only-year-start">Only year</label>
         </div>
       </div>
     </div>
+
+    <!-- END DATE -->
     <div class="col">
       <label for="end-date">End Date <span class="optional">optional</span></label>
-      <div class="date-input">
-        <select [(ngModel)]="SetMonthEnd">
+      <div class="date-input" *ngIf="!endDontShow && !present">
+        <select *ngIf="!endOnlyYear" [(ngModel)]="SetMonthEnd">
           <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
         </select>
-
         <select [(ngModel)]="selectedYearEnd">
-          <label>Month</label>
           <option *ngFor="let year of years" [value]="year">{{ year }}</option>
         </select>
       </div>
       <div class="checkbox-group">
         <div class="checkbox-wrapper">
-          <input type="checkbox" id="present" checked />
+          <input type="checkbox" id="present" [(ngModel)]="present" />
           <label for="present">Present (Current)</label>
         </div>
         <div class="checkbox-wrapper">
-          <input type="checkbox" id="dont-show-end" />
+          <input type="checkbox" id="dont-show-end" [(ngModel)]="endDontShow" [disabled]="present" />
           <label for="dont-show-end">Don't show</label>
         </div>
         <div class="checkbox-wrapper">
-          <input type="checkbox" id="only-year-end" />
+          <input type="checkbox" id="only-year-end" [(ngModel)]="endOnlyYear" [disabled]="present || endDontShow" />
           <label for="only-year-end">Only year</label>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- DESCRIPTION -->
   <div class="form-group">
     <label for="description">Description <span class="optional">optional</span></label>
     <div class="textarea-toolbar">
@@ -93,29 +92,24 @@
       <button (click)="formatText('underline')"><mat-icon>format_underlined</mat-icon></button>
       <button (click)="formatText('insertUnorderedList')"><mat-icon>format_list_bulleted</mat-icon></button>
       <button (click)="formatText('insertOrderedList')"><mat-icon>format_list_numbered</mat-icon></button>
-      <button (click)="showLinkInput1 = true">
-        <mat-icon>link</mat-icon>
-      </button>
-
+      <button (click)="showLinkInput1 = true"><mat-icon>link</mat-icon></button>
     </div>
+
     <div *ngIf="showLinkInput1" class="link-input-group">
       <input [(ngModel)]="newLink" placeholder="Enter link..." />
       <button (click)="insertLink()">✔</button>
       <button (click)="cancelInsertLink()">✖</button>
     </div>
 
-
-    <div
-      id="description"
-      contenteditable="true"
-      class="editable-box"
-      dir="ltr"
-      spellcheck="true"
-    ></div>
+    <div id="description" contenteditable="true" class="editable-box" dir="ltr" spellcheck="true"></div>
   </div>
 </div>
 
+<!-- ACTION BUTTONS -->
 <div class="action-buttons">
-  <button mat-stroked-button>Cancel</button>
-  <button mat-flat-button>Save</button>
+  <button class="delete"><mat-icon>delete_outline</mat-icon>Delete</button>
+  <div class="btn">
+    <button mat-stroked-button (click)="cancel.emit()">Cancel</button>
+    <button mat-flat-button (click)="save.emit()">Save</button>
+  </div>
 </div>

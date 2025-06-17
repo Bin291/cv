@@ -12,7 +12,7 @@
     <!-- Content Options -->
     <div class="options">
       @for (content of contentAdd; track $index) {
-        <app-content-option-add [content]="content"></app-content-option-add>
+        <app-content-option-add [content]="content"  (click)="select(content)"></app-content-option-add>
       }
     </div>
     <!-- Footer -->

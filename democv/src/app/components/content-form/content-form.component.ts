@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
@@ -18,6 +18,16 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrl: './content-form.component.scss'
 })
 export class ContentFormComponent  implements OnInit {
+  @Output() cancel = new EventEmitter<void>();
+  @Output() save = new EventEmitter<void>();
+  @Input() selectedContentName!: string;
+  startDontShow = false;
+  startOnlyYear = false;
+
+  present = false;
+  endDontShow = false;
+  endOnlyYear = false;
+
   years: number[] = [];
   selectedMonth: string = this.getCurrentMonth();
   SetMonthEnd: string = this.getCurrentMonth();
@@ -28,6 +38,44 @@ export class ContentFormComponent  implements OnInit {
   descriptionHtml = '';
   newLink = '';
   showLinkInput1 = false;
+  formConfigLarge: any = {
+    Education: {
+      title: 'Create Education',
+      icon: 'school',
+      fields: [
+        { label: 'School', placeholder: 'Enter school / university', id: 'school' },
+        { label: 'Degree', placeholder: 'Enter Degree / Field Of Study', id: 'degree' },
+      ]
+    },
+    Projects: {
+      title: 'Create Project',
+      icon: 'code',
+      fields: [
+        { label: 'Project Name', placeholder: 'Enter project name', id: 'projectName' },
+        { label: 'Role', placeholder: 'Enter your role', id: 'role' },
+
+      ]
+    },
+    'Professional Experience': {
+      title: 'Add Experience',
+      icon: 'work',
+      fields: [
+        { label: 'Company', placeholder: 'Enter company name', id: 'company' },
+        { label: 'Job Title', placeholder: 'Enter job title', id: 'jobTitle' },
+
+      ]
+    },
+    Organizations: {
+      title: 'Add Organization',
+      icon: 'groups',
+      fields: [
+        { label: 'Organization Name', placeholder: 'Enter organization name', id: 'orgName' },
+        { label: 'Position', placeholder: 'Enter your position', id: 'position' },
+      ]
+    }
+  };
+
+  selectedConfig: any;
 
   months = [
     { value: '01', name: 'January' },
@@ -50,6 +98,7 @@ export class ContentFormComponent  implements OnInit {
   ngOnInit(): void {
     this.generateYearsStart();
     this.generateYearsEnd();
+    this.selectedConfig = this.formConfigLarge[this.selectedContentName];
   }
 
   generateYearsStart(): void {
