@@ -9,7 +9,7 @@ import  * as AddContentActions from '../../ngrx/add-content/add-content.action';
 import {Observable, Subscription} from 'rxjs';
 import {AddContentModel} from '../../models/add-content.model';
 import {ImageShareService} from '../../services/image-share/image-share.service';
-import {MatMiniFabButton} from '@angular/material/button';
+import {MatButton, MatMiniFabButton} from '@angular/material/button';
 import {ResumeState} from '../../ngrx/resume/resume.state';
 import {ResumeModel} from '../../models/resume.model';
 import {loadResume} from '../../ngrx/resume/resume.action';
@@ -17,7 +17,8 @@ import {LetDirective} from '@ngrx/component';
 import {MatCardSubtitle} from '@angular/material/card';
 import {ContentInfoAddedComponent} from '../content-info-added/content-info-added.component';
 import {AddContentService} from '../../services/add-content/add-content.service';
-
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-inputcontent',
 
@@ -28,6 +29,7 @@ import {AddContentService} from '../../services/add-content/add-content.service'
     LetDirective,
     MatCardSubtitle,
     ContentInfoAddedComponent,
+    MatButton,
 
   ],
   templateUrl: './inputcontent.component.html',
