@@ -2,18 +2,46 @@
   <mat-expansion-panel [expanded]="isOpen" (opened)="isOpen = true" (closed)="isOpen = false">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <mat-icon>folder</mat-icon> Education
+        <mat-icon>folder</mat-icon> {{ contentData.content }}
       </mat-panel-title>
       <mat-action-row>
-        <button mat-button (click)="addItem($event)">+ Education</button>
+        <button mat-button (click)="addItem($event)">+ {{ contentData.content }}</button>
       </mat-action-row>
     </mat-expansion-panel-header>
+
     <div class="item-list-container" cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="drop($event)">
-      <div class="item-card" *ngFor="let item of items" cdkDrag>
+      <div class="item-card" *ngFor="let item of items; let i = index" cdkDrag (click)="onClickItem(item)">
         <mat-icon>drag_indicator</mat-icon>
-        <span>{{ item.name }}</span>
-        <span class="details">{{ item.details }}</span>
-        <mat-icon class="preview-icon">visibility</mat-icon>
+
+        <div class="info-content">
+          <!-- Hàng đầu: Title/SubTitle hoặc Name -->
+          <div class="top-line" *ngIf="resolveName(contentData.content, item)">
+            <strong>{{ resolveName(contentData.content, item) }}</strong>
+          </div>
+
+          <!-- Hàng 2: Ngày + Địa điểm -->
+          <div
+            *ngIf="(renderDateRange(item) || renderLocation(item)) && (item.startYear || item.endYear || item.present || item.city || item.country)"
+            class="meta"
+          >
+            <span *ngIf="renderDateRange(item)">{{ renderDateRange(item) }}</span>
+            <span *ngIf="renderLocation(item)"> | {{ renderLocation(item) }}</span>
+          </div>
+
+
+
+          <!-- Hàng 3: Mô tả -->
+          <div class="description" *ngIf="item.description">
+            <span [innerHTML]="renderHTML(item.description)"></span>
+          </div>
+        </div>
+
+        <div class="action-icons">
+          <mat-icon class="preview-icon">visibility</mat-icon>
+          <button mat-icon-button color="warn" (click)="deleteItem(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
   </mat-expansion-panel>

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {InputcontentComponent} from '../../components/inputcontent/inputcontent.component';
 import { EditDetailsComponent } from "../../components/edit-details/edit-details.component";
 import {AsyncPipe, NgIf} from '@angular/common';
@@ -34,16 +34,19 @@ import {AddContentService} from '../../services/add-content/add-content.service'
 export class ContentComponent implements OnInit{
   @Input() resume$!: Observable<ResumeModel | null>;
   @Input() showInfoAdded: boolean = false;
-
+  savedContentData: { content: string; data: any }[] = [];
+  @ViewChild(ContentFormComponent)
+  formComponentRef?: ContentFormComponent;
+  @Output() editItem = new EventEmitter<{ content: string; data: any }>();
+  @ViewChild(ContentFormSmallComponent)
+  formSmallComponentRef?: ContentFormSmallComponent;
   selectedContent: string | null = null;
-  readonly FORM_LARGE = ['Education', 'Professional Experience', 'Projects', 'Organizations'];
-
   selectContent(contentName: string) {
     this.selectedContent = contentName;
   }
 
   isLargeForm(name: string): boolean {
-    return ['Education', 'Professional Experience', 'Projects', 'Organizations'].includes(name);
+    return ['Education', 'Professional Experience', 'Projects', 'Organisations'].includes(name);
   }
 
   constructor(private store: Store<{
@@ -81,9 +84,17 @@ export class ContentComponent implements OnInit{
 
   backToInput(saved: boolean = false) {
     this.isLoading = true;
+
+    if (saved && this.selectedContent) {
+      const formData = this.getFormDataFromCurrentForm(); // gọi từ FormComponent
+      this.addContentService.saveContent(this.selectedContent, {
+        ...formData,
+        contentName: this.selectedContent
+      });
+    }
+
     this.selectedContent = null;
     this.showEdit = false;
-    this.showInfoAdded = saved;
 
     setTimeout(() => {
       const id = localStorage.getItem('resume_id');
@@ -91,7 +102,28 @@ export class ContentComponent implements OnInit{
         this.store.dispatch(loadResume({ id }));
       }
       this.isLoading = false;
-    }, 500);
+    }, 300);
+  }
+
+// 🚨 HÀM GIẢM SÁT FORM
+  getFormDataFromCurrentForm(): any {
+    return (
+      this.formComponentRef?.getData?.() ||
+      this.formSmallComponentRef?.getData?.() ||
+      {}
+    );
+  }
+
+  editFromItem(event: { content: string; data: any }) {
+    this.selectedContent = event.content;
+
+    setTimeout(() => {
+      if (this.isLargeForm(event.content)) {
+        this.formComponentRef?.patchData(event.data);
+      } else {
+        this.formSmallComponentRef?.patchData(event.data);
+      }
+    });
   }
 
 

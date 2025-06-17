@@ -7,7 +7,13 @@
   <div class="form-group" *ngFor="let field of selectedConfig?.fields">
     <label [for]="field.id">{{ field.label }} <span class="optional">optional</span></label>
     <div class="input-wrapper">
-      <input type="text" [id]="field.id" [placeholder]="field.placeholder" />
+      <input
+        type="text"
+        [id]="field.id"
+        [placeholder]="field.placeholder"
+        [(ngModel)]="formValues[field.id]"
+        name="{{ field.id }}"
+      />
       <button *ngIf="field.link" mat-icon-button class="link-btn">
         <mat-icon>link</mat-icon>
       </button>
@@ -19,13 +25,15 @@
     <div class="col">
       <label for="city">City <span class="optional">optional</span></label>
       <div class="input-wrapper">
-        <input type="text" id="city" placeholder="Enter City" />
+        <input type="text" id="city" placeholder="Enter City" [(ngModel)]="city" name="city" />
+
       </div>
     </div>
     <div class="col">
       <label for="country">Country <span class="optional">optional</span></label>
       <div class="input-wrapper">
-        <input type="text" id="country" placeholder="Enter Country" />
+        <input type="text" id="country" placeholder="Enter Country" [(ngModel)]="country" name="country" />
+
       </div>
     </div>
   </div>

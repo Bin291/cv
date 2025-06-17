@@ -23,11 +23,15 @@ export class ContentFormComponent  implements OnInit {
   @Input() selectedContentName!: string;
   startDontShow = false;
   startOnlyYear = false;
+  formValues: { [key: string]: string } = {};
 
   present = false;
   endDontShow = false;
   endOnlyYear = false;
-
+  title = '';
+  subtitle = '';
+  city = '';
+  country = '';
   years: number[] = [];
   selectedMonth: string = this.getCurrentMonth();
   SetMonthEnd: string = this.getCurrentMonth();
@@ -43,37 +47,36 @@ export class ContentFormComponent  implements OnInit {
       title: 'Create Education',
       icon: 'school',
       fields: [
-        { label: 'School', placeholder: 'Enter school / university', id: 'school' },
-        { label: 'Degree', placeholder: 'Enter Degree / Field Of Study', id: 'degree' },
+        { id: 'title', label: 'School', placeholder: 'Enter school / university' },
+        { id: 'subtitle', label: 'Degree', placeholder: 'Enter Degree / Field Of Study' }
       ]
     },
     Projects: {
       title: 'Create Project',
       icon: 'code',
       fields: [
-        { label: 'Project Name', placeholder: 'Enter project name', id: 'projectName' },
-        { label: 'Role', placeholder: 'Enter your role', id: 'role' },
-
+        { id: 'title', label: 'Project Name', placeholder: 'Enter project name' },
+        { id: 'subtitle', label: 'Role', placeholder: 'Enter your role' }
       ]
     },
     'Professional Experience': {
       title: 'Add Experience',
       icon: 'work',
       fields: [
-        { label: 'Company', placeholder: 'Enter company name', id: 'company' },
-        { label: 'Job Title', placeholder: 'Enter job title', id: 'jobTitle' },
-
+        { id: 'title', label: 'Company', placeholder: 'Enter company name' },
+        { id: 'subtitle', label: 'Job Title', placeholder: 'Enter job title' }
       ]
     },
-    Organizations: {
-      title: 'Add Organization',
-      icon: 'groups',
+    Organisations: {
+      title: 'Add Organisation',
+      icon: 'group',
       fields: [
-        { label: 'Organization Name', placeholder: 'Enter organization name', id: 'orgName' },
-        { label: 'Position', placeholder: 'Enter your position', id: 'position' },
+        { id: 'title', label: 'Organisation Name', placeholder: 'Enter organisation name' },
+        { id: 'subtitle', label: 'Role', placeholder: 'Enter your role' }
       ]
     }
   };
+
 
   selectedConfig: any;
 
@@ -153,6 +156,15 @@ export class ContentFormComponent  implements OnInit {
     this.newLink = '';
     this.snackBar.open('Link inserted!', 'Close', { duration: 2000 });
   }
+  resolveName(content: string, d: any): string {
+    if (['Education', 'Professional Experience', 'Projects', 'Organizations'].includes(content)) {
+      const title = d.title || '';
+      const subtitle = d.subtitle ? ' – ' + d.subtitle : '';
+      return `${title}${subtitle}` || 'Untitled';
+    }
+
+    return d.name || d.title || '';
+  }
 
 
   cancelInsertLink() {
@@ -163,6 +175,56 @@ export class ContentFormComponent  implements OnInit {
   formatText(command: string) {
     document.execCommand(command, false);
   }
+
+  getData() {
+    return {
+      ...this.formValues, // đã bao gồm title, subtitle
+      city: this.city || '',
+      country: this.country || '',
+      startMonth: this.selectedMonth,
+      startYear: this.selectedYearStart,
+      endMonth: this.SetMonthEnd,
+      endYear: this.selectedYearEnd,
+      startDontShow: this.startDontShow,
+      startOnlyYear: this.startOnlyYear,
+      endDontShow: this.endDontShow,
+      endOnlyYear: this.endOnlyYear,
+      present: this.present,
+      description: this.getDescriptionText()
+    };
+  }
+
+
+  getDescriptionText(): string {
+    const el = document.getElementById('description');
+    return el?.innerHTML || '';
+  }
+
+  patchData(data: any): void {
+    this.formValues = {
+      title: data.title || '',
+      subtitle: data.subtitle || '',
+      ...data
+    };
+
+    this.city = data.city || '';
+    this.country = data.country || '';
+    this.selectedMonth = data.startMonth;
+    this.selectedYearStart = data.startYear;
+    this.SetMonthEnd = data.endMonth;
+    this.selectedYearEnd = data.endYear;
+    this.startDontShow = data.startDontShow;
+    this.startOnlyYear = data.startOnlyYear;
+    this.endDontShow = data.endDontShow;
+    this.endOnlyYear = data.endOnlyYear;
+    this.present = data.present;
+
+    setTimeout(() => {
+      const el = document.getElementById('description');
+      if (el) el.innerHTML = data.description || '';
+    });
+  }
+
 
 
 

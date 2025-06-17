@@ -16,6 +16,12 @@ interface SmallFormConfig {
   nameLabel: string;
   namePlaceholder: string;
 }
+interface FormSmallModel {
+  [key: string]: string;
+  title: string;
+  subtitle: string;
+}
+
 @Component({
   selector: 'app-content-form-small',
   imports: [
@@ -32,7 +38,8 @@ interface SmallFormConfig {
 export class ContentFormSmallComponent implements OnInit{
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
-  skill = '';
+  name = '';
+
   selectedLevel = '';
   dropdownOpen = false;
   levels = ['Beginner', 'Amateur', 'Competent', 'Proficient', 'Expert'];
@@ -42,56 +49,54 @@ export class ContentFormSmallComponent implements OnInit{
   selectedConfig: any;
   @ViewChild('descInput') descInput!: ElementRef<HTMLDivElement>;
   descriptionHtml = '';
-  formConfigSmall = {
+  formValues: FormSmallModel = {
+    title: '',
+    subtitle: ''
+  };
+
+  formConfigSmall: any = {
     Skills: {
-      title: 'Create Skill',
-      icon: 'accessible_forward',
-      label: 'Skill',
-      placeholder: 'Skill name',
-      subLabel: 'Information / Sub-skills',
-      levelLabel: 'Select skill level'
+      title: 'Add Skill',
+      icon: 'psychology',
+      fields: [
+        { id: 'title', label: 'Skill', placeholder: 'Enter skill name' },
+        { id: 'subtitle', label: 'Level', placeholder: 'Enter skill level' }
+      ]
     },
     Languages: {
       title: 'Add Language',
       icon: 'language',
-      label: 'Language',
-      placeholder: 'Enter language name',
-      subLabel: 'Fluency / Notes',
-      levelLabel: 'Proficiency level'
+      fields: [
+        { id: 'title', label: 'Language', placeholder: 'Enter language' },
+        { id: 'subtitle', label: 'Level', placeholder: 'Enter fluency level' }
+      ]
     },
     Certificates: {
       title: 'Add Certificate',
-      icon: 'workspace_premium',
-      label: 'Certificate',
-      placeholder: 'Certificate name',
-      subLabel: 'Issuing Organization',
-      levelLabel: 'Level (optional)'
+      icon: 'verified',
+      fields: [
+        { id: 'title', label: 'Certificate Name', placeholder: 'Enter name' },
+        { id: 'subtitle', label: 'Issuer', placeholder: 'Enter organization' }
+      ]
     },
     Awards: {
       title: 'Add Award',
       icon: 'emoji_events',
-      label: 'Award Name',
-      placeholder: 'What did you win?',
-      subLabel: 'Context / Organizer',
-      levelLabel: 'Level (optional)'
+      fields: [
+        { id: 'title', label: 'Award Title', placeholder: 'Enter award name' },
+        { id: 'subtitle', label: 'Event', placeholder: 'Enter event or competition' }
+      ]
     },
     Publications: {
       title: 'Add Publication',
-      icon: 'menu_book',
-      label: 'Title',
-      placeholder: 'Name of publication',
-      subLabel: 'Authors / Summary',
-      levelLabel: 'Type (e.g. Journal, Book)'
-    },
-    Organisations: {
-      title: 'Add Organization',
-      icon: 'business',
-      label: 'Organization Name',
-      placeholder: 'Name of organization',
-      subLabel: 'Role / Description',
-      levelLabel: 'Type (e.g. Non-profit, Company)'
+      icon: 'article',
+      fields: [
+        { id: 'title', label: 'Publication Title', placeholder: 'Enter title' },
+        { id: 'subtitle', label: 'Publisher', placeholder: 'Enter publisher or journal' }
+      ]
     }
   };
+
 
   ngOnInit(): void {
      this.selectedConfig = this.formConfigSmall[this.selectedContentName as SmallFormKey];
@@ -126,6 +131,34 @@ export class ContentFormSmallComponent implements OnInit{
     this.selectedLevel = level;
     this.dropdownOpen = false;
   }
+
+  getFormattedHtml(): string {
+    const el = this.descInput?.nativeElement;
+    return el?.innerHTML || '';
+  }
+
+  getData() {
+    return {
+      ...this.formValues,
+      title: this.formValues['title'] || '',
+      subtitle: this.formValues['subtitle'] || '',
+      description: this.getFormattedHtml()
+    };
+  }
+
+  patchData(data: any) {
+    this.formValues = {
+      title: data.title || '',
+      subtitle: data.subtitle || '',
+      ...data
+    };
+
+    setTimeout(() => {
+      const el = document.getElementById('description');
+      if (el) el.innerHTML = data.description || '';
+    });
+  }
+
 
   // cancel() {
   //   this.skill = '';

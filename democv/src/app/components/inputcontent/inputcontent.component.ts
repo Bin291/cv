@@ -39,10 +39,11 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
   @Output() switchToEdit = new EventEmitter<void>();
   @Input() showInfoAdded: boolean = false;
   croppedImage: string | null = null;
+  @Output() editContent = new EventEmitter<{ content: string; data: any }>();
   subscription: Subscription[] = []
   contentList$ !: Observable<AddContentModel[]>;
   resumeData!: ResumeModel | null;
-
+  savedContents: { content: string; data: any }[] = [];
   constructor(private dialog: MatDialog, private store: Store<{
     addContent: AddContentState,
     resume:ResumeState
@@ -109,6 +110,7 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
     }
 
     this.resume$ = this.store.select(state => state.resume.resume);
+    this.savedContents = this.addContentService.getSavedContents();
   }
 
 
@@ -128,7 +130,9 @@ const dialogRef = this.dialog.open(ContentDialogComponent, {
       this.addContentService.selectContent(selectedName);  // Lưu tên content đã chọn
     });
   }
-
+  onEditItem(event: { content: string; data: any }) {
+    this.editContent.emit(event);
+  }
 
 
 }

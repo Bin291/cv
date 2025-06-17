@@ -26,8 +26,10 @@
       *ngIf="!showEdit && !isLoading"
       [resume$]="resume$"
       [showInfoAdded]="showInfoAdded"
+      (editContent)="editFromItem($event)"
       (switchToEdit)="switchToEdit()">
     </app-inputcontent>
+
 
     <app-edit-details
       *ngIf="showEdit && !isLoading"
