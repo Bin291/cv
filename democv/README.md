@@ -57,3 +57,20 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+# install @angular/animations: ^19.2.8
+
+```bash
+npm install --legacy-peer-deps
+```
+
+# install ngrxLet
+
+```bash
+npm install @ngrx/component
+```
+# install @angular/cdk
+
+```bash
+npm install @angular/cdk
+```

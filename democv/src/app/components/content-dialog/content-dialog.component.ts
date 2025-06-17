@@ -19,7 +19,7 @@ import * as AddContentActions from '../../ngrx/add-content/add-content.action';
     MatIconButton,
     ContentOptionAddComponent,
     MatButton,
-    MatFabButton,
+
   ],
   templateUrl: './content-dialog.component.html',
   styleUrl: './content-dialog.component.scss'

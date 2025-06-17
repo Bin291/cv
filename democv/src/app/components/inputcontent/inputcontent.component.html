@@ -1,8 +1,12 @@
 <div class="content-container" (click)="onClick()">
   <div class="personal-info" *ngrxLet="resume$ as data">
     <div class="name-container">
-      <h3 *ngIf="!data?.full_name">Your name</h3>
-      <h3 *ngIf="data?.full_name">{{data?.full_name}}</h3>
+      <div class="name-info">
+        <h3 *ngIf="!data?.full_name">Your name</h3>
+        <h3 *ngIf="data?.full_name">{{data?.full_name}}</h3>
+        <mat-card-subtitle *ngIf="!data?.job_title">Your job title</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="data?.job_title">{{data?.job_title}}</mat-card-subtitle>
+      </div>
       <button mat-mini-fab aria-label="Example icon button with a menu icon">
         <mat-icon> border_color</mat-icon>
       </button>
@@ -30,8 +34,9 @@
       </div>
     </div>
   </div>
-
 </div>
+
+<app-content-info-added ></app-content-info-added>
 
 <div class="add-content-container">
   <p class="content-prompt">Well done! :) Add some content here</p>

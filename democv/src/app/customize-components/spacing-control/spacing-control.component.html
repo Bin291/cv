@@ -1,0 +1,21 @@
+<div class="spacing-control">
+  <h2>Spacing</h2>
+
+  <div class="control-row" *ngFor="let ctrl of controls; let i = index">
+    <label>{{ ctrl.label }}</label>
+    <div class="slider-container">
+      <input
+        type="range"
+        [min]="ctrl.min"
+        [max]="ctrl.max"
+        [step]="ctrl.step"
+        [(ngModel)]="ctrl.value"
+      />
+      <span class="value">{{ getDisplayValue(ctrl) }}</span>
+      <div class="buttons">
+        <button (click)="decrease(i)">−</button>
+        <button (click)="increase(i)">+</button>
+      </div>
+    </div>
+  </div>
+</div>

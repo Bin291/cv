@@ -1,0 +1,20 @@
+<div class="container">
+  <mat-expansion-panel [expanded]="isOpen" (opened)="isOpen = true" (closed)="isOpen = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>folder</mat-icon> Education
+      </mat-panel-title>
+      <mat-action-row>
+        <button mat-button (click)="addItem($event)">+ Education</button>
+      </mat-action-row>
+    </mat-expansion-panel-header>
+    <div class="item-list-container" cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="drop($event)">
+      <div class="item-card" *ngFor="let item of items" cdkDrag>
+        <mat-icon>drag_indicator</mat-icon>
+        <span>{{ item.name }}</span>
+        <span class="details">{{ item.details }}</span>
+        <mat-icon class="preview-icon">visibility</mat-icon>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</div>

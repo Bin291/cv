@@ -21,6 +21,9 @@ body {
     margin-bottom: 20px;
 
     h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin: 0;
       font-size: 1.5em;
       font-weight: bold;
@@ -55,11 +58,12 @@ body {
       input, textarea {
         width: 100%;
         padding: 10px;
-        border: 1px solid var(--onSurfaceVariant);
+        border: 1px solid #ddd;
         border-radius: 5px;
         box-sizing: border-box;
         font-size: 0.9em;
-        background: #f5f5f5;
+        background: var(--surfaceContainer);
+        color: var(--onSurface);
       }
 
       textarea {
@@ -90,7 +94,9 @@ body {
         input {
           width: 100%;
           //padding: 0.75rem;
-          background: #f5f5f5;
+          background: var(--surfaceContainer);
+          color: var(--onSurface);
+          border: 1px solid #ddd;
         }
       }
     }
@@ -113,6 +119,9 @@ body {
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 0.9em;
+            background-color: var(--surfaceContainer);
+            color: var(--onSurface);
+            outline: none;
           }
         }
 
@@ -171,6 +180,11 @@ body {
         color: var(---onSurfaceVariant);
         padding: 5px;
       }
+
+      button:hover {
+        background: var(--primaryContainer);
+        color: var(--onPrimaryContainer);
+      }
     }
   }
 
@@ -220,6 +234,8 @@ body {
   min-height: 150px;
   min-width: auto;
   padding: 10px;
+  border-radius: 15px;
+  border: 1px solid var(--onSurfaceVariant);
 }
 
 .action-buttons {
@@ -231,4 +247,61 @@ body {
   gap: 10px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+::ng-deep .snackbar-warning {
+  background: #ff9800;
+  color: white;
+}
+
+::ng-deep .snackbar-success {
+  background: #4caf50;
+  color: white;
+}
+.link-input-single1 {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+
+  input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #a259ff;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fdfcff;
+    outline: none;
+  }
+
+  button {
+    background: #a259ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 16px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
+.link-input-group {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  button {
+    background: #a259ff;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
 }

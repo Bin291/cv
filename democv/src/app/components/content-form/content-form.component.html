@@ -1,7 +1,7 @@
 <div class="education-form">
   <div class="header">
-    <h2>Create Education</h2>
-    <a href="#" class="need-help">Need help?</a>
+    <h2><mat-icon>school</mat-icon>Create Education</h2>
+<!--    <a href="#" class="need-help">Need help?</a>-->
   </div>
 
   <div class="form-group">
@@ -88,19 +88,33 @@
   <div class="form-group">
     <label for="description">Description <span class="optional">optional</span></label>
     <div class="textarea-toolbar">
-      <button mat-icon-button><mat-icon>format_bold</mat-icon></button>
-      <button mat-icon-button><mat-icon>format_italic</mat-icon></button>
-      <button mat-icon-button><mat-icon>format_underlined</mat-icon></button>
-      <button mat-icon-button><mat-icon>format_list_bulleted</mat-icon></button>
-      <button mat-icon-button><mat-icon>reorder</mat-icon></button>
-      <button mat-icon-button><mat-icon>format_align_left</mat-icon></button>
-      <button mat-icon-button><mat-icon>format_align_right</mat-icon></button>
-      <button mat-icon-button><mat-icon>format_list_numbered</mat-icon></button>
-      <button mat-icon-button><mat-icon>link</mat-icon></button>
+      <button (click)="formatText('bold')"><mat-icon>format_bold</mat-icon></button>
+      <button (click)="formatText('italic')"><mat-icon>format_italic</mat-icon></button>
+      <button (click)="formatText('underline')"><mat-icon>format_underlined</mat-icon></button>
+      <button (click)="formatText('insertUnorderedList')"><mat-icon>format_list_bulleted</mat-icon></button>
+      <button (click)="formatText('insertOrderedList')"><mat-icon>format_list_numbered</mat-icon></button>
+      <button (click)="showLinkInput1 = true">
+        <mat-icon>link</mat-icon>
+      </button>
+
     </div>
-    <textarea id="description" placeholder="Add a description of your education entry..."></textarea>
+    <div *ngIf="showLinkInput1" class="link-input-group">
+      <input [(ngModel)]="newLink" placeholder="Enter link..." />
+      <button (click)="insertLink()">✔</button>
+      <button (click)="cancelInsertLink()">✖</button>
+    </div>
+
+
+    <div
+      id="description"
+      contenteditable="true"
+      class="editable-box"
+      dir="ltr"
+      spellcheck="true"
+    ></div>
   </div>
 </div>
+
 <div class="action-buttons">
   <button mat-stroked-button>Cancel</button>
   <button mat-flat-button>Save</button>

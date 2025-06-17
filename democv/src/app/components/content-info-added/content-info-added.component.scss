@@ -1,0 +1,108 @@
+/* Định nghĩa biến global */
+:root {
+  --surfaceContainer: #ffffff;
+  --background: #fff5f7; /* Màu hồng nhạt cho nền tổng thể, giống hình ảnh */
+  --text-color: #333333; /* Màu chữ */
+  --border-color: #ddd; /* Màu viền */
+}
+
+/* Container chính */
+.container {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+//padding: 10px;
+  background: var(--background); /* Nền hồng nhạt */
+  width: 100%;
+
+}
+
+/* Panel mở rộng */
+mat-expansion-panel {
+  padding: 3px;
+  //width: 100%;
+  box-shadow: none;
+  min-height: 50px;
+
+  border-radius: 15px;
+  background: var(--surfaceContainer); /* Nền trắng cho panel */
+}
+
+/* Header của panel */
+mat-expansion-panel-header {
+  padding: 10px;
+  background: var(--surfaceContainer); /* Nền trắng cho header */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+mat-panel-title {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+mat-action-row {
+  margin-left: auto;
+
+  button {
+    color: #6b4e71; /* Màu tím nhạt cho nút "+" */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/* Container danh sách item */
+.item-list-container {
+  padding: 10px 0;
+  background: var(--surfaceContainer); /* Nền trắng */
+}
+
+/* Card item */
+.item-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  height: 150px; /* Chiều cao cố định 200px */
+  background: var(--surfaceContainer); /* Nền trắng cho card */
+  margin: 5px 0;
+  border-radius: 4px;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    transform: translateY(-2px); /* Hiệu ứng hover nhẹ */
+  }
+
+  &.cdk-drag-preview {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: var(--surfaceContainer); /* Nền trắng khi kéo thả */
+  }
+
+  &.cdk-drag-placeholder {
+    background: var(--surfaceContainer); /* Nền trắng cho placeholder */
+    border: 1px dashed var(--border-color);
+  }
+
+  mat-icon {
+    margin-right: 8px;
+    cursor: move;
+    color: var(--text-color);
+  }
+
+  .details {
+    flex-grow: 1;
+    margin-left: 10px;
+    color: var(--text-color);
+  }
+
+  .preview-icon {
+    margin-left: auto;
+    color: var(--text-color);
+  }
+}
