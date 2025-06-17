@@ -21,11 +21,8 @@
     overflow-x: auto;
     gap: 20px;
     padding-bottom: 12px;
-
     scroll-behavior: smooth;
-
-    /* Ẩn thanh cuộn ngang */
-    scrollbar-width: none;       // Firefox
+    scrollbar-width: none;
     -ms-overflow-style: none;
     .template-card {
       min-width: 200px;
@@ -61,7 +58,7 @@
     }
   }
   .template-scroll::-webkit-scrollbar {
-    display: none;               // Chrome/Safari
+    display: none;
   }
 
   .see-all {
