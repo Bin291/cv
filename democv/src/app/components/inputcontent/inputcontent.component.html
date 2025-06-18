@@ -37,7 +37,11 @@
 </div>
 
 <ng-container *ngFor="let item of savedContents">
-  <app-content-info-added [contentData]="item"   (editItem)="onEditItem($event)"></app-content-info-added>
+  <app-content-info-added
+    [contentData]="item"
+    (editItem)="onEditItem($event)"
+    (update)="onUpdateContent($event)">
+  </app-content-info-added>
 </ng-container>
 
 

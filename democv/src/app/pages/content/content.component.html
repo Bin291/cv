@@ -9,14 +9,14 @@
     *ngIf="isLargeForm(selectedContent)"
     (cancel)="backToInput(false)"
     [selectedContentName]="selectedContent"
-    (save)="backToInput(true)">
+    (save)="onSaveItem($event)">
   </app-content-form>
 
   <app-content-form-small
     *ngIf="!isLargeForm(selectedContent)"
     (cancel)="backToInput(false)"
     [selectedContentName]="selectedContent"
-    (save)="backToInput(true)">
+    (save)="onSaveItem($event)">
   </app-content-form-small>
 </ng-container>
 

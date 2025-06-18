@@ -155,7 +155,12 @@ export const resumeReducer = createReducer(
     ...state,
     loading: false,
     error,
+  })),
+  on(ResumeActions.updateResumeInStore, (state, { data }) => ({
+    ...state,
+    resume: data
   }))
+
 
 );
 

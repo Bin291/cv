@@ -23,6 +23,41 @@ export interface ResumeModel {
   template_id?: string; // ID của template resume, nếu có
   material_status?: string; // Tình trạng hôn nhân, nếu có
 links?: LinkModel[];
-
+  contents: ResumeContent[];
 }
 
+
+export interface ResumeContent {
+  content: string;           // Tên loại nội dung, ví dụ: 'Education', 'Skills'
+  data: ContentItem[];       // Danh sách item của mỗi loại
+}
+
+export interface ContentItem {
+  id: number;
+
+  // Các field chung hoặc động (từ selectedConfig.fields)
+  title?: string;
+  subtitle?: string;
+  level?: string;
+  [key: string]: any; // Cho phép lưu các field động theo từng content type
+
+  // Vị trí địa lý
+  city?: string;
+  country?: string;
+
+  // Thời gian bắt đầu
+  startMonth?: string;
+  startYear?: number;
+  startOnlyYear?: boolean;
+  startDontShow?: boolean;
+
+  // Thời gian kết thúc
+  endMonth?: string;
+  endYear?: number;
+  endOnlyYear?: boolean;
+  endDontShow?: boolean;
+  present?: boolean;
+
+  // Mô tả dạng HTML
+  description?: string;
+}

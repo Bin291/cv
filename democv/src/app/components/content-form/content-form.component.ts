@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ImageShareService} from '../../services/image-share/image-share.service';
 import {ShareModule} from '../../../shared/shared.module';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ContentItem} from '../../models/resume.model';
 
 @Component({
   selector: 'app-content-form',
@@ -19,12 +20,12 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class ContentFormComponent  implements OnInit {
   @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<void>();
+  @Output() save = new EventEmitter<ContentItem>();
   @Input() selectedContentName!: string;
   startDontShow = false;
   startOnlyYear = false;
   formValues: { [key: string]: string } = {};
-
+  @Input() itemId?: number;
   present = false;
   endDontShow = false;
   endOnlyYear = false;
@@ -225,7 +226,29 @@ export class ContentFormComponent  implements OnInit {
     });
   }
 
+  saveItem(): void {
+    const descriptionEl = document.getElementById('description');
+    const descriptionHTML = descriptionEl?.innerHTML || '';
 
+    const newItem: ContentItem = {
+      id: this.itemId ?? 0,
+      ...this.formValues,
+      city: this.city,
+      country: this.country,
+      startMonth: this.selectedMonth,
+      startYear: this.selectedYearStart,
+      startOnlyYear: this.startOnlyYear,
+      startDontShow: this.startDontShow,
+      endMonth: this.SetMonthEnd,
+      endYear: this.selectedYearEnd,
+      endOnlyYear: this.endOnlyYear,
+      endDontShow: this.endDontShow,
+      present: this.present,
+      description: descriptionHTML,
+    };
+
+    this.save.emit(newItem);
+  }
 
 
 

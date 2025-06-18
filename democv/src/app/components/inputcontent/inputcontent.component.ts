@@ -11,7 +11,7 @@ import {AddContentModel} from '../../models/add-content.model';
 import {ImageShareService} from '../../services/image-share/image-share.service';
 import {MatButton, MatMiniFabButton} from '@angular/material/button';
 import {ResumeState} from '../../ngrx/resume/resume.state';
-import {ResumeModel} from '../../models/resume.model';
+import {ResumeContent, ResumeModel} from '../../models/resume.model';
 import {loadResume} from '../../ngrx/resume/resume.action';
 import {LetDirective} from '@ngrx/component';
 import {MatCardSubtitle} from '@angular/material/card';
@@ -19,6 +19,9 @@ import {ContentInfoAddedComponent} from '../content-info-added/content-info-adde
 import {AddContentService} from '../../services/add-content/add-content.service';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import * as ResumeActions from  '../../ngrx/resume/resume.action';
+import {take} from 'rxjs/operators';
+import {ResumeService} from '../../services/resume/resume.service';
 @Component({
   selector: 'app-inputcontent',
 
@@ -38,6 +41,7 @@ import {MatButtonModule} from '@angular/material/button';
 export class InputcontentComponent implements  OnInit, AfterViewInit{
   @Input() resume$!: Observable<ResumeModel | null>;
   showEdit : boolean = false;
+
   @Output() switchToEdit = new EventEmitter<void>();
   @Input() showInfoAdded: boolean = false;
   croppedImage: string | null = null;
@@ -50,7 +54,9 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
     addContent: AddContentState,
     resume:ResumeState
   }>, private imageShareService: ImageShareService,
-              private addContentService: AddContentService,) {
+              private addContentService: AddContentService,
+              private resumeService: ResumeService
+              ) {
 
      this.contentList$ = this.store.select('addContent','addContent')
     this.store.dispatch(AddContentActions.loadAddContents());
@@ -113,8 +119,35 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
 
     this.resume$ = this.store.select(state => state.resume.resume);
     this.savedContents = this.addContentService.getSavedContents();
+    this.resume$.subscribe((resume) => {
+      this.savedContents = resume?.contents || [];
+    });
+
+
   }
 
+
+  onUpdateContent(updated: ResumeContent): void {
+    this.store.select('resume').pipe(take(1)).subscribe((resumeState) => {
+      const resume = resumeState.resume;
+      if (!resume) return;
+
+      const updatedContents = resume.contents
+        .map(c => c.content === updated.content ? updated : c)
+        .filter(c => c.data.length > 0); // ❗ Bỏ block nếu rỗng
+
+      this.resumeService.updateResume(resume.id!, {
+        contents: updatedContents
+      }).subscribe(() => {
+        this.store.dispatch(ResumeActions.updateResumeInStore({
+          data: {
+            ...resume,
+            contents: updatedContents
+          }
+        }));
+      });
+    });
+  }
 
 
 

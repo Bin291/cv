@@ -78,3 +78,9 @@ export const deleteResumeFailure = createAction(
 export const loadLinks = createAction('[Resume] Load Links', props<{ resumeId: string }>());
 export const loadLinksSuccess = createAction('[Resume] Load Links Success', props<{ links: LinkModel[] }>());
 export const loadLinksFailure = createAction('[Resume] Load Links Failure', props<{ error: any }>());
+
+export const updateResumeInStore = createAction(
+  '[Resume] Update Resume In Store',
+  props<{ data: ResumeModel }>()
+);
+

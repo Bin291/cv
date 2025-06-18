@@ -2,6 +2,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {ShareModule} from '../../../shared/shared.module';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {ContentItem} from '../../models/resume.model';
 
 type SmallFormKey =
   | 'Skills'
@@ -37,9 +38,10 @@ interface FormSmallModel {
 })
 export class ContentFormSmallComponent implements OnInit{
   @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<void>();
-  name = '';
+  @Output() save = new EventEmitter<ContentItem>();
 
+  name = '';
+  @Input() itemId?: number;
   selectedLevel = '';
   dropdownOpen = false;
   levels = ['Beginner', 'Amateur', 'Competent', 'Proficient', 'Expert'];
@@ -158,7 +160,19 @@ export class ContentFormSmallComponent implements OnInit{
       if (el) el.innerHTML = data.description || '';
     });
   }
+  saveItem(): void {
+    const descriptionHTML = this.descInput?.nativeElement?.innerHTML || '';
 
+    const newItem: ContentItem = {
+      id: this.itemId ?? 0,
+      title: this.formValues.title,
+      subtitle: this.formValues.subtitle,
+      level: this.selectedLevel,
+      description: descriptionHTML,
+    };
+
+    this.save.emit(newItem);
+  }
 
   // cancel() {
   //   this.skill = '';

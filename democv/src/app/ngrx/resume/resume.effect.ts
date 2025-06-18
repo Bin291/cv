@@ -16,7 +16,19 @@ export const loadResume = createEffect(
       ofType(ResumeActions.loadResume),
       switchMap(({ id }) =>
         resumeService.getResume(id).pipe(
-          map(resume => ResumeActions.loadResumeSuccess({ resume })),
+          map(resume => {
+            const parsedContents =
+              typeof resume.contents === 'string'
+                ? JSON.parse(resume.contents)
+                : resume.contents;
+
+            return ResumeActions.loadResumeSuccess({
+              resume: {
+                ...resume,
+                contents: parsedContents
+              }
+            });
+          }),
           catchError(error => of(ResumeActions.loadResumeFailure({ error })))
         )
       )

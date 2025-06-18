@@ -6,14 +6,16 @@ import {DownloadBoxComponent} from '../../components/download-box/download-box.c
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {ContentFormComponent} from '../../components/content-form/content-form.component';
 import {Observable} from 'rxjs';
-import {ResumeModel} from '../../models/resume.model';
+import {ContentItem, ResumeContent, ResumeModel} from '../../models/resume.model';
 import {Store} from '@ngrx/store';
 import {ResumeState} from '../../ngrx/resume/resume.state';
 import {loadResume} from '../../ngrx/resume/resume.action';
 import {LetDirective} from '@ngrx/component';
 import {ContentFormSmallComponent} from '../../components/content-form-small/content-form-small.component';
 import {AddContentService} from '../../services/add-content/add-content.service';
-
+import {ResumeService} from '../../services/resume/resume.service';
+import {take} from 'rxjs/operators';
+import * as ResumeActions from '../../ngrx/resume/resume.action';
 
 
 @Component({
@@ -51,7 +53,7 @@ export class ContentComponent implements OnInit{
 
   constructor(private store: Store<{
     resume: ResumeState
-  }>, private addContentService: AddContentService) {
+  }>, private addContentService: AddContentService, private resumeService: ResumeService) {
     this.resume$ = this.store.select(state => state.resume.resume);
     this.resume$.subscribe(data => {
       console.log('resume$', data);
@@ -125,6 +127,51 @@ export class ContentComponent implements OnInit{
       }
     });
   }
+  onSaveItem(item: ContentItem): void {
+    if (!this.selectedContent) return; // tránh lỗi khi chưa chọn content
+    const type: string = this.selectedContent;
+
+    this.store.select('resume').pipe(take(1)).subscribe((resumeState) => {
+      const oldResume = resumeState.resume as ResumeModel;
+      if (!oldResume) return;
+
+      // Clone resume và contents
+      const resume: ResumeModel = {
+        ...oldResume,
+        contents: Array.isArray(oldResume.contents) ? [...oldResume.contents] : []
+      };
+
+      // ✅ Đảm bảo mỗi content chỉ có 1 block
+      let contentBlockIndex = resume.contents.findIndex((c) => c.content === type);
+      const newData: ContentItem[] = [item]; // chỉ lưu đúng 1 data
+
+      if (contentBlockIndex >= 0) {
+        // cập nhật content đã có
+        resume.contents[contentBlockIndex] = {
+          content: type,
+          data: newData
+        };
+      } else {
+        // thêm content mới
+        resume.contents.push({ content: type, data: newData });
+      }
+
+      // Cập nhật lên backend
+      this.resumeService.updateResume(resume.id ?? '', {
+        contents: resume.contents
+      }).subscribe(() => {
+        // ✅ Cập nhật ngay trong store → dữ liệu lên Added liền
+        this.store.dispatch(ResumeActions.updateResumeInStore({ data: resume }));
+      });
+
+
+      this.backToInput(false);
+    });
+  }
+
+
+
+
 
 
 }

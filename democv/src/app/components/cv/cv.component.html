@@ -62,6 +62,29 @@
               </section>
             </ng-container>
 
+    <section class="cv-contents" *ngIf="data?.contents?.length">
+      <ng-container *ngFor="let section of data?.contents">
+        <div class="cv-section">
+          <h3>{{ section.content }}</h3>
+          <ng-container *ngFor="let item of section.data">
+            <div class="cv-item">
+              <div class="cv-title" *ngIf="item.title"><strong>{{ item.title }}</strong></div>
+              <div class="cv-subtitle" *ngIf="item.subtitle">{{ item.subtitle }}</div>
+              <div class="cv-meta" *ngIf="item.startYear || item.endYear || item.present || item.city || item.country">
+                <span *ngIf="item.startYear">{{ item.startMonth }}/{{ item.startYear }}</span>
+                <span *ngIf="item.endYear && !item.present"> - {{ item.endMonth }}/{{ item.endYear }}</span>
+                <span *ngIf="item.present"> - Present</span>
+                <span *ngIf="item.city || item.country"> | {{ item.city }} {{ item.country }}</span>
+              </div>
+              <div class="cv-description" *ngIf="item.description">
+                <div [innerHTML]="item.description"></div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </section>
+
 
 
   </div>

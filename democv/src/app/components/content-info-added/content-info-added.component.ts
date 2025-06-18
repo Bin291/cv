@@ -12,6 +12,7 @@ import {
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import {AddContentService} from '../../services/add-content/add-content.service';
+import {ContentItem, ResumeContent} from '../../models/resume.model';
 
 @Component({
   selector: 'app-content-info-added',
@@ -32,17 +33,16 @@ import {AddContentService} from '../../services/add-content/add-content.service'
   styleUrl: './content-info-added.component.scss'
 })
 export class ContentInfoAddedComponent {
-  @Input() contentData!: { content: string; data: any[] };
+  // @Input() contentData!: { content: string; data: any[] };
   @Output() editItem = new EventEmitter<{ content: string; data: any }>();
   isOpen = true;
   @Output() itemsChange = new EventEmitter<any[]>(); // định nghĩa đúng
-
+  @Input() contentData!: ResumeContent ;
   constructor(private addContentService: AddContentService) {}
-
-  get items(): any[] {
-    return this.contentData.data;
+  @Output() update = new EventEmitter<ResumeContent>();
+  get items(): ContentItem[] {
+    return this.contentData?.data || [];
   }
-
 
   renderDateRange(item: any): string {
     const {
@@ -102,10 +102,16 @@ export class ContentInfoAddedComponent {
     this.addContentService.selectContent(this.contentData.content);
   }
 
-  deleteItem(i: number) {
-    this.items.splice(i, 1);
-    this.itemsChange.emit(this.items);
+  deleteItem(index: number): void {
+    if (!this.contentData?.data) return;
 
+    const updatedData = [...this.contentData.data];
+    updatedData.splice(index, 1);
+
+    this.update.emit({
+      content: this.contentData.content,
+      data: updatedData
+    });
   }
 
   drop(event: CdkDragDrop<any[]>) {
