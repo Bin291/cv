@@ -26,7 +26,7 @@ export class FontComponent {
 
   selectFont(font: string): void {
     this.selectedFontFamily = font;
-    this.fontService.setFont(font); // truyền font
+    this.fontService.setFontClass(font);
   }
 
 

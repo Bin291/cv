@@ -5,11 +5,11 @@ import {BehaviorSubject} from 'rxjs';
   providedIn: 'root'
 })
 export class FontService {
-  private fontSubject = new BehaviorSubject<string>('Roboto');
-  font$ = this.fontSubject.asObservable();
+  private fontClassSubject = new BehaviorSubject<string>('font-Comfortaa'); // mặc định
+  fontClass$ = this.fontClassSubject.asObservable();
 
-  setFont(font: string) {
-    this.fontSubject.next(font);
+  setFontClass(fontName: string) {
+    const className = `font-${fontName.replace(/\s+/g, '-')}`;
+    this.fontClassSubject.next(className);
   }
-
 }

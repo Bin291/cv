@@ -1,72 +1,11 @@
-<div class="cv-container" [ngClass]="[templateClass, fontClass]">
+<ng-container *ngIf="resume$ | async as resume">
+  <ng-container *ngFor="let pageSections of pages; let i = index">
+    <app-cv-page
+      [resume]="resume"
+      [sections]="pageSections"
+      [links]="(links$ | async) || []"
+      [isFirstPage]="i === 0"
+    ></app-cv-page>
+  </ng-container>
 
-
-<div class="cv" *ngrxLet="resume$ as data">
-    <!-- Header with or without avatar -->
-    <div class="cv-header">
-      <div *ngIf="data?.avatar_url && (templateClass === 'template-brian' || templateClass === 'with-image')" class="avatar-container">
-        <img [src]="data?.avatar_url" alt="Avatar" class="avatar-image" />
-      </div>
-      <div class="header-info">
-        <h2>{{ data?.full_name }}</h2>
-        <mat-card-subtitle>{{ data?.job_title }}</mat-card-subtitle>
-
-        <p *ngIf="data?.email"><mat-icon>email</mat-icon>{{ data?.email }}</p>
-        <p *ngIf="data?.phone"><mat-icon>phone</mat-icon>{{ data?.phone }}</p>
-        <p *ngIf="data?.location"><mat-icon>location_on</mat-icon>{{ data?.location }}</p>
-      </div>
-    </div>
-
-    <!-- ==== Personal Information ==== -->
-    <section class="personal-info-cv">
-      <div *ngIf="data?.date_of_birth"><i class="fa-solid fa-cake-candles"></i> {{ data?.date_of_birth }}</div>
-      <div *ngIf="data?.nationality"><i class="fa-solid fa-flag"></i>{{ data?.nationality }}</div>
-      <div *ngIf="data?.passport_or_id"><i class="fa-solid fa-id-card"></i> {{ data?.passport_or_id }}</div>
-      <div *ngIf="data?.material_status"><i class="fa-solid fa-heart"></i> {{ data?.material_status }}</div>
-      <div *ngIf="data?.minitary_service"><i class="fa-solid fa-shield-halved"></i> {{ data?.minitary_service }}</div>
-      <div *ngIf="data?.driving_license"><i class="fa-solid fa-car"></i> {{ data?.driving_license }}</div>
-      <div *ngIf="data?.gender_or_pronoun"><i class="fa-solid fa-venus-mars"></i> {{ data?.gender_or_pronoun }}</div>
-      <div *ngIf="data?.visa_status"><i class="fa-solid fa-passport"></i> {{ data?.visa_status }}</div>
-    </section>
-
-    <!-- ==== Links ==== -->
-    <ng-container *ngIf="links$ | async as links" class="links-container">
-      <section *ngIf="links?.length" class="links">
-        <ul>
-          <ng-container *ngFor="let link of links">
-            <li *ngIf="link.name && link.name.trim() !== ''" class="link-item-container">
-              <a class="link-item" [href]="link.value" target="_blank" [title]="link.value">
-                <i class="{{ link.icon }}"></i>
-                <span>{{ link.name }}</span>
-              </a>
-            </li>
-          </ng-container>
-        </ul>
-      </section>
-    </ng-container>
-
-    <!-- ==== Content Sections ==== -->
-    <section class="cv-contents" *ngIf="data?.contents?.length">
-      <ng-container *ngFor="let section of data?.contents">
-        <div class="cv-section">
-          <h3>{{ section.content }}</h3>
-          <ng-container *ngFor="let item of section.data">
-            <div class="cv-item">
-              <div class="cv-title" *ngIf="item.title"><strong>{{ item.title }}</strong></div>
-              <div class="cv-subtitle" *ngIf="item.subtitle">{{ item.subtitle }}</div>
-              <div class="cv-meta" *ngIf="item.startYear || item.endYear || item.present || item.city || item.country">
-                <span *ngIf="item.startYear">{{ item.startMonth }}/{{ item.startYear }}</span>
-                <span *ngIf="item.endYear && !item.present"> - {{ item.endMonth }}/{{ item.endYear }}</span>
-                <span *ngIf="item.present"> - Present</span>
-                <span *ngIf="item.city || item.country"> | {{ item.city }} {{ item.country }}</span>
-              </div>
-              <div class="cv-description" *ngIf="item.description">
-                <div [innerHTML]="item.description"></div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-      </ng-container>
-    </section>
-  </div>
-</div>
+</ng-container>
