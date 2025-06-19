@@ -5,9 +5,9 @@
   <h4>Choose the template</h4>
   <p>Get started with a template and then customize it easily</p>
 
-  <div class="template-scroll" #scrollContainer>
-    <div class="template-card" *ngFor="let template of templates">
-      <img [src]="template.image" alt="Template preview" />
+  <div class="template-scroll">
+    <div class="template-card" *ngFor="let template of templates" (click)="selectTemplate(template.name)">
+      <img [src]="template.image" />
     </div>
   </div>
 

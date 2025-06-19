@@ -22,9 +22,9 @@ import {ContentItem, ResumeContent} from '../../models/resume.model';
     CdkDropList,
     NgForOf,
     ShareModule,
-    MatButton,
+
     MatExpansionPanel,
-    MatExpansionPanelActionRow,
+
     MatExpansionPanelTitle,
     MatExpansionPanelHeader,
     MatIconButton,

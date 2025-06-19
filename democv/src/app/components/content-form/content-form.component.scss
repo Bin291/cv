@@ -235,7 +235,7 @@ body {
   min-width: auto;
   padding: 10px;
   border-radius: 15px;
-  border: 1px solid var(--onSurfaceVariant);
+  //border: 1px solid var(--onSurfaceVariant);
 }
 
 .action-buttons {
@@ -319,4 +319,19 @@ body {
     border-radius: 6px;
     cursor: pointer;
   }
+}
+.editable-wrapper {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.editable-box {
+  min-height: 120px;
+  width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  outline: none;
 }

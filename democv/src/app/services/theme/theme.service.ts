@@ -61,4 +61,10 @@ import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
         }
 
 
+
+        applyTemplate(templateName: string) {
+          document.body.classList.remove('cv-template-default', 'cv-template-image', 'cv-template-no-image');
+          document.body.classList.add(`cv-template-${templateName}`);
+        }
+
       }
