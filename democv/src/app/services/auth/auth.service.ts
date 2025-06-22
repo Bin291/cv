@@ -46,4 +46,10 @@ logout() {
       switchMap(u => u ? from(u.getIdToken()) : of(null))
     );
   }
+
+  async getIdTokenAsync(): Promise<string> {
+    const u = await this.getCurrentUser().pipe(switchMap(u => u ? from(u.getIdToken()) : of(null))).toPromise();
+    if (!u) throw new Error('User not authenticated');
+    return u;
+  }
 }

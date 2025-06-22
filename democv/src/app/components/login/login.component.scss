@@ -23,7 +23,9 @@
 
     }
   }
-
+  *{
+    font-family: "Lexend Deca", sans-serif;
+  }
   button:hover{
     background-color: var(--secondary);
     color: var(--onSecondary);

@@ -1,16 +1,20 @@
-<link href="https://fonts.googleapis.com/css2?family=Lexend&family=Roboto&family=Fira+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend&family=Roboto&family=Fira+Sans&display=swap" rel="stylesheet" />
 
-<div class="cv-container" [ngClass]="templateClass" [ngStyle]="{ 'font-family': fontFamily }">
 
-<div class="cv" *ngrxLet="resume$ as data">
 
-    <!-- ✅ Left Sidebar -->
-    <div class="cv-sidebar" *ngIf="templateClass === 'template-brian'">
+
+<div class="cv-container {{templateClass}} {{selectedFontClass}}">
+  <div class="cv-font-wrapper cv-font-{{fontFamily.replace(' ', '-')}}" style="font-family: var(--cv-font-family)">
+  <div class="cv" *ngrxLet="resume$ as data">
+
+
+    <!-- ✅ Sidebar -->
+    <div class="cv-sidebar" *ngIf="templateClass === 'template-brian'" [ngClass]="selectedFontClass">
       <div class="avatar" *ngIf="data?.avatar_url">
         <img [src]="data?.avatar_url" alt="Avatar" />
       </div>
 
-      <section class="sidebar-section personal-info" *ngIf="data">
+      <section class="sidebar-section personal-info" *ngIf="data" [ngClass]="selectedFontClass">
         <p *ngIf="data.date_of_birth"><i class="fa-solid fa-cake-candles"></i> {{ data.date_of_birth }}</p>
         <p *ngIf="data.nationality"><i class="fa-solid fa-flag"></i> {{ data.nationality }}</p>
         <p *ngIf="data.passport_or_id"><i class="fa-solid fa-id-card"></i> {{ data.passport_or_id }}</p>
@@ -21,7 +25,7 @@
         <p *ngIf="data.visa_status"><i class="fa-solid fa-passport"></i> {{ data.visa_status }}</p>
       </section>
 
-      <section class="sidebar-section cv-links" *ngIf="(links$ | async) as links">
+      <section class="sidebar-section cv-links" *ngIf="(links$ | async) as links" [ngClass]="selectedFontClass">
         <ul class="link-list" *ngIf="links.length">
           <ng-container *ngFor="let link of links">
             <li class="link-item" *ngIf="link.name?.trim()">
@@ -35,8 +39,8 @@
     </div>
 
     <!-- ✅ Main Content -->
-    <div class="cv-main">
-      <header class="cv-header">
+    <div class="cv-main" [ngClass]="selectedFontClass">
+      <header class="cv-header" [ngClass]="selectedFontClass">
         <div class="header-info">
           <h2>{{ data?.full_name }}</h2>
           <p class="job-title">{{ data?.job_title }}</p>
@@ -45,14 +49,13 @@
           <p *ngIf="data?.location"><mat-icon>location_on</mat-icon> {{ data?.location }}</p>
         </div>
 
-        <!-- ✅ Avatar ở bên phải -->
+        <!-- ✅ Avatar bên phải -->
         <div class="avatar" *ngIf="data?.avatar_url && templateClass === 'template-anna'">
           <img [src]="data?.avatar_url" alt="Avatar" />
         </div>
       </header>
 
-
-      <section class="cv-contents" *ngIf="data?.contents?.length">
+      <section class="cv-contents" *ngIf="data?.contents?.length" [ngClass]="selectedFontClass">
         <article *ngFor="let section of data?.contents" class="cv-section">
           <h3 class="section-title">{{ section.content }}</h3>
           <div *ngFor="let item of section.data" class="cv-item">
@@ -75,4 +78,5 @@
     </div>
 
   </div>
+</div>
 </div>

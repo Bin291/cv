@@ -11,7 +11,7 @@ import {
   loadAllResumesFailure,
   createResume,
   createResumeSuccess,
-  createResumeFailure,
+  createResumeFailure, updateSelectedFont,
 } from './resume.action';
 import * as ResumeActions from './resume.action';
 import { initialState } from './resume.state';
@@ -159,12 +159,12 @@ export const resumeReducer = createReducer(
 on(ResumeActions.updateResumeInStore, (state, { data }) => ({
   ...state,
   resume: data
-}))
+})),
+  on(updateSelectedFont, (state, { font }) => ({
+    ...state,
+    selectedFont: font
+  }))
 );
 
 
 
-on(ResumeActions.changeFont, (state, { font }) => ({
-        ...(state as object),
-        selectedFont: font
-      }))

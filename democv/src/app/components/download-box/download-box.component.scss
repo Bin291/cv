@@ -1,3 +1,4 @@
+
 .resume-header {
   max-height: 70px;
   width: 100%;
@@ -15,6 +16,7 @@
   max-width: 70%;
   display: flex;
   align-items: center;
+  font-family: 'Lexend Deca', sans-serif;
 }
 .resume-enter{
   width: 100%;
@@ -40,6 +42,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  font-family: 'Lexend Deca', sans-serif;
 }
 
 .download-btn:hover {
@@ -54,9 +57,10 @@
 
     font-size: 18px;
     font-weight: 500;
-    color: #333;
+    color: var(--onSurfaceVariant);
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: 'Lexend Deca', sans-serif;
     white-space: nowrap;
   }
   .icon-btn {
@@ -79,6 +83,7 @@
     padding: 4px 8px;
     border: none;
     border-bottom: 2px solid #ccc;
+    font-family: 'Lexend Deca', sans-serif;
     outline: none;
     transition: border-color 0.2s;
     &::placeholder {

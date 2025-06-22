@@ -60,14 +60,9 @@
     </div>
 
     <!-- Editable area -->
-    <div
-      class="editable-box"
-      contenteditable="true"
-      dir="ltr"
-      #descInput
-      (input)="onContentChange()"
-      spellcheck="true"
-    ></div>
+    <div class="editable-wrapper">
+      <div id="description" contenteditable="true" class="editable-box" dir="ltr" spellcheck="true"></div>
+    </div>
   </div>
 </div>
 

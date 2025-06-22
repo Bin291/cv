@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {InputcontentComponent} from '../../components/inputcontent/inputcontent.component';
 import { EditDetailsComponent } from "../../components/edit-details/edit-details.component";
 import {AsyncPipe, NgIf} from '@angular/common';
-import {DownloadBoxComponent} from '../../components/download-box/download-box.component';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {ContentFormComponent} from '../../components/content-form/content-form.component';
 import {Observable} from 'rxjs';
@@ -24,7 +23,6 @@ import * as ResumeActions from '../../ngrx/resume/resume.action';
     InputcontentComponent,
     EditDetailsComponent,
     NgIf,
-    DownloadBoxComponent,
     MatProgressSpinner,
     LetDirective,
     ContentFormComponent,

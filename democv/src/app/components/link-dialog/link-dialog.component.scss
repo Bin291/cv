@@ -14,7 +14,9 @@ button[mat-button] {
   border-radius: 4px;
   padding: 0.5rem 1rem;
 }
-
+*{
+  font-family: "Lexend Deca", sans-serif;
+}
 button[mat-raised-button] {
   background-color: var(--secondary); // Màu hồng như mẫu
   color: var(--onSecondary); // Màu chữ trắng

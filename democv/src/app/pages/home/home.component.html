@@ -17,8 +17,10 @@
             class="resume-thumb"
             (click)="onEditResume(r.id!)"/>
           <div class="caption">
-            {{ r.resume_name || 'Untitled Resume' }}<br />
-            <small>edited {{ r.updated_at | date:'short' }}</small>
+           <div class="caption-text">
+             {{ r.resume_name || 'Untitled Resume' }}<br />
+             <small>edited {{ r.updated_at | date:'short' }}</small>
+           </div>
             <button class="caption-btn" (click)="deleteResume(r.id!)"><mat-icon >delete</mat-icon></button>
           </div>
         </div>

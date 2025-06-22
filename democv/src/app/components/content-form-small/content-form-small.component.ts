@@ -121,7 +121,11 @@ export class ContentFormSmallComponent implements OnInit{
   }
 
   onContentChange() {
+    // Cập nhật giá trị mô tả HTML khi nội dung thay đổi
+    if (!this.descInput) return;
+    // Lấy nội dung từ descInput và cập nhật descriptionHtml
     this.descriptionHtml = this.descInput.nativeElement.innerHTML;
+
   }
   setDirection(dir: 'ltr' | 'rtl') {
     this.descInput.nativeElement.setAttribute('dir', dir);
@@ -145,7 +149,7 @@ export class ContentFormSmallComponent implements OnInit{
       ...this.formValues,
       title: this.formValues['title'] || '',
       subtitle: this.formValues['subtitle'] || '',
-      description: this.getFormattedHtml()
+      description: this.getDescriptionText()
     };
   }
 
@@ -168,6 +172,7 @@ export class ContentFormSmallComponent implements OnInit{
     return el?.innerHTML || '';
   }
   saveItem(): void {
+// const descriptionHTML = this.getDescriptionText();
     const descriptionEl = document.getElementById('description');
     const descriptionHTML = descriptionEl?.innerHTML || '';
 

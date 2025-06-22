@@ -12,21 +12,14 @@ import {LinkModel} from '../../models/link.model';
 export class ResumeService {
   private _resume$ = new BehaviorSubject<ResumeModel | null>(null);
   resume$ = this._resume$.asObservable();
-
   private api = environment.apiUrl + 'resume';
-
   constructor(private http: HttpClient, private authService: AuthService) {}
-
-  // updateResume(id: string, data: Partial<ResumeModel>): Observable<any> {
-  //   return this.http.patch(`${this.api}/${id}`, data,);
-  // }
   updateResume(id: string, data: Partial<ResumeModel>): Observable<ResumeModel> {
     return this.http.patch<ResumeModel>(`${this.api}/${id}`, data)
       .pipe(
         tap(r => this._resume$.next(  r))
       );
   }
-
   createResume(data: Partial<ResumeModel>): Observable<ResumeModel> {
     return this.authService.getCurrentUser().pipe(
       take(1),
@@ -48,39 +41,30 @@ export class ResumeService {
       )
     );
   }
-
   getResume(id: string): Observable<ResumeModel> {
     return this.http.get<ResumeModel>(`${this.api}/${id}`);
   }
   update(id: string, dto: { resume_name?: string }): Observable<ResumeModel> {
     return this.http.patch<ResumeModel>(`${this.api}/${id}`, dto);
   }
-
   getMyResumes(uid: string): Observable<ResumeModel[]> {
     // http://…/resume/user/:uid
     return this.http.get<ResumeModel[]>(`${this.api}/user/${uid}`, {
       headers: { Authorization: `Bearer ${this.authToken()}` }
     });
   }
-
   private authToken(): string {
     return localStorage.getItem('idToken') || '';
   }
-
   getAllByUser(uid: string): Observable<ResumeModel[]> {
     return this.http.get<ResumeModel[]>(`${this.api}/${uid}`);
   }
-
   deleteResume(id: string): Observable<void> {
     return this.http.delete<void>(`${this.api}/${id}`, {
       headers: { Authorization: `Bearer ${this.authToken()}` }
     });
   }
-
   getResumeLinks(id: string): Observable<LinkModel[]> {
     return this.http.get<LinkModel[]>(`${this.api}/${id}/links`);
   }
-
-
-
 }

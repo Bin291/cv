@@ -88,3 +88,7 @@ export const changeFont = createAction(
   '[Customize] Change Font',
   props<{ font: string }>()
 );
+export const updateSelectedFont = createAction(
+  '[Resume] Update Selected Font',
+  props<{ font: string }>()
+);
