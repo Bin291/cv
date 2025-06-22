@@ -68,7 +68,8 @@ mat-action-row {
 .item-card {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  height: fit-content;
   padding: 12px 16px;
   border-radius: 8px;
   background-color: white;
@@ -93,12 +94,22 @@ mat-action-row {
     .description {
       font-size: 0.875rem;
       color: #333;
+
+      span{
+        max-width: 100%;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+      }
     }
+
   }
 
   .action-icons {
     display: flex;
     align-items: center;
+
     gap: 8px;
 
     .preview-icon {

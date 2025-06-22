@@ -1,11 +1,26 @@
-import {Component, OnInit, ViewChild, ElementRef, Inject, PLATFORM_ID} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Inject,
+  PLATFORM_ID,
+  AfterViewInit,
+  ChangeDetectorRef
+} from '@angular/core';
 import { ResumeService } from '../../services/resume/resume.service';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {ShareModule} from '../../../shared/shared.module';
 import {isPlatformBrowser} from '@angular/common';
 import {ResumeModel} from '../../models/resume.model';
+import { Router } from '@angular/router';
+declare const html2pdf: any;
+import jsPDF from 'jspdf';
 
+import html2canvas from 'html2canvas';
+
+import {CvPrintComponent} from '../cv-print/cv-print.component';
 @Component({
   selector: 'app-download-box',
   templateUrl: './download-box.component.html',
@@ -13,11 +28,15 @@ import {ResumeModel} from '../../models/resume.model';
     MatIconButton,
     MatIcon,
     ShareModule,
-    MatButton
+    MatButton,
+    CvPrintComponent
   ],
   styleUrls: ['./download-box.component.scss']
 })
-export class DownloadBoxComponent implements OnInit {
+export class DownloadBoxComponent implements OnInit , AfterViewInit {
+  showCvPrint = false;
+
+  @ViewChild('cvPrintRef') cvPrintRef!: ElementRef;
   resumeName = '';        // biến hiển thị / edit
   private originalName = '';  // lưu tạm để restore khi Cancel
   editing = false;
@@ -29,7 +48,9 @@ export class DownloadBoxComponent implements OnInit {
 
   constructor(
     private resumeService: ResumeService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router:Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -63,6 +84,9 @@ export class DownloadBoxComponent implements OnInit {
       return this.cancel();
     }
 
+
+
+
     // 1. Lưu tạm bản gốc để nếu lỗi còn restore được
     this.originalName = this.resumeName;
 
@@ -84,11 +108,34 @@ export class DownloadBoxComponent implements OnInit {
       });
   }
 
+  async downloadPDF(): Promise<void> {
+    if (typeof window === 'undefined') return;
 
+    const html2pdf = await import('html2pdf.js');
+    const element = document.querySelector('.cv') as HTMLElement;
+    if (!element) return;
+
+    const opt = {
+      margin: 0,
+      filename: 'resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf.default().from(element).set(opt).save();
+  }
+
+
+  ngAfterViewInit() {
+    // Kiểm tra DOM có tồn tại
+    console.log('cv-print có tồn tại:', this.cvPrintRef?.nativeElement);
+  }
 
   cancel(): void {
     // restore về giá trị gốc
     this.resumeName = this.originalName;
     this.editing = false;
   }
+
 }

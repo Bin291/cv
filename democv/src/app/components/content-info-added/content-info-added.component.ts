@@ -35,7 +35,7 @@ import {ContentItem, ResumeContent} from '../../models/resume.model';
 export class ContentInfoAddedComponent {
   // @Input() contentData!: { content: string; data: any[] };
   @Output() editItem = new EventEmitter<{ content: string; data: any }>();
-  isOpen = true;
+  isOpen = false;
   @Output() itemsChange = new EventEmitter<any[]>(); // định nghĩa đúng
   @Input() contentData!: ResumeContent ;
   constructor(private addContentService: AddContentService) {}

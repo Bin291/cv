@@ -246,7 +246,6 @@ export class ContentFormComponent  implements OnInit {
       present: this.present,
       description: descriptionHTML,
     };
-
     this.save.emit(newItem);
   }
 

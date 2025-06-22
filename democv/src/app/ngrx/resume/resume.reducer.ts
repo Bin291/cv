@@ -156,13 +156,15 @@ export const resumeReducer = createReducer(
     loading: false,
     error,
   })),
-  on(ResumeActions.updateResumeInStore, (state, { data }) => ({
-    ...state,
-    resume: data
-  }))
-
-
+on(ResumeActions.updateResumeInStore, (state, { data }) => ({
+  ...state,
+  resume: data
+}))
 );
 
 
 
+on(ResumeActions.changeFont, (state, { font }) => ({
+        ...(state as object),
+        selectedFont: font
+      }))

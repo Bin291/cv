@@ -1,10 +1,10 @@
-<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bungee+Shade&family=Caveat&family=Caveat+Brush&family=Comfortaa&family=Elsie&family=Lobster&family=Pacifico&family=Parisienne&family=Vibur&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bungee+Shade&family=Caveat&family=Caveat+Brush&family=Comfortaa&family=Elsie&family=Lobster&family=Pacifico&family=Parisienne&family=Vibur&display=swap" rel="stylesheet">
 
 <div class="font-selector">
   <h2>Font</h2>
 
-  <!-- Font Type Selection -->
+  <!-- Font Type -->
   <div class="font-type-group">
     <div
       *ngFor="let type of fontTypes"
@@ -16,14 +16,16 @@
     </div>
   </div>
 
-  <!-- Font Family Selection -->
+  <!-- Font Family -->
+  <!-- Font Family -->
   <div class="font-family-group">
     <button
       *ngFor="let font of fontFamilies"
       [class.active]="selectedFontFamily === font"
       [style.fontFamily]="font"
-      (click)="selectFont(font)">
+      (click)="selectFontFamily(font)">
       {{ font }}
     </button>
   </div>
+
 </div>

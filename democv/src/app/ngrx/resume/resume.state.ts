@@ -6,6 +6,7 @@ export interface ResumeState {
   resume: ResumeModel | null;      // selected / current
   loading: boolean;
   error: any;
+  selectedFont: string;
 }
 
 export const initialState: ResumeState = {
@@ -13,4 +14,5 @@ export const initialState: ResumeState = {
   resume: null,
   loading: false,
   error: null,
+  selectedFont: 'Lexend',
 };

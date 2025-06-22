@@ -36,6 +36,8 @@ export class TemplateSelectorComponent {
   templates = [
     { name: 'brian', image: 'https://prod.flowcvassets.com/resume-templates/wk78myowij2vvh1gy8l-s/2560.webp' },
     { name: 'andrew', image: 'https://prod.flowcvassets.com/resume-templates/gs_qryrzly3kldmqhxqsb/2560.webp' },
+    { name: 'anna', image: 'https://prod.flowcvassets.com/resume-templates/pgcuzlm0skbwabfnppg3b/2560.webp' },
+    { name: 'lara', image: 'https://prod.flowcvassets.com/resume-templates/yrf-1jligslm-ta_zmyji/2560.webp' },
   ];
 
 

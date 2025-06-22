@@ -25,4 +25,8 @@ export const routes: Routes = [
     path:'customize',
     loadChildren: () => import('./pages/customize/customize.routes').then(m => m.customizeRoutes),
   },
+  {
+    path:'cv-print',
+    loadChildren: () => import('./components/cv-print/cv-print.routes').then(m => m.CvPrintRoutes),
+  }
 ];

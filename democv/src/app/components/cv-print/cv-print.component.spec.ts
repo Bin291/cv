@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CvPageComponent } from './cv-page.component';
+import { CvPrintComponent } from './cv-print.component';
 
-describe('CvPageComponent', () => {
-  let component: CvPageComponent;
-  let fixture: ComponentFixture<CvPageComponent>;
+describe('CvPrintComponent', () => {
+  let component: CvPrintComponent;
+  let fixture: ComponentFixture<CvPrintComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CvPageComponent]
+      imports: [CvPrintComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CvPageComponent);
+    fixture = TestBed.createComponent(CvPrintComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

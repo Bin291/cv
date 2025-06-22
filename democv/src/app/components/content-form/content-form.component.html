@@ -100,6 +100,10 @@
       <button (click)="formatText('underline')"><mat-icon>format_underlined</mat-icon></button>
       <button (click)="formatText('insertUnorderedList')"><mat-icon>format_list_bulleted</mat-icon></button>
       <button (click)="formatText('insertOrderedList')"><mat-icon>format_list_numbered</mat-icon></button>
+      <button mat-icon-button (click)="formatText('justifyLeft')"><mat-icon>format_align_left</mat-icon></button>
+      <button mat-icon-button (click)="formatText('justifyCenter')"><mat-icon>format_align_center</mat-icon></button>
+      <button mat-icon-button (click)="formatText('justifyRight')"><mat-icon>format_align_right</mat-icon></button>
+      <button mat-icon-button (click)="formatText('justify')"><mat-icon>format_align_justify</mat-icon></button>
       <button (click)="showLinkInput1 = true"><mat-icon>link</mat-icon></button>
     </div>
 
@@ -112,6 +116,7 @@
     <div class="editable-wrapper">
       <div id="description" contenteditable="true" class="editable-box" dir="ltr" spellcheck="true"></div>
     </div>
+
 
   </div>
 </div>

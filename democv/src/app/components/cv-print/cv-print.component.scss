@@ -1,0 +1,30 @@
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  .cv-container {
+    box-shadow: none !important;
+    background: white;
+  }
+
+  .cv {
+    page-break-after: always;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    width: 794px;
+    height: 1123px; // A4
+    margin: 0 auto;
+  }
+
+  button, .toolbar, .template-selector {
+    display: none !important;
+  }
+}

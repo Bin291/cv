@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {NgForOf} from '@angular/common';
-import {FontService} from '../../services/font/font.service';
 
 @Component({
   selector: 'app-font',
@@ -11,30 +10,25 @@ import {FontService} from '../../services/font/font.service';
   styleUrl: './font.component.scss'
 })
 export class FontComponent {
-  @Output() fontChange = new EventEmitter<string>();
-
-  fontFamilies: string[] = [
-    'Lexend', 'Roboto', 'Open Sans', 'Lato',
-    'Caveat', 'Pacifico', 'Comfortaa', 'Lobster'
+  @Output() fontChanged = new EventEmitter<string>();
+  fontTypes = ['Serif', 'Sans', 'Mono'];
+  fontFamilies = [
+    'Source Sans Pro', 'Karla', 'Mulish',
+    'Lato', 'Titillium Web', 'Work Sans',
+    'Barlow', 'Jost', 'Fira Sans',
+    'Roboto', 'Rubik', 'Asap',
+    'Nunito', 'Open Sans', 'Lexend',
   ];
 
-  selectedFontFamily = 'Roboto';
-  fontTypes = ['Sans-serif', 'Serif', 'Handwritten'];
-  selectedFontType = '';
+  selectedFontType = 'Sans';
+  selectedFontFamily = 'Lexend';
 
-  constructor(private fontService: FontService) {}
-
-  selectFont(font: string): void {
-    this.selectedFontFamily = font;
-    this.fontService.setFontClass(font);
+  selectFontType(type: string) {
+    this.selectedFontType = type;
   }
 
-
-
-
-
-  selectFontType(type: string): void {
-    this.selectedFontType = type;
-    // Nếu muốn lọc fontFamilies theo type thì xử lý tại đây
+  selectFontFamily(font: string) {
+    this.selectedFontFamily = font;
+    this.fontChanged.emit(font);
   }
 }

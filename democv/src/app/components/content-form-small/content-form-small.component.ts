@@ -5,11 +5,11 @@ import {MatIcon} from '@angular/material/icon';
 import {ContentItem} from '../../models/resume.model';
 
 type SmallFormKey =
-  | 'Skills'
-  | 'Languages'
-  | 'Certificates'
-  | 'Awards'
-  | 'Publications';
+    | 'Skills'
+    | 'Languages'
+    | 'Certificates'
+    | 'Awards'
+    | 'Publications';
 
 interface SmallFormConfig {
   title: string;
@@ -41,6 +41,7 @@ export class ContentFormSmallComponent implements OnInit{
   @Output() save = new EventEmitter<ContentItem>();
 
   name = '';
+
   @Input() itemId?: number;
   selectedLevel = '';
   dropdownOpen = false;
@@ -101,8 +102,8 @@ export class ContentFormSmallComponent implements OnInit{
 
 
   ngOnInit(): void {
-     this.selectedConfig = this.formConfigSmall[this.selectedContentName as SmallFormKey];
-}
+    this.selectedConfig = this.formConfigSmall[this.selectedContentName as SmallFormKey];
+  }
 
   toggleFormat(command: string) {
     document.execCommand(command, false, undefined);
@@ -160,8 +161,15 @@ export class ContentFormSmallComponent implements OnInit{
       if (el) el.innerHTML = data.description || '';
     });
   }
+
+
+  getDescriptionText(): string {
+    const el = document.getElementById('description');
+    return el?.innerHTML || '';
+  }
   saveItem(): void {
-    const descriptionHTML = this.descInput?.nativeElement?.innerHTML || '';
+    const descriptionEl = document.getElementById('description');
+    const descriptionHTML = descriptionEl?.innerHTML || '';
 
     const newItem: ContentItem = {
       id: this.itemId ?? 0,

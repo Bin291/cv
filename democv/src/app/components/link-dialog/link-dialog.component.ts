@@ -38,7 +38,7 @@ export class LinkDialogComponent {
 
   onAdd(): void {
     if (this.data.value) {
-      this.dialogRef.close(this.data.value); // Trả về value (URL) khi nhấn Add
+      this.dialogRef.close(this.data.value || 'invalid'); // Trả về value (URL) khi nhấn Add
     }
   }
 }

@@ -1,8 +1,5 @@
-<link href="https://fonts.googleapis.com/css2?family=Lexend&family=Roboto&family=Fira+Sans&display=swap" rel="stylesheet">
-
-<div class="cv-container" [ngClass]="templateClass" [ngStyle]="{ 'font-family': fontFamily }">
-
-<div class="cv" *ngrxLet="resume$ as data">
+<div class="cv-container" [ngClass]="templateClass">
+  <div class="cv" *ngrxLet="resume$ as data">
 
     <!-- ✅ Left Sidebar -->
     <div class="cv-sidebar" *ngIf="templateClass === 'template-brian'">
@@ -44,13 +41,7 @@
           <p *ngIf="data?.phone"><mat-icon>phone</mat-icon> {{ data?.phone }}</p>
           <p *ngIf="data?.location"><mat-icon>location_on</mat-icon> {{ data?.location }}</p>
         </div>
-
-        <!-- ✅ Avatar ở bên phải -->
-        <div class="avatar" *ngIf="data?.avatar_url && templateClass === 'template-anna'">
-          <img [src]="data?.avatar_url" alt="Avatar" />
-        </div>
       </header>
-
 
       <section class="cv-contents" *ngIf="data?.contents?.length">
         <article *ngFor="let section of data?.contents" class="cv-section">

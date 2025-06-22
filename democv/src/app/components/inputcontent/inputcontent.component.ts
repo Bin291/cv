@@ -51,14 +51,14 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
   resumeData!: ResumeModel | null;
   savedContents: { content: string; data: any }[] = [];
   constructor(private dialog: MatDialog, private store: Store<{
-    addContent: AddContentState,
-    resume:ResumeState
-  }>, private imageShareService: ImageShareService,
+                addContent: AddContentState,
+                resume:ResumeState
+              }>, private imageShareService: ImageShareService,
               private addContentService: AddContentService,
               private resumeService: ResumeService
-              ) {
+  ) {
 
-     this.contentList$ = this.store.select('addContent','addContent')
+    this.contentList$ = this.store.select('addContent','addContent')
     this.store.dispatch(AddContentActions.loadAddContents());
 
     this.imageShareService.croppedImage$.subscribe((img) => {
@@ -126,7 +126,6 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
 
   }
 
-
   onUpdateContent(updated: ResumeContent): void {
     this.store.select('resume').pipe(take(1)).subscribe((resumeState) => {
       const resume = resumeState.resume;
@@ -151,15 +150,14 @@ export class InputcontentComponent implements  OnInit, AfterViewInit{
 
 
 
-
   @ViewChild(ContentDialogComponent) contentDialog!: ContentDialogComponent;
 
 
   openDialogContent() {
-const dialogRef = this.dialog.open(ContentDialogComponent, {
-  width: '840px',
-  minWidth: '1000px',
-});
+    const dialogRef = this.dialog.open(ContentDialogComponent, {
+      width: '840px',
+      minWidth: '1000px',
+    });
     dialogRef.componentInstance.contentSelected = new EventEmitter<string>();
     dialogRef.componentInstance.contentSelected.subscribe((selectedName) => {
       this.addContentService.selectContent(selectedName);  // Lưu tên content đã chọn

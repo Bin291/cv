@@ -26,7 +26,6 @@ links?: LinkModel[];
   contents: ResumeContent[];
 }
 
-
 export interface ResumeContent {
   content: string;           // Tên loại nội dung, ví dụ: 'Education', 'Skills'
   data: ContentItem[];       // Danh sách item của mỗi loại
