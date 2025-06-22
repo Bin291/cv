@@ -74,3 +74,23 @@ npm install @ngrx/component
 ```bash
 npm install @angular/cdk
 ```
+
+# install html2canvas
+
+```bash
+npm install html2canvas jspdf --legacy-peer-deps
+```
+
+# install html2pdf.js
+
+```bash
+npm install html2pdf.js --legacy-peer-deps
+```
+
+Trong trưởng hợp không thấy @angular-devkit/build-angular và angular core common 
+
+```bash
+npm install --save-dev @angular-devkit/build-angular
+npm install @angular/core @angular/common @angular/compiler @angular/platform-browser @angular/platform-browser-dynamic @angular/router
+
+```

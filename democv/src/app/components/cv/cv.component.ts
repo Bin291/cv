@@ -95,6 +95,8 @@ export class CVComponent implements OnInit, OnDestroy{
 
     this.store.select(state => state.resume.selectedFont)
       .subscribe(font => this.fontFamily = font);
+    console.log("Font family:", this.fontFamily);
+
   }
 
 
