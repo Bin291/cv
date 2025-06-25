@@ -13,7 +13,85 @@
   left: 0;
   width: 15%;
   height: 100%;
-  padding: 2% 0 0 2%;
+  padding: 2% 0 0 2%;.app-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+  .column1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 15%;
+    height: 100%;
+    padding: 2% 0 0 2%;
+    z-index: 10;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+
+    &.column1-home {
+      display: none;
+    }
+  }
+
+  .column2 {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 85%;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 2% 2% 0 0;
+    border-radius: 10px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+  }
+
+  .column3 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 47%;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 2% 2% 2% 0;
+    border-radius: 10px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+  }
+
+  // ✅ Nếu có column3 thì column2 thu nhỏ lại
+  .column2:has(+ .column3) {
+    width: 38%;
+    margin-right: 0;
+  }
+
+  // ✅ Nếu KHÔNG có column1 thì column2 chiếm full chiều ngang
+  .app-container:not(:has(.column1)) .column2 {
+    left: 0;
+    width: 100%;
+  }
+
+  // ✅ Nếu KHÔNG có column3 thì column2 chiếm phần còn lại
+  .app-container:not(:has(.column3)) .column2 {
+    width: calc(100% - 15%);
+  }
+
   z-index: 10;
   box-sizing: border-box;
   display: flex;
@@ -63,7 +141,8 @@
 }
 
 
-.column2:has(+ .column3) {
+.column2:has(+ .column3 ) {
   width: 38%;
+  overflow-y: auto;
   margin-right: 0;
 }
