@@ -13,20 +13,73 @@ import {AuthModel} from '../../models/auth.model';
 export class AuthService {
 
   constructor(private auth: Auth, private http: HttpClient) {}
-loginWithGoogle() {
-      return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
-        switchMap(() => {
-          window.location.reload();
-          return of(null);
-        }),
-        catchError((error) => {
-          return of(GoogleAuthProvider.credentialFromError(error));
-        })
-      );
-    }
+  loginWithGoogle(): Observable<AuthModel | null> {
+    return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
+      switchMap((result) => {
+        const user = result.user;
+        if (!user) return of(null);
+
+        return from(user.getIdToken()).pipe(
+          switchMap(idToken => {
+            const authData: AuthModel = {
+              idToken: idToken ?? null,
+              uid: user.uid ?? null,
+              email: user.email ?? null,
+              displayName: user.displayName ?? null,
+              photoURL: user.photoURL ?? null
+            };
+            window.location.reload();
+            return of(authData);
+          })
+        );
+      }
+
+      ),
+      catchError((error) => {
+        console.error('Google login failed:', error);
+        return of(null);
+      })
+    );
+  }
 
 
-logout() {
+  // loginWithGoogle() {
+  //   return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
+  //     switchMap(result => {
+  //       const user = result.user;
+  //       if (!user) return of(null);
+  //
+  //       // Lấy idToken bằng Observable
+  //       return from(user.getIdToken()).pipe(
+  //         switchMap(idToken => {
+  //           const authData: AuthModel = {
+  //             idToken: idToken,
+  //             uid: user.uid,
+  //             displayName: user.displayName || '',
+  //             email: user.email || '',
+  //             photoURL: user.photoURL || ''
+  //           };
+  //
+  //           // Gọi API auth nếu cần
+  //           return this.getAuth(idToken).pipe(
+  //             switchMap(apiResult => {
+  //
+  //               // Gộp kết quả nếu muốn
+  //               return of(authData); // hoặc of(apiResult) nếu bạn dùng API trả về
+  //             })
+  //           );
+  //         })
+  //       );
+  //     }),
+  //     catchError(error => {
+  //       console.error('Login failed:', error);
+  //       return of(null);
+  //     })
+  //   );
+  // }
+
+
+  logout() {
       return this.auth.signOut().then(() => window.location.reload());
     }
   /** Trả về Observable<AuthModel> rõ ràng */

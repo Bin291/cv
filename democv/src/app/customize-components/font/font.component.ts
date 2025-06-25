@@ -15,6 +15,8 @@ import { User } from '@angular/fire/auth';
 import { AuthModel } from '../../models/auth.model';
 import { AuthService } from '../../services/auth/auth.service';
 import { AuthState } from '../../ngrx/auth/auth.state';
+import {Font} from 'jspdf';
+import {FontService} from '../../services/font/font.service';
 
 @Component({
   selector: 'app-font',
@@ -27,12 +29,22 @@ export class FontComponent implements OnInit {
   @Output() fontChanged = new EventEmitter<string>();
   fontTypes = ['Serif', 'Sans', 'Mono'];
   fontFamilies = [
-    'Source Sans Pro', 'Karla', 'Mulish',
-    'Lato', 'Titillium Web', 'Work Sans',
-    'Barlow', 'Jost', 'Fira Sans',
-    'Roboto', 'Rubik', 'Asap',
-    'Nunito', 'Open Sans', 'Lexend',
+    // 👔 Truyền thống, dễ đọc, nghiêm túc
+    'Source Sans Pro', 'Karla', 'Fira Sans',
+
+    // 🧊 Hiện đại phổ biến (Web/App)
+    'Roboto', 'Open Sans', 'Lato',
+
+    // 🟣 Sáng tạo nhẹ, tinh tế
+    'Work Sans', 'Jost', 'Mulish',
+
+    // 🟡 Geometric / Techy – dành cho startup hoặc tiêu đề
+    'Lexend', 'Nunito', 'Rubik',
+
+    // 🟠 Cá tính nhẹ, dùng cho phần phụ / tiêu đề phụ
+    'Titillium Web', 'Asap', 'Barlow'
   ];
+
   user$!: Observable<User | null>;
   selectedFontType = 'Sans';
   selectedFontFamily = 'Lexend';
@@ -43,32 +55,23 @@ export class FontComponent implements OnInit {
     private store: Store<{ auth: AuthState }>,
     private auth: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object,
+    private fontService: FontService,
   ) {
     this.auth$ = this.store.select(s => s.auth.authData);
+    this.store.dispatch(updateSelectedFont({ font: this.selectedFontFamily }));
+
   }
 
   selectFontType(type: string) {
     this.selectedFontType = type;
   }
 
-  async selectFontFamily(font: string) {
+  selectFontFamily(font: string) {
     this.selectedFontFamily = font;
-    this.fontChanged.emit(font);
-
-    if (isPlatformBrowser(this.platformId)) {
-      const resumeId = localStorage.getItem('resume_id');
-      if (resumeId) {
-        try {
-          const req$ = await this.styleService.update(resumeId, { fontFamily: font });
-          req$.subscribe();
-        } catch (err) {
-          console.error('❌ Error updating font style:', err);
-        }
-      }
-    }
-
-    this.store.dispatch(updateSelectedFont({ font }));
+    console.log('[FONT] Font được chọn:', font);
+    this.fontService.setFont(font); // hoặc emit để set `selectedFontClass`
   }
+
 
   async ngOnInit() {
     this.user$ = this.auth.getCurrentUser();

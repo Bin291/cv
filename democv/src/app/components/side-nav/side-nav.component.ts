@@ -10,6 +10,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../models/auth.model';
 import * as AuthActions from '../../ngrx/auth/auth.actions';
+import {clearState} from '../../ngrx/auth/auth.actions';
 
 @Component({
   selector: 'app-side-nav',
@@ -84,8 +85,13 @@ export class SideNavComponent implements OnInit {
   }
 
   logout() {
-    this.auth.signOut();
+    this.auth.signOut().then(() => {
+      localStorage.clear(); // nếu bạn có lưu gì vào localStorage
+      this.store.dispatch(clearState()); // hoặc logoutSuccess nếu bạn có
+      window.location.reload(); // tùy chọn
+    });
   }
+
 
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;

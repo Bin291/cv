@@ -5,12 +5,17 @@ body {
   margin: 0;
   padding: 20px;
   border-radius: 8px;
+  font-family: 'Lexend Deca', sans-serif;
 }
-
+.resume-container{
+  font-family: 'Lexend Deca', sans-serif;
+}
 p {
   color: var(--onBackground);
   font-size: 36px;
   margin-bottom: 30px;
+  font-family: 'Lexend Deca', sans-serif;
+
 }
 
 h3 {
@@ -41,6 +46,7 @@ h3 {
   justify-content: space-between;
   box-sizing: border-box;
   cursor: pointer;
+  font-family: 'Lexend Deca', sans-serif;
 }
 
 .resume-card img {
@@ -61,6 +67,8 @@ h3 {
   cursor: pointer;
   height: 100%;
   max-height: 475px;
+  font-family: 'Lexend Deca', sans-serif;
+  min-height: 380px;
   color: var(--onBackground);
   border-radius: 8px;
   text-align: center;
@@ -113,6 +121,22 @@ display: flex;
 .caption-btn:hover {
   color: var(--background);
   background-color: red;
+}
+.login-box {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.login-button {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .caption-text{

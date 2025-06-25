@@ -1,31 +1,49 @@
+<!-- Nếu đang loading -->
+@if (isLoading$ | async) {
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+} @else {
 
-  <ng-container *ngrxLet="resumes$ as resumes">
-    <h3>My Resume</h3>
-    <div class="grid-container">
-      <!-- New Resume card -->
-      <div class="new-resume" (click)="onCreateResume()">
-        <mat-icon>add</mat-icon>
-        <span>New resume</span>
-      </div>
+  <!-- Nếu chưa đăng nhập -->
+  @if (!(isLoggedIn$ | async)) {
+    <app-login></app-login>
+  } @else {
 
-      <!-- Resume previews -->
-      <ng-container *ngFor="let r of resumes" >
-        <div class="resume-card" >
-          <img
-            [src]="r.avatar_origin || defaultThumbnail"
-            alt="Resume Preview"
-            class="resume-thumb"
-            (click)="onEditResume(r.id!)"/>
-          <div class="caption">
-           <div class="caption-text">
-             {{ r.resume_name || 'Untitled Resume' }}<br />
-             <small>edited {{ r.updated_at | date:'short' }}</small>
-           </div>
-            <button class="caption-btn" (click)="deleteResume(r.id!)"><mat-icon >delete</mat-icon></button>
-          </div>
+    <!-- Nếu đã đăng nhập -->
+    <ng-container *ngrxLet="resumes$ as resumes" class="resume-container">
+      <h3>My Resume</h3>
+      <div class="grid-container">
+
+        <!-- New Resume -->
+        <div class="new-resume" (click)="onCreateResume()">
+          <mat-icon>add</mat-icon>
+          <span>New resume</span>
         </div>
-      </ng-container>
-    </div>
-  </ng-container>
 
+        <!-- Resume list -->
+        <ng-container *ngFor="let r of resumes">
+          <div class="resume-card">
+            <img
+              [src]="r.avatar_origin || defaultThumbnail"
+              alt="Resume Preview"
+              class="resume-thumb"
+              (click)="onEditResume(r.id!)"
+            />
+            <div class="caption">
+              <div class="caption-text">
+                {{ r.resume_name || 'Untitled Resume' }}<br />
+                <small>edited {{ r.updated_at | date: 'short' }}</small>
+              </div>
+              <button class="caption-btn" (click)="deleteResume(r.id!)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </ng-container>
 
+      </div>
+    </ng-container>
+
+  }
+}

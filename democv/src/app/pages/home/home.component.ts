@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {Component, OnInit, OnDestroy, inject, ChangeDetectorRef} from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Subscription, Observable, of } from 'rxjs';
+import {Subscription, Observable, of, map, from} from 'rxjs';
 import {take, switchMap, filter, tap} from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -20,12 +20,14 @@ import { ResumeState } from '../../ngrx/resume/resume.state';
 import { AuthState }   from '../../ngrx/auth/auth.state';
 import {MatIcon} from '@angular/material/icon';
 import {LetDirective} from '@ngrx/component';
-import {DatePipe, NgForOf} from '@angular/common';
+import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
 import {Actions, ofType} from '@ngrx/effects';
 import {User} from '@angular/fire/auth';
 import {LoginComponent} from '../../components/login/login.component';
 import {MatButton} from '@angular/material/button';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {storeAuth} from '../../ngrx/auth/auth.actions';
 
 
 
@@ -39,6 +41,10 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     DatePipe,
     NgForOf,
 
+    AsyncPipe,
+    MatProgressSpinner,
+    LoginComponent,
+
 
   ],
   styleUrls: ['./home.component.scss']
@@ -49,9 +55,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   private authService   = inject(AuthService);
   private router        = inject(Router);
   private subs          = new Subscription();
-isLoading = false;
-  subcription: Subscription[] = [];
+  isLoading$ !: Observable<boolean>;
+  authData: AuthModel | null = null;
 
+  isLoading = false;
+  isLoggedIn$: Observable<boolean> | undefined;
+  subcription: Subscription[] = [];
+  isLoggedIn: boolean = false;
   // Select thẳng state
   resumes$!: Observable<ResumeModel[]>;
   auth$   !: Observable<AuthModel | null>;
@@ -59,45 +69,65 @@ isLoading = false;
   user$!: Observable<User | null>;
   defaultThumbnail = '../../assets/logos/Frame 5.png';
 
-  constructor(private auth: AuthService, resumeService: ResumeService, private snakbar: MatSnackBar) {
+  constructor(private auth: AuthService, resumeService: ResumeService, private snakbar: MatSnackBar, private cdr: ChangeDetectorRef) {
     this.resumes$ = this.store.select(s => s.resume.resumes);
+
     this.auth$    = this.store.select(s => s.auth.authData);
   }
 
   ngOnInit() {
-    // Load danh sách resume khi vào trang
     this.user$ = this.auth.getCurrentUser();
     this.store.dispatch(loadAllResumes());
 
-    // Debug auth
+    // ✅ Khôi phục auth từ Firebase sau reload
+    // Khôi phục Auth từ Firebase khi load lại trang
+    this.auth.getCurrentUser().pipe(
+      switchMap(user => {
+        if (!user) return of(null);
+        return from(user.getIdToken()).pipe(
+          map(idToken => ({
+            idToken,
+            uid: user.uid ?? null,
+            email: user.email ?? null,
+            displayName: user.displayName ?? null,
+            photoURL: user.photoURL ?? null
+          }))
+        );
+      })
+    ).subscribe(authData => {
+      if (authData) {
+        this.store.dispatch(storeAuth({ authData }));
+      }
+    });
+
+
+    // Đồng bộ authData để dùng trong template
     this.subs.add(
-      this.auth$
-        .pipe(filter(a => !!a))
-        .subscribe(a => console.log('[Auth]', a))
+      this.auth$.subscribe(auth => {
+        this.authData = auth;
+      })
     );
 
-    // Bắt lỗi khi createResume thất bại
+    // Xử lý lỗi tạo CV
     this.subs.add(
       this.actions$.pipe(
         ofType(createResumeFailure),
         tap(({ error }) => {
-          console.error('Tạo resume lỗi:', error);
           this.snakbar.open('Tao resume thất bại: ' + error, 'Hide', {
             duration: 3000,
             panelClass: ['snackbar-error'],
             verticalPosition: 'top',
             horizontalPosition: 'right',
-          })
+          });
         })
-      )
-        .subscribe(),
-
+      ).subscribe()
     );
 
-
+    this.isLoggedIn$ = this.store.select(state => !!state.auth.authData);
   }
 
-deleteResume(id: string): void {
+
+  deleteResume(id: string): void {
       this.store.dispatch(deleteResume({ id }));
 
       this.router.navigate(['']);
@@ -143,4 +173,32 @@ deleteResume(id: string): void {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+  loginWithGoogle(): void {
+    this.auth.loginWithGoogle().subscribe({
+      next: (authData) => {
+        if (authData) {
+          this.store.dispatch(storeAuth({ authData }));
+          window.localStorage.setItem('authData', JSON.stringify(authData));
+          this.isLoggedIn = true; // Cập nhật trạng thái đăng nhập
+          //reload window
+          window.location.reload();
+          this.router.navigate(['/']);
+          this.cdr.detectChanges(); // 👈 Bắt buộc để template phản ứng
+
+        }
+      },
+      error: (err) => {
+        console.error('Đăng nhập thất bại:', err);
+        this.snakbar.open('Đăng nhập thất bại', 'Đóng', {
+          duration: 3000,
+          panelClass: ['snackbar-error'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+        });
+      }
+    });
+  }
+
+
+
 }

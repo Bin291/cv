@@ -1,10 +1,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend&family=Roboto&family=Fira+Sans&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Lexend&family=Roboto&family=Fira+Sans&family=Work+Sans&family=Nunito&family=Open+Sans&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Lexend&family=Roboto&family=Fira+Sans&family=Work+Sans&family=Nunito&family=Open+Sans&display=swap" rel="stylesheet" />
 
 
 
 
 <div class="cv-container {{templateClass}} {{selectedFontClass}}">
-  <div class="cv-font-wrapper cv-font-{{fontFamily.replace(' ', '-')}}" style="font-family: var(--cv-font-family)">
+
   <div class="cv" *ngrxLet="resume$ as data">
 
 
@@ -39,11 +41,28 @@
     </div>
 
     <!-- ✅ Main Content -->
-    <div class="cv-main" [ngClass]="selectedFontClass">
+    <div
+      class="cv-main"
+      [ngClass]="selectedFontClass"
+      [ngStyle]="{
+    'font-size': fontSize + 'pt',
+    'line-height': lineHeight,
+    'padding-left': marginX + 'mm',
+    'padding-right': marginX + 'mm',
+    'padding-top': marginY + 'mm',
+    'padding-bottom': marginY + 'mm'
+  }"
+    >
       <header class="cv-header" [ngClass]="selectedFontClass">
         <div class="header-info">
           <h2>{{ data?.full_name }}</h2>
-          <p class="job-title">{{ data?.job_title }}</p>
+          <p class="job-title" [ngClass]="jobTitleClass">
+            {{ data?.job_title }}
+          </p>
+
+
+
+
           <p *ngIf="data?.email"><mat-icon>email</mat-icon> {{ data?.email }}</p>
           <p *ngIf="data?.phone"><mat-icon>phone</mat-icon> {{ data?.phone }}</p>
           <p *ngIf="data?.location"><mat-icon>location_on</mat-icon> {{ data?.location }}</p>
@@ -79,4 +98,4 @@
 
   </div>
 </div>
-</div>
+

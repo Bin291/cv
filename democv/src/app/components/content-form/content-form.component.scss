@@ -1,6 +1,4 @@
-*{
-  font-family: "Lexend Deca", sans-serif;
-}
+
 
 body {
   display: flex;
@@ -11,6 +9,7 @@ body {
 }
 
 .education-form {
+  font-family: "Lexend Deca", sans-serif;
   background: var(--surfaceContainer);
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

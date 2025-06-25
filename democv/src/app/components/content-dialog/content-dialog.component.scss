@@ -90,7 +90,12 @@
   justify-content: flex-end;
   align-items: center;
   padding: 10px;
+  font-family: "Lexend Deca", sans-serif;
   gap: 10px;
+
+  button{
+    font-family: "Lexend Deca", sans-serif;
+  }
 }
 .title{
   display: flex;

@@ -1,26 +1,100 @@
-@each $font, $css in (
-  "Lexend": "Lexend",
-  "Roboto": "Roboto",
-  "FiraSans": "Fira Sans"
-) {
-  .cv-font-#{$font} {
-    --cv-font-family: "#{$css}", sans-serif;
+
+.font-SourceSansPro {
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+.font-Karla {
+  font-family: 'Karla', sans-serif !important;
+}
+
+.font-Mulish {
+  font-family: 'Mulish', sans-serif !important;
+}
+
+.font-Lato {
+  font-family: 'Lato', sans-serif !important;
+}
+
+.font-TitilliumWeb {
+  font-family: 'Titillium Web', sans-serif !important;
+}
+
+.font-WorkSans {
+  font-family: 'Work Sans', sans-serif !important;
+}
+
+.font-Barlow {
+  font-family: 'Barlow', sans-serif !important;
+}
+
+.font-Jost {
+  font-family: 'Jost', sans-serif !important;
+}
+
+.font-FiraSans {
+  font-family: 'Fira Sans', sans-serif !important;
+}
+
+.font-Roboto {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.font-Rubik {
+  font-family: 'Rubik', sans-serif !important;
+}
+
+.font-Asap {
+  font-family: 'Asap', sans-serif !important;
+}
+
+.font-Nunito {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+.font-OpenSans {
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+.font-Lexend {
+  font-family: 'Lexend', sans-serif !important;
+}
+
+.job-title {
+  font-weight: 600;
+
+  &.job-size-S { font-size: 14px; }
+  &.job-size-M { font-size: 18px; }
+  &.job-size-L { font-size: 22px; }
+
+  &.job-position-Below {
+    display: block;
+    margin-top: 8px;
   }
+
+  &.job-position-Try-Same-Line {
+    display: inline-block;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+
+  &.italic { font-style: italic; }
+  &.normal { font-style: normal; }
 }
 
-.cv {
-  font-family: var(--cv-font-family);
-}
 
-/* ======= BASE CV STYLES ======= */
+
 .cv-container {
+  font-family: var(--cv-font-family), sans-serif !important;
 }
 
 .cv {
+
   width: 794px;
   max-width: 100%;
-  //height: 1123px;
-  height: auto;
+  height: 1123px;
+  //min-height: 1123px;
+  //height: fit-content;
+
   background: white;
   margin: 0 auto 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -60,10 +134,41 @@
       }
 
       .job-title {
-        font-size: 14px;
-        margin-bottom: 4px;
-        font-style: italic;
+        &.job-size-S {
+          font-size: 14px;
+          letter-spacing: 0.3px;
+        }
+
+        &.job-size-M {
+          font-size: 16px;
+          letter-spacing: 0.5px;
+        }
+
+        &.job-size-L {
+          font-size: 18px;
+          letter-spacing: 0.8px;
+        }
+
+        &.italic {
+          font-style: italic;
+        }
+
+        &.normal {
+          font-style: normal;
+        }
+
+        &.job-position-Try\ Same\ Line {
+          display: inline-block;
+          margin-left: 8px;
+          vertical-align: bottom;
+        }
+
+        &.job-position-Below {
+          display: block;
+          margin-top: 4px;
+        }
       }
+
 
       p {
         display: flex;
@@ -71,8 +176,11 @@
         font-size: 13px;
         margin: 0;
         mat-icon {
+          display: flex;
+          align-items: center;
           font-size: 14px;
-          margin-right: 4px;
+          gap: 10px;
+          justify-content: center;
         }
       }
     }
@@ -104,7 +212,7 @@
       margin: 0;
       list-style: none;
 
-      a {
+      a{
         text-decoration: none;
         color: inherit;
         transition: color 0.3s;
@@ -175,10 +283,12 @@
 
 /* ======= TEMPLATE VARIANTS ======= */
 .cv-container.template-brian {
+  font-family: var(--cv-font-family), sans-serif !important;
   .cv {
     display: flex;
     background: #f6f8fa;
     color: #1b2a40;
+    //font-family: var(--cv-font-family), sans-serif !important;
     border: none;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
     padding: 0;
@@ -256,7 +366,7 @@
 
           .job-title {
             font-size: 14px;
-            font-style: italic;
+            //font-style: italic;
             margin-bottom: 8px;
           }
 
@@ -301,11 +411,13 @@
           .item-meta {
             font-size: 13px;
             color: #555;
+
           }
 
           .item-description {
             font-size: 14px;
             margin-top: 6px;
+
           }
         }
       }
@@ -315,6 +427,7 @@
 
 
 .cv-container.template-andrew {
+  font-family: var(--cv-font-family), sans-serif !important;
   .cv {
     padding: 48px;
     background-color: white;
@@ -340,7 +453,7 @@
         }
 
         .job-title {
-          font-style: italic;
+          //font-style: italic;
           font-size: 16px;
           color: #444;
           margin-bottom: 12px;
@@ -353,6 +466,8 @@
           align-items: center;
 
           mat-icon {
+            display: flex;
+            align-items: center;
             margin-right: 6px;
             font-size: 14px;
           }
@@ -369,6 +484,7 @@
         font-size: 13px;
         margin: 4px 0;
         color: #333;
+
       }
     }
 
@@ -442,8 +558,10 @@
     }
   }
 }
+
 /* ==== ANNA STYLE TEMPLATE ==== */
 .cv-container.template-anna {
+  font-family: var(--cv-font-family), sans-serif !important;
   .cv {
     background: #f9fafb;
     color: #222;
@@ -471,7 +589,7 @@
         .job-title {
           font-size: 15px;
           margin: 6px 0;
-          font-style: italic;
+          //font-style: italic;
           color: #555;
         }
 
@@ -556,6 +674,7 @@
           .item-description {
             font-size: 14px;
             line-height: 1.5;
+            font-family: "Lexend Deca", sans-serif;
           }
         }
       }
@@ -563,6 +682,8 @@
   }
 }
 .cv-container.template-lara {
+  //font-family: var(--cv-font-family), sans-serif !important;
+  font-family: 'Caveat', cursive;
   .cv {
     display: flex;
     background: #f6f8fa;
@@ -640,6 +761,7 @@
             strong {
               font-size: 14px;
               font-weight: bold;
+
             }
 
             .subtitle {

@@ -10,6 +10,7 @@
 .container {
   border: 1px solid var(--border-color);
   border-radius: 8px;
+  font-family: "Lexend Deca", sans-serif;
 //padding: 10px;
   background: var(--background);
   width: 100%;
@@ -41,6 +42,7 @@ mat-panel-title {
   display: flex;
   align-items: center;
   color: var(--text-color);
+  font-family: "Lexend Deca", sans-serif;
 
   mat-icon {
     margin-right: 8px;
@@ -80,6 +82,7 @@ mat-action-row {
   .info-content {
     flex: 1;
     margin-right: 16px;
+    font-family: "Lexend Deca", sans-serif;
 
     .top-line {
       font-weight: bold;

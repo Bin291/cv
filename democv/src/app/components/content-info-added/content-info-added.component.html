@@ -4,9 +4,7 @@
       <mat-panel-title>
         <mat-icon>folder</mat-icon> {{ contentData.content }}
       </mat-panel-title>
-      <!--      <mat-action-row>-->
-      <!--        <button mat-button (click)="addItem($event)">+ {{ contentData.content }}</button>-->
-      <!--      </mat-action-row>-->
+
     </mat-expansion-panel-header>
 
     <div class="item-list-container" cdkDropList [cdkDropListData]="items" (cdkDropListDropped)="drop($event)">
@@ -14,7 +12,6 @@
         <mat-icon>drag_indicator</mat-icon>
 
         <div class="info-content">
-          <!-- Hàng đầu: Title/SubTitle hoặc Name -->
           <div class="top-line" *ngIf="resolveName(contentData.content, item)">
             <strong>{{ resolveName(contentData.content, item) }}</strong>
           </div>

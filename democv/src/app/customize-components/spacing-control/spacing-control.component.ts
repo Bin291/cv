@@ -1,36 +1,49 @@
-import { Component } from '@angular/core';
-import {NgForOf} from '@angular/common';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {ShareModule} from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-spacing-control',
+  templateUrl: './spacing-control.component.html',
   imports: [
-    NgForOf,
     ShareModule
   ],
-  templateUrl: './spacing-control.component.html',
-  styleUrl: './spacing-control.component.scss'
+  styleUrls: ['./spacing-control.component.scss']
 })
 export class SpacingControlComponent {
+  @Output() spacingChange = new EventEmitter<{ key: string; value: number }>();
+
   controls = [
-    { label: 'Font Size', value: 12, unit: 'pt', min: 6, max: 24, step: 1 },
-    { label: 'Line Height', value: 1.45, unit: '', min: 1, max: 2, step: 0.05 },
-    { label: 'Left & Right Margin', value: 12, unit: 'mm', min: 0, max: 30, step: 1 },
-    { label: 'Top & Bottom Margin', value: 26, unit: 'mm', min: 0, max: 40, step: 1 },
-    { label: 'Space between Entries', value: 16, unit: '', min: 0, max: 40, step: 1 },
+    { key: 'fontSize', label: 'Font Size', value: 12, min: 8, max: 24, step: 1 },
+    { key: 'lineHeight', label: 'Line Height', value: 1.5, min: 1, max: 3, step: 0.1 },
+    { key: 'marginX', label: 'Left/Right Margin', value: 12, min: 0, max: 50, step: 1 },
+    { key: 'marginY', label: 'Top/Bottom Margin', value: 20, min: 0, max: 50, step: 1 },
+    { key: 'spacingBetween', label: 'Spacing Between Entries', value: 16, min: 0, max: 64, step: 1 }
   ];
 
+  getDisplayValue(ctrl: any): string {
+    switch (ctrl.key) {
+      case 'fontSize': return `${ctrl.value}pt`;
+      case 'lineHeight': return ctrl.value.toFixed(1);
+      case 'marginX':
+      case 'marginY': return `${ctrl.value}mm`;
+      case 'spacingBetween': return `${ctrl.value}px`;
+      default: return `${ctrl.value}`;
+    }
+  }
+
   increase(i: number) {
-    const c = this.controls[i];
-    if (c.value + c.step <= c.max) c.value = parseFloat((c.value + c.step).toFixed(2));
+    const ctrl = this.controls[i];
+    ctrl.value = Math.min(ctrl.value + ctrl.step, ctrl.max);
+    this.emitChange(ctrl);
   }
 
   decrease(i: number) {
-    const c = this.controls[i];
-    if (c.value - c.step >= c.min) c.value = parseFloat((c.value - c.step).toFixed(2));
+    const ctrl = this.controls[i];
+    ctrl.value = Math.max(ctrl.value - ctrl.step, ctrl.min);
+    this.emitChange(ctrl);
   }
 
-  getDisplayValue(ctrl: any): string {
-    return ctrl.unit === '' && ctrl.label.includes('Line') ? ctrl.value.toFixed(2) : `${ctrl.value}${ctrl.unit}`;
+  emitChange(ctrl: any) {
+    this.spacingChange.emit({ key: ctrl.key, value: ctrl.value });
   }
 }

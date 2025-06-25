@@ -92,3 +92,5 @@ export const updateSelectedFont = createAction(
   '[Resume] Update Selected Font',
   props<{ font: string }>()
 );
+
+export const loadResumes = createAction('[Resume] Load Resumes');

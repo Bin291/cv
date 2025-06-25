@@ -1,7 +1,13 @@
 <app-template-selector></app-template-selector>
 <app-font></app-font>
-<app-heading></app-heading>
-<app-header-style></app-header-style>
-<app-spacing-control></app-spacing-control>
+<!--<app-heading></app-heading>-->
+<!--<app-header-style></app-header-style>-->
+
+<app-spacing-control (spacingChange)="onSpacingChange($event.key, $event.value)"></app-spacing-control>
+
 <app-name-style></app-name-style>
-<app-job-title></app-job-title>
+<app-job-title
+  (sizeChange)="onSizeChange($event)"
+  (positionChange)="onPositionChange($event)"
+  (fontStyleChange)="onFontStyleChange($event)">
+</app-job-title>

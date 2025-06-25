@@ -16,6 +16,7 @@ export const authReducer = createReducer(
 
     return <AuthState>{
       ...state,
+
       authData: null,
       isLogging: true,
     }

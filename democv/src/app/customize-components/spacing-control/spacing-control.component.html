@@ -5,11 +5,15 @@
     <label>{{ ctrl.label }}</label>
     <div class="slider-container">
       <input
+
         type="range"
         [min]="ctrl.min"
         [max]="ctrl.max"
         [step]="ctrl.step"
         [(ngModel)]="ctrl.value"
+        (ngModelChange)="emitChange(ctrl)"
+
+
       />
       <span class="value">{{ getDisplayValue(ctrl) }}</span>
       <div class="buttons">

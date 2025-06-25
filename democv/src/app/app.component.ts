@@ -14,7 +14,7 @@ import {DownloadBoxComponent} from './components/download-box/download-box.compo
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit{
-  title = 'democv';
+  title = 'Easy CV';
 
   menuItems: { route: string }[] = [];
   activeLink: string = '';

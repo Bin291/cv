@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {NgForOf} from '@angular/common';
+import {StyleService} from '../../services/style/style.service';
 
 @Component({
   selector: 'app-job-title',
@@ -10,6 +11,26 @@ import {NgForOf} from '@angular/common';
   styleUrl: './job-title.component.scss'
 })
 export class JobTitleComponent {
+  constructor(private styleService: StyleService) {}
+  @Output() sizeChange = new EventEmitter<string>();
+  @Output() positionChange = new EventEmitter<string>();
+  @Output() fontStyleChange = new EventEmitter<string>();
+
+
+  selectSize(size: string) {
+    this.selectedSize = size;
+    this.styleService.updateSize(size);
+  }
+
+  selectPosition(pos: string) {
+    this.selectedPosition = pos;
+    this.styleService.updatePosition(pos);
+  }
+
+  selectStyle(style: string) {
+    this.selectedStyle = style;
+    this.styleService.updateFontStyle(style);
+  }
   sizes = ['S', 'M', 'L'];
   selectedSize = 'M';
 
@@ -19,15 +40,6 @@ export class JobTitleComponent {
   styles = ['Normal', 'Italic'];
   selectedStyle = 'Normal';
 
-  selectSize(size: string) {
-    this.selectedSize = size;
-  }
 
-  selectPosition(position: string) {
-    this.selectedPosition = position;
-  }
 
-  selectStyle(style: string) {
-    this.selectedStyle = style;
-  }
 }
