@@ -1,11 +1,10 @@
-*{
-  font-family: "Lexend Deca", sans-serif;
-}
+
 .upload-container{
   width: 100%;
   height: 70%;
   background: var(--inverseOnSurface);
   padding: 20px;
+  font-family: 'Lexend Deca', sans-serif;
 
   .upload-header{
     width: 100%;
@@ -25,7 +24,7 @@
   align-items: center;
   background: var(--inverseOnSurface);
   border-radius: 10px;
-  border: 2px dashed var(--onSurface);
+  //border: 2px dashed var(--onSurface);
 }
 .file-input{
   width: 100%;

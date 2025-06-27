@@ -18,6 +18,8 @@ import {ResumeState} from './ngrx/resume/resume.state';
 import {resumeReducer} from './ngrx/resume/resume.reducer';
 import  * as LinkEffects from './ngrx/link/link.effects';
 import {linkReducer} from './ngrx/link/link.reducers';
+import {styleReducer} from './ngrx/style/style.reducers';
+import * as StyleEffects from './ngrx/style/style.effects';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
@@ -30,11 +32,12 @@ export const appConfig: ApplicationConfig = {
       addContent: addContentReducer,
       resume:resumeReducer,
       link: linkReducer,
+      style: styleReducer,
 
     }),
 
 
     provideAuth(() => getAuth()),
-    provideEffects( AuthEffects, AddcontentEffects , ResumeEffects, LinkEffects),
+    provideEffects( AuthEffects, AddcontentEffects , ResumeEffects, LinkEffects, StyleEffects)
   ]
 };

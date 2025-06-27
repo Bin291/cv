@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { ResumeModule } from './resume/resume.module';
 import { AuthMiddleware } from './auth/firebase-auth.middleware';
 import { LinkModule } from './link/link.module';
+import { StyleSettingsModule } from './style-settings/style-settings.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,6 +24,7 @@ import { LinkModule } from './link/link.module';
     AuthModule,
     ResumeModule,
     LinkModule,
+    StyleSettingsModule,
   ],
   controllers: [AppController, AuthController, AddContentController ],
   providers: [AppService, AuthService, AddContentService ],
@@ -40,7 +42,7 @@ export class AppModule {
         { path: 'link', method: RequestMethod.GET },
         { path: 'link', method: RequestMethod.PATCH },
         { path: 'link', method: RequestMethod.DELETE },
-
+        { path: 'style-settings', method: RequestMethod.ALL }
 
 
 

@@ -33,21 +33,34 @@ import {
                   created_at: new Date().toISOString(), // 👈 thêm created_at nếu chưa có mặc định
                 },
               ]);
-        
               if (insertRes.error) {
                 console.error('[Service] Supabase insert error:', insertRes.error);
                 throw new HttpException(insertRes.error.message, 500);
               }
-        
               console.log('[Service] User inserted:', insertRes.data);
               return insertRes.data?.[0];
             }
-        
             return data?.[0];
           } catch (error) {
             console.error('[Service] verifyToken error:', error);
             throw new UnauthorizedException(error.message);
           }
         }
+
+        async getUserByUid(uid: string): Promise<any> {
+          const { data, error } = await this.supabaseProvider
+            .getClient()
+            .from('auth')
+            .select('*')
+            .eq('uid', uid)
+            .single();
+
+          if (error) {
+            console.error('[Service] Supabase getUserByUid error:', error);
+            throw new HttpException(error.message, 500);
+          }
+          return data;
+        }
+
         
       }

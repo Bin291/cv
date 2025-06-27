@@ -34,6 +34,7 @@ import * as LinkActions from '../../ngrx/link/link.actions';
 import { ResumeService } from '../../services/resume/resume.service';
 import {FontService} from '../../services/font/font.service';
 import {StyleService} from '../../services/style/style.service';
+import {StyleConfig} from '../../models/style-setting.model';
 
 @Component({
   selector: 'app-cv',
@@ -62,6 +63,7 @@ export class CVComponent implements OnInit, OnDestroy {
   selectedSize = 'S';
   selectedPosition = 'Try Same Line';
   selectedStyle = 'Normal';
+  resumeId!: string;
 
   size: string = 'M';
   position: string = 'Below';
@@ -100,47 +102,60 @@ export class CVComponent implements OnInit, OnDestroy {
     console.log('[FONT] Class font đang áp dụng:', this.selectedFontClass);
   }
   ngOnInit(): void {
+    let resumeId: string | null = null;
+
     if (this.isBrowser) {
-      const resumeId = localStorage.getItem('resume_id');
+      resumeId = localStorage.getItem('resume_id');
       if (resumeId) {
         this.store.dispatch(loadResume({ id: resumeId }));
         this.store.dispatch(LinkActions.loadLinks({ resumeId }));
       }
 
-      // Khởi tạo template
       const savedTemplate = localStorage.getItem('cv_template');
       if (savedTemplate) {
         this.templateClass = `template-${savedTemplate}`;
       }
 
-      // Lắng nghe thay đổi font từ FontService
-      this.fontService.fontClass$.subscribe(fontClass => {
-        this.selectedFontClass = fontClass;
-        console.log('[CV] 🔠 Font class áp dụng:', fontClass);
-      });
-
-      // Lắng nghe thay đổi từ Store (NGRX)
-      this.store.select(state => state.resume.selectedFont).subscribe(font => {
-        if (font) {
-          this.fontService.setFont(font); // Trigger fontClass$ luôn
-          localStorage.setItem('cv_font', font);
-        }
-      });
-
       window.addEventListener('cv-template-change', this.handleTemplateChange);
     }
 
-    this.styleService.size$.subscribe(val => this.size = val);
-    this.styleService.position$.subscribe(val => this.position = val);
-    this.styleService.fontStyle$.subscribe(val => {
-      this.fontStyle = val;
-      console.log('fontStyle nhận:', val); // Kiểm tra log
-    });
-    this.styleService.fontSize$.subscribe(v => this.fontSize = v);
-    this.styleService.lineHeight$.subscribe(v => this.lineHeight = v);
-    this.styleService.marginX$.subscribe(v => this.marginX = v);
-    this.styleService.marginY$.subscribe(v => this.marginY = v);
-    this.styleService.spacingBetween$.subscribe(v => this.spacingBetween = v);
+    if (resumeId) {
+      this.resumeId = resumeId;
+
+      // Lắng nghe cập nhật style realtime
+      this.styleService.style$.subscribe(style => {
+        this.applyStyle(style);
+      });
+
+      // Load style từ Supabase một lần và phát vào stream
+      this.styleService.loadStyle(resumeId).subscribe({
+        next: ({ style }) => this.styleService.emitLocalStyle(style), // ✅ thay vì gọi applyStyle trực tiếp
+        error: (err) => {
+          console.warn('[CV] Không tìm thấy style, dùng mặc định.', err.message);
+        }
+      });
+    }
+
+  }
+
+  applyStyle(style: StyleConfig) {
+    this.selectedFontClass = style.fontFamily ? `font-${style.fontFamily}` : 'font-Lexend';
+    if (style.templateVariant) {
+      this.templateClass = `template-${style.templateVariant}`;
+    }
+
+
+    this.size = style.jobTitleSize || 'M';
+    this.position = style.jobTitlePosition === 'inline' ? 'Try Same Line' : 'Below';
+    this.fontStyle = style.jobTitleStyle === 'italic' ? 'Italic' : 'Normal';
+
+    this.fontSize = style.fontSize ? parseInt(style.fontSize) : 12;
+    this.lineHeight = style.lineHeight || 1.5;
+    this.marginX = style.marginLeftRight ? parseInt(style.marginLeftRight) : 12;
+    this.marginY = style.marginTopBottom ? parseInt(style.marginTopBottom) : 20;
+    this.spacingBetween = style.entrySpacing ? parseInt(style.entrySpacing) : 16;
+
+    console.log('[CV] ✅ Style loaded & applied:', style);
   }
 
 

@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Inject,
+  Input,
   OnInit,
   Output,
   PLATFORM_ID
@@ -15,8 +16,8 @@ import { User } from '@angular/fire/auth';
 import { AuthModel } from '../../models/auth.model';
 import { AuthService } from '../../services/auth/auth.service';
 import { AuthState } from '../../ngrx/auth/auth.state';
-import {Font} from 'jspdf';
-import {FontService} from '../../services/font/font.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-font',
@@ -27,39 +28,47 @@ import {FontService} from '../../services/font/font.service';
 })
 export class FontComponent implements OnInit {
   @Output() fontChanged = new EventEmitter<string>();
+  @Input() resumeId!: string;
+
   fontTypes = ['Serif', 'Sans', 'Mono'];
   fontFamilies = [
-    // 👔 Truyền thống, dễ đọc, nghiêm túc
     'Source Sans Pro', 'Karla', 'Fira Sans',
-
-    // 🧊 Hiện đại phổ biến (Web/App)
     'Roboto', 'Open Sans', 'Lato',
-
-    // 🟣 Sáng tạo nhẹ, tinh tế
     'Work Sans', 'Jost', 'Mulish',
-
-    // 🟡 Geometric / Techy – dành cho startup hoặc tiêu đề
     'Lexend', 'Nunito', 'Rubik',
-
-    // 🟠 Cá tính nhẹ, dùng cho phần phụ / tiêu đề phụ
     'Titillium Web', 'Asap', 'Barlow'
   ];
 
   user$!: Observable<User | null>;
-  selectedFontType = 'Sans';
-  selectedFontFamily = 'Lexend';
   auth$!: Observable<AuthModel | null>;
+  selectedFontType = 'Sans';
+  selectedFontFamily = '';
 
   constructor(
     private styleService: StyleService,
     private store: Store<{ auth: AuthState }>,
     private auth: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private fontService: FontService,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.auth$ = this.store.select(s => s.auth.authData);
-    this.store.dispatch(updateSelectedFont({ font: this.selectedFontFamily }));
+  }
 
+  ngOnInit() {
+    if (this.resumeId) {
+      this.styleService.loadStyle(this.resumeId).subscribe({
+        next: ({ style }) => {
+          this.selectedFontFamily = style.fontFamily || 'Lexend';
+          console.log('[FONT] Font từ Supabase:', this.selectedFontFamily);
+          this.cdr.detectChanges(); // 👈 ép Angular cập nhật
+        },
+        error: (err) => {
+          console.warn('[FONT] ❌ Không load được style. Dùng mặc định.', err.message);
+          this.selectedFontFamily = 'Lexend';
+          this.cdr.detectChanges(); // 👈 luôn detect
+        }
+      });
+    }
   }
 
   selectFontType(type: string) {
@@ -69,35 +78,22 @@ export class FontComponent implements OnInit {
   selectFontFamily(font: string) {
     this.selectedFontFamily = font;
     console.log('[FONT] Font được chọn:', font);
-    this.fontService.setFont(font); // hoặc emit để set `selectedFontClass`
-  }
 
+    const patch = { fontFamily: font };
 
-  async ngOnInit() {
-    this.user$ = this.auth.getCurrentUser();
+    if (this.resumeId) {
+      // 🔄 Lấy style hiện tại từ local cache
+      const currentStyle = this.styleService.getCurrentStyle();
+      const mergedStyle = { ...currentStyle, ...patch };
 
-    if (isPlatformBrowser(this.platformId)) {
-      const resumeId = localStorage.getItem('resume_id');
-      if (resumeId) {
-        try {
-          const req$ = await this.styleService.getByResumeId(resumeId);
-          req$.subscribe({
-            next: (styleSettings) => {
-              this.selectedFontFamily = styleSettings.style?.fontFamily || 'Lexend';
-            },
-            error: async (err) => {
-              if (err.status === 404) {
-                const create$ = await this.styleService.create(resumeId, { fontFamily: 'Lexend' });
-                create$.subscribe();
-              } else {
-                console.error('❌ Failed to load style settings:', err);
-              }
-            }
-          });
-        } catch (e) {
-          console.error('❌ Error calling styleService:', e);
-        }
-      }
+      this.styleService.saveStyle(this.resumeId, mergedStyle).subscribe({
+        next: () => {
+          this.styleService.emitLocalStyle(mergedStyle); // cập nhật toàn bộ
+          this.store.dispatch(updateSelectedFont({ font }));
+        },
+        error: err => console.error('[FONT] ❌ Lỗi khi lưu font', err)
+      });
     }
   }
+
 }

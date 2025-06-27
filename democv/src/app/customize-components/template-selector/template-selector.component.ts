@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
 import {MatCard} from "@angular/material/card";
 import {MatCheckbox} from "@angular/material/checkbox";
@@ -6,6 +6,7 @@ import {MatIcon} from "@angular/material/icon";
 import {NgForOf} from "@angular/common";
 import {ThemeService} from '../../services/theme/theme.service';
 import {Store} from '@ngrx/store';
+import {StyleService} from '../../services/style/style.service';
 
 @Component({
   selector: 'app-template-selector',
@@ -16,8 +17,10 @@ import {Store} from '@ngrx/store';
   templateUrl: './template-selector.component.html',
   styleUrl: './template-selector.component.scss'
 })
-export class TemplateSelectorComponent {
+export class TemplateSelectorComponent implements OnInit{
   @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
+  @Input() resumeId!: string;
+  selectedTemplate: string = 'brian';
 
   // templates = [
   //   { image: 'https://prod.flowcvassets.com/resume-templates/wk78myowij2vvh1gy8l-s/2560.webp', name: 'image' },
@@ -43,16 +46,39 @@ export class TemplateSelectorComponent {
 
 
 
-  constructor(private themeService: ThemeService,private store: Store<any>) {}
+  constructor(private themeService: ThemeService,private store: Store<any>, private styleService: StyleService) {}
 
   // selectTemplate(name: string) {
   //   this.themeService.applyTemplate(name);
   // }
   selectTemplate(name: string) {
+    if (this.resumeId) {
+      this.styleService.saveStyle(this.resumeId, { templateVariant: name }).subscribe({
+        next: () => {
+          this.selectedTemplate = name;
+          this.styleService.emitLocalStyle({ templateVariant: name });
+        },
+        error: err => console.error('[TemplateSelector] ❌ Failed to save template', err)
+      });
+    }
+
     if (typeof window !== 'undefined') {
       localStorage.setItem('cv_template', name);
       const event = new CustomEvent('cv-template-change', { detail: name });
       window.dispatchEvent(event);
     }
   }
+
+
+
+  ngOnInit(): void {
+    if (this.resumeId) {
+      this.styleService.loadStyle(this.resumeId).subscribe({
+        next: ({ style }) => {
+          this.selectedTemplate = style.templateVariant || 'brian';
+        },
+        error: err => console.warn('[TemplateSelector] Không load được style', err.message)
+      });
+  }
+    }
 }

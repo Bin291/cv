@@ -1,13 +1,17 @@
-<app-template-selector></app-template-selector>
-<app-font></app-font>
-<!--<app-heading></app-heading>-->
-<!--<app-header-style></app-header-style>-->
-
-<app-spacing-control (spacingChange)="onSpacingChange($event.key, $event.value)"></app-spacing-control>
-
-<app-name-style></app-name-style>
+<app-template-selector [resumeId]="resumeId"></app-template-selector>
+<app-font [resumeId]="resumeId"></app-font>
+<app-spacing-control  [resumeId]="resumeId"></app-spacing-control>
 <app-job-title
+  [resumeId]="resumeId"
   (sizeChange)="onSizeChange($event)"
   (positionChange)="onPositionChange($event)"
   (fontStyleChange)="onFontStyleChange($event)">
 </app-job-title>
+
+
+
+
+<!--<app-heading></app-heading>-->
+<!--<app-header-style></app-header-style>-->
+<!--<app-name-style></app-name-style>-->
+<!--(spacingChange)="onSpacingChange($event.key, $event.value)"-->

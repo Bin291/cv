@@ -17,4 +17,12 @@ export class AuthController {
     // console.log(user);
     return user;
   }
+  @Get('user')
+  async getUserByUid(@Headers('uid') uid: string) {
+    if (!uid) {
+      throw new UnauthorizedException('UID is required');
+    }
+    const user = await this.authService.getUserByUid(uid);
+    return user;
+  }
 }

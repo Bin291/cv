@@ -7,5 +7,6 @@ import { SupabaseModule } from '../supabase/supabase.module';
   imports: [SupabaseModule],
   controllers: [ResumeController],
   providers: [ResumeService],
+  exports: [ResumeService]
 })
 export class ResumeModule {}
