@@ -8,6 +8,7 @@ import {
   Req,
   Patch,
   BadRequestException,
+  Delete,
 } from '@nestjs/common';
 import { ResumeService } from './resume.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
@@ -68,6 +69,12 @@ export class ResumeController {
   @Get('user/:uid')
   findByUser(@Param('uid') uid: string) {
     return this.resumeService.findAllByUser(uid);
+  }
+
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.resumeService.delete(id);
   }
 
 }

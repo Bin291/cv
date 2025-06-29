@@ -7,32 +7,7 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ResumeService {
-  constructor(private readonly supabase: SupabaseService) {
-
-  }
-  // async create(data: CreateResumeDto & { uid?: string }) {
-  //   // Nếu uid không có thì gán 'guest'
-  //   const owner = data.uid ?? 'guest';
-  //
-  //   // Chuẩn bị payload để insert
-  //   const payload = {
-  //     ...data,
-  //     uid: owner,
-  //   };
-  //
-  //   const { error, data: inserted } = await this.supabase
-  //     .getClient()
-  //     .from('resume')
-  //     .insert(payload)
-  //     .single();
-  //
-  //   if (error) {
-  //     console.error('Supabase insert error:', error);
-  //     throw new InternalServerErrorException(error.message);
-  //   }
-  //   return inserted;
-  // }
-
+  constructor(private readonly supabase: SupabaseService) {}
 
   async create(createDto: CreateResumeDto, uid: string | null) {
     // Build payload
@@ -42,7 +17,8 @@ export class ResumeService {
     }
     // Nếu uid === null thì không set uid, Supabase sẽ để NULL
 
-    const { data, error } = await this.supabase.getClient()
+    const { data, error } = await this.supabase
+      .getClient()
       .from('resume')
       .insert([payload])
       .select();
@@ -54,10 +30,13 @@ export class ResumeService {
     return data![0];
   }
 
-
   async findOne(id: string) {
     const client = this.supabase.getClient();
-    const { data, error } = await client.from('resume').select('*').eq('id', id).single();
+    const { data, error } = await client
+      .from('resume')
+      .select('*')
+      .eq('id', id)
+      .single();
     if (error) throw error;
     return data;
   }
@@ -79,13 +58,12 @@ export class ResumeService {
     return updated;
   }
 
-
-
   async findAllByUser(uid: string) {
-    const { data, error } = await this.supabase.getClient()
+    const { data, error } = await this.supabase
+      .getClient()
       .from('resume')
       .select('*')
-      .eq('uid', uid)         // <-- dùng đúng tên cột
+      .eq('uid', uid) // <-- dùng đúng tên cột
       .order('updated_at', { ascending: false });
     if (error) throw new Error(error.message);
     return data;
@@ -110,7 +88,4 @@ export class ResumeService {
     }
     return data as Resume[];
   }
-
-
-
 }

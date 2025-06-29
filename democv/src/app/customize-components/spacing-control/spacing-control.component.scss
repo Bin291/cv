@@ -9,6 +9,7 @@
     font-weight: bold;
     margin-bottom: 24px;
     font-size: 30px;
+    font-family: Lexend Deca, sans-serif;
   }
 
   .control-row {
@@ -29,8 +30,9 @@
         flex-grow: 1;
         height: 6px;
         border-radius: 8px;
-        background: #eee;
+        background: #535353;
         accent-color: #4f46e5; // màu xanh đậm
+        outline: none;
       }
 
       .value {

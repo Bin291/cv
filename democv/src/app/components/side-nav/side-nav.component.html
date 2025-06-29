@@ -5,14 +5,14 @@
       <mat-icon>{{ item.icon }}</mat-icon>{{ item.label }}</button>
   }
 
-  <hr>
-  <button mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === 'account'}" (click)="login()">
+  <!-- <hr> -->
+  <button mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === 'account'}">
     @if (currentUsers != null){
       <div class="avatar-container">
         <img src="{{currentUsers.photoURL}}" alt="Login" class="avatar" (error)="onImageError($event)">
       </div>
     } @else {
-      <div class="avatar-container1"><mat-icon>account_circle</mat-icon><p>Login</p></div>
+      <div class="avatar-container1"><mat-icon>account_circle</mat-icon><p></p></div>
     }
   </button>
   <button *ngIf="currentUsers != null" mat-button class="menu-buttons" [ngClass]="{'active': selectedMenu === 'logout'}" (click)="logout()">

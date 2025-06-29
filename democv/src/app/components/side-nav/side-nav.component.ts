@@ -86,9 +86,9 @@ export class SideNavComponent implements OnInit {
 
   logout() {
     this.auth.signOut().then(() => {
-      localStorage.clear(); // nếu bạn có lưu gì vào localStorage
-      this.store.dispatch(clearState()); // hoặc logoutSuccess nếu bạn có
-      window.location.reload(); // tùy chọn
+      localStorage.clear();
+      this.store.dispatch(clearState());
+      window.location.reload();
     });
   }
 
